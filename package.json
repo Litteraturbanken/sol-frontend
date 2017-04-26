@@ -6,7 +6,7 @@
   "private": true,
   "dependencies": {
     "axios-debug": "0.0.4",
-    "nuxt": "latest"
+    "nuxt": "https://github.com/jroxendal/nuxt.js.git#minify-error"
   },
   "scripts": {
     "dev": "nuxt",
@@ -23,6 +23,8 @@
     "eslint-loader": "^1.6.1",
     "eslint-plugin-html": "^2.0.0",
     "eslint-plugin-promise": "^3.4.1",
-    "eslint-plugin-standard": "^2.0.1"
+    "eslint-plugin-standard": "^2.0.1",
+    "node-sass": "^4.5.2",
+    "sass-loader": "^6.0.3"
   }
 }

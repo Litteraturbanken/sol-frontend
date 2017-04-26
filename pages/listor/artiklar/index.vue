@@ -17,10 +17,13 @@ import backend from "assets/model"
 var c = console
 
 export default {
-  // components: {
-  //   Logo
-  // }
   name : "ArticleList",
+  head : {
+      title : this.article.ArticleID + " – Svenskt översättarlexikon",
+      meta : {
+          vmid : "description", description : "Alla artiklar – Svenskt översättarlexikon"
+      }
+  },
   data() {
     return {
       filterstr : ""

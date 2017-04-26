@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="outer-container">
 
     <header>
       <h1><a href="/">Svenskt översättarlexikon</a></h1>
@@ -10,15 +10,15 @@
         <li><a href="/listor/kronologi">Kronologi</a></li>
         <li><a href="/listor/sprak">Språk</a></li>
       </ul>
-  </header>
-    <nuxt/>
+    </header>
+    <nuxt class="mainview"/>
   </div>
 </template>
 
-<style>
+<style lang="scss">
 html
 {
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: Georgia, serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
@@ -28,8 +28,27 @@ html
   box-sizing: border-box;
   padding : 1em;
 }
+.outer-container {
+  display : flex;
+  flex-direction : column;
+  align-items: center;
+  justify-content: center;
+}
+.mainview {
+
+}
+a {
+  color : #333;
+  &:hover {
+    color : grey;
+  }
+}
 p {
   max-width : 40em;
+  line-height: 143%;
+}
+p + p {
+  margin-top : 1em;
 }
 li {
   list-style : none;
@@ -42,37 +61,19 @@ header {
   box-sizing: border-box;
   margin: 0;
 }
+.mainmenu {
+  margin-left : 0;
+  padding-left : 0;
+}
 .mainmenu li {
   display : inline-block;
   margin-right: 1em;
+  &:first-child {
+
+  }
 }
-.button--green
-{
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-.button--green:hover
-{
-  color: #fff;
-  background-color: #3b8070;
-}
-.button--grey
-{
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-.button--grey:hover
-{
-  color: #fff;
-  background-color: #35495e;
+
+blockquote {
+  margin: 0 3em 1em 3em;
 }
 </style>

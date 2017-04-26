@@ -47,12 +47,12 @@ module.exports = {
     // }    
 
 
-
+    interval : 100,
     routes: function () {
+      // return ["/artiklar/Herman_Napoleon_Almkvist"]
       return axios.get('https://ws.spraakbanken.gu.se/ws/karplabb/minientry?q=extended%7C%7Cand%7Cartikelid%7Cexists&resource=sol-articles&mode=sol&size=10000&show=url_name')
             .then( (resp) => {
               return resp.data.hits.hits.map((item) => {
-                // console.log("inner", item, item._source.Metadata.URLName)
                 return "/artiklar/" + decodeURIComponent(item._source.Metadata.URLName)
               })
             }, (err) => {
