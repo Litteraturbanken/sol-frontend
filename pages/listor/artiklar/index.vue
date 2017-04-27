@@ -1,9 +1,9 @@
 <template>
   <section class="">
     <input v-model="filterstr">
-    <ul><li v-for="(items, letter) in groups">
+    <ul><li v-for="(items, letter) in groups" v-if="letterHasVisibleArticle(letter)">
         <h2>{{letter}}</h2>
-        <ul><li v-for="item in items" v-if="!filterstr || item.ArticleID.toLowerCase().includes(filterstr.toLowerCase())">
+        <ul><li v-for="item in items" v-if="!filterstr || isFilterInArticle(item)">
             <a :href="'/artiklar/' + item.Metadata.URLName">{{item.ArticleID}}</a>
         </li></ul>
     </li></ul>
@@ -19,10 +19,10 @@ var c = console
 export default {
   name : "ArticleList",
   head : {
-      title : this.article.ArticleID + " – Svenskt översättarlexikon",
-      meta : {
-          vmid : "description", description : "Alla artiklar – Svenskt översättarlexikon"
-      }
+      title : "Alla artiklar – Svenskt översättarlexikon",
+      meta : [{
+        vmid : "description", name: "description", content : "Alla artiklar – Svenskt översättarlexikon",
+      }]
   },
   data() {
     return {
@@ -39,6 +39,16 @@ export default {
   },
   computed : {
 
+  },
+  methods : {
+    isFilterInArticle: function(item) {
+      return item.ArticleID.toLowerCase().includes(this.filterstr.toLowerCase())
+    },
+    letterHasVisibleArticle : function(letter) {
+      return this.groups[letter].filter( (item) => {
+          return this.isFilterInArticle(item)
+      }).length
+    }
   }
 }
 

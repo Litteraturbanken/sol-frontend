@@ -13,6 +13,12 @@
   </section>
 </template>
 
+<style lang="scss">
+  h2 {
+    text-transform: capitalize;
+  }
+</style>
+
 <script>
 import axios from "axios"
 import backend from "assets/model"
@@ -22,6 +28,9 @@ var c = console
 
 export default {
     name : "Languages",
+    head : {
+      title : "Språk"
+    },
     async asyncData ({error, env}) {
       try {
         return {groups : await backend.getLangs()} 
@@ -35,5 +44,3 @@ export default {
 
 </script>
 
-<style>
-</style>

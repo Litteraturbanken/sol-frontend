@@ -33,9 +33,12 @@ html
   flex-direction : column;
   align-items: center;
   justify-content: center;
+
+  & > * {
+    width : 700px;
+  }
 }
 .mainview {
-
 }
 a {
   color : #333;

@@ -19,6 +19,9 @@ var c = console
 
 export default {
     name : "Themes",
+    head : {
+      title : "Tema"
+    },
     async asyncData ({error, env}) {
       try {
         return {items : await backend.listThemeArticles()} 
