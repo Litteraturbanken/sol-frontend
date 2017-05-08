@@ -16,8 +16,7 @@
 </template>
 
 <style lang="scss">
-html
-{
+html {
   font-family: Georgia, serif;
   font-size: 16px;
   word-spacing: 1px;

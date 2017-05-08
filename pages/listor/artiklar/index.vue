@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import axios from "axios"
 import _ from "lodash"
 import backend from "assets/model"
 var c = console

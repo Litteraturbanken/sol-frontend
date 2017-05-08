@@ -6,7 +6,7 @@
   "private": true,
   "dependencies": {
     "axios-debug": "0.0.4",
-    "nuxt": "https://github.com/jroxendal/nuxt.js.git#minify-error"
+    "nuxt": "latest"
   },
   "scripts": {
     "dev": "nuxt",

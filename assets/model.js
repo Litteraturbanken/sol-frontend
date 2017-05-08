@@ -13,7 +13,8 @@ function karpGet(url, params) {
         }, params)
     })        
 }
-
+// use for: http://oversattarlexikon.se/listor/avoversattare/Roland_Adlerberth
+// https://ws.spraakbanken.gu.se/ws/karplabb/query?q=extended%7C%7Cand%7Cverkid%7Cequals|1026|1027|1028&resource=sol-works&mode=sol&size=10000
 class KarpBackend {
     async getArticle(articleId) {
         try {
@@ -113,7 +114,7 @@ class KarpBackend {
     }
 
     // async getWorks(author) {
-        
+
     // }
 
 }

@@ -1,6 +1,5 @@
 <template>
     <div class="container">
-        <!-- <div v-html="article.TextIngress"></div> -->
         <figure v-if="article.Files && article.Files.length">
             <img :src="'https://spraakbanken.gu.se/karp/data/sol/artikelfiler/' + maybeFilename"
                 onerror="this.style.display='none'">
