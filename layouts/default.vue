@@ -1,23 +1,65 @@
 <template>
-  <div class="outer-container">
+  <div class="container justify-content-center">
+    <header class="row">
+      <h1 class="col-12"><a href="/">Svenskt översättarlexikon</a></h1>
 
-    <header>
-      <h1><a href="/">Svenskt översättarlexikon</a></h1>
-      <ul class="mainmenu">
-        <li><a href="/listor/artiklar">Översättare A-Ö</a></li>
-        <li><a href="/listor/artiklar/tema">Temaartiklar</a></li>
-        <li><a href="/listor/priser">Översättarpriser</a></li>
-        <li><a href="/listor/kronologi">Kronologi</a></li>
-        <li><a href="/listor/sprak">Språk</a></li>
-      </ul>
+      <nav class="navbar navbar-toggleable-md navbar col-12">
+          <div class="navbar-nav">
+
+            <nuxt-link class="nav-item nav-link" to="/listor/artiklar">Översättare A-Ö</nuxt-link>
+            <nuxt-link class="nav-item nav-link" to="/listor/artiklar/tema">Temaartiklar</nuxt-link>
+            <nuxt-link class="nav-item nav-link" to="/listor/priser">Översättarpriser</nuxt-link>
+            <nuxt-link class="nav-item nav-link" to="/listor/kronologi">Kronologi</nuxt-link>
+            <nuxt-link class="nav-item nav-link" to="/listor/sprak">Språk</nuxt-link>
+
+          </div>
+      </nav>
     </header>
-    <nuxt class="mainview"/>
+    <nuxt class="mainview row col-12"/>
   </div>
+
 </template>
+
+<script>
+  export default {
+    data () {
+      return {
+        showNav : false
+      }
+    }
+  }
+</script>
+
+
+<!-- <style reboot src="bootstrap/dist/css/bootstrap-reboot.min.css"></style>  -->
+<!-- <style src="bootstrap/dist/css/bootstrap-grid.min.css"></style>  -->
+<!-- <style src="bootstrap/dist/css/bootstrap.min.css"></style> -->
+
+<style lang="scss">
+  @import "node_modules/bootstrap/scss/variables";
+  @import "node_modules/bootstrap/scss/mixins";
+  @import "node_modules/bootstrap/scss/custom";
+  @import "node_modules/bootstrap/scss/reboot";
+  @import "node_modules/bootstrap/scss/tables";
+  @import "node_modules/bootstrap/scss/buttons";
+
+  @import "node_modules/bootstrap/scss/nav";
+  @import "node_modules/bootstrap/scss/navbar";
+  @import "node_modules/bootstrap/scss/grid";
+
+  @import "node_modules/bootstrap/scss/utilities";
+
+  @import "node_modules/bootstrap/scss/responsive-embed";
+
+  .navbar {
+    .nav-link:first-child {
+      padding-left : 0;
+    }
+  }
+</style>
 
 <style lang="scss">
 html {
-  font-family: Georgia, serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
@@ -27,6 +69,11 @@ html {
   box-sizing: border-box;
   padding : 1em;
 }
+
+body {
+  font-family : Georgia, serif;
+}
+
 .outer-container {
   display : flex;
   flex-direction : column;
@@ -37,6 +84,7 @@ html {
     width : 700px;
   }
 }
+
 .mainview {
 }
 a {
@@ -66,12 +114,14 @@ header {
 .mainmenu {
   margin-left : 0;
   padding-left : 0;
-}
-.mainmenu li {
-  display : inline-block;
-  margin-right: 1em;
-  &:first-child {
-
+  li {
+    display : inline-block;
+    margin-right: 1em;
+    &:first-child {
+    }
+    .router-link-exact-active {
+      color : darkgrey;
+    }
   }
 }
 

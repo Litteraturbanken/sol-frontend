@@ -30,6 +30,11 @@ export default {
   },
   async asyncData ({error, env}) {
     try {
+      console.log(await backend.directusListArticles())
+    } catch (e) {
+      console.log("error", e)
+    }
+    try {
       return {groups : await backend.listArticles()} 
     } catch(err) {
       error("Ett fel uppstod, vänligen försök igen senare.")

@@ -8,8 +8,11 @@
 import axios from "axios"
 var c = console
 
-
+export default {
+  data() {
+  }
+}
 </script>
 
-<style>
+<style lang="scss">
 </style>

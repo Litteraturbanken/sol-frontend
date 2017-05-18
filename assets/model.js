@@ -28,6 +28,18 @@ class KarpBackend {
         return resp.data.hits.hits[0]._source
 
     } 
+
+    async directusListArticles() {
+        // curl -u QvUhn2QWacpcanfDkO5KSe0SwsytMn16: 
+        console.log("directusListArticles")
+        return await axios.get("http://localhost:8080/api/1.1/tables/Articles/rows?columns=ArticleID,TranslatorYearBirth,TranslatorYearDeath",
+        {
+            auth: {
+                username : "QvUhn2QWacpcanfDkO5KSe0SwsytMn16"
+            }
+        })
+    }
+
     async listArticles() {
         var resp = await karpGet(MINIENTRY, {
             q : "extended||and|artikelid|exists",

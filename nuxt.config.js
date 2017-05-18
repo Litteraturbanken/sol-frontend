@@ -38,6 +38,9 @@ module.exports = {
     //   }
     }
   },
+  router: {
+    linkActiveClass: 'router-link-active'
+  },
 
   generate: {
     // routeParams : {
