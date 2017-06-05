@@ -6,6 +6,7 @@
   "private": true,
   "dependencies": {
     "axios-debug": "0.0.4",
+    "axios": "latest",
     "nuxt": "latest",
     "pug": "^2.0.0-rc.1",
     "pug-loader": "^2.3.0"
