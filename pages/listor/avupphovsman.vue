@@ -8,7 +8,7 @@
 </style>
 
 <script>
-    import backend from "assets/model"
+    import backend from "assets/backend"
     export default {
         name : "AvUpphovsman",
         head () {

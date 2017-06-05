@@ -5,6 +5,8 @@ const QUERY = KARP + "query"
 const MINIENTRY = KARP + "minientry"
 const STATS = KARP + "statistics"
 
+const DIRECTUS = "http://demo.spraakdata.gu.se/fklittb/directus"
+
 function karpGet(url, params) {
     return axios.get(url, {
         params : _.extend({}, {
@@ -12,6 +14,73 @@ function karpGet(url, params) {
             mode : "sol"
         }, params)
     })        
+}
+
+
+function directusGet(table, params) {
+    return axios.get(`${DIRECTUS}/api/1.1/tables/${table}/rows`,
+        {
+            auth: {
+                username : "test-token"
+            },
+            params : _.extend({}, {
+                // TODO: add active only searching here
+                // resource : "sol-articles",
+                // mode : "sol"
+                
+            }, params)
+        })
+}
+class DirectusBackend {
+    
+    async getArticle(articleId) {
+        
+        let {data} = await directusGet("Articles", {
+            "filters[URLName][eq]" : encodeURIComponent(articleId)
+        })
+
+        return data.data[0]
+    }
+    async listArticles() {
+        let resp = await directusGet("Articles", {
+            limit : 10000,
+            columns : "ArticleID,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"
+        })
+
+        console.log("datas", resp)
+        let data = resp.data.data;
+
+        function normalizeSortLetter(letter) {
+            return {
+                "Ü" : "U"
+            }[letter.toUpperCase()] || letter.toUpperCase() 
+
+        }
+
+        let groups = _(data).groupBy((item) => {
+            return normalizeSortLetter( (item.TranslatorLastname || item.ArticleName)[0] )
+        }).toPairs().sortBy(([key, item]) => {
+            return key
+        }).fromPairs().value()
+        for (let letter in groups) {
+            groups[letter] = _.sortBy(groups[letter], (item) => item.TranslatorLastname || item.ArticleName)
+        }
+        return groups
+    }
+
+    async getWork(workid) {
+        let resp = await directusGet("Works", {
+            // columns : "id,ArticleID,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname"
+            "filters[WorkID][eq]" : workid
+        })
+        console.log("resp", resp)  
+
+        return resp.data.data[0]
+    }
+
+    async getLangs() {}
+    async listPrizeArticles() {}
+    async listThemeArticles() {}
 }
 // use for: http://oversattarlexikon.se/listor/avoversattare/Roland_Adlerberth
 // https://ws.spraakbanken.gu.se/ws/karplabb/query?q=extended%7C%7Cand%7Cverkid%7Cequals|1026|1027|1028&resource=sol-works&mode=sol&size=10000
@@ -29,16 +98,6 @@ class KarpBackend {
 
     } 
 
-    async directusListArticles() {
-        // curl -u QvUhn2QWacpcanfDkO5KSe0SwsytMn16: 
-        console.log("directusListArticles")
-        return await axios.get("http://localhost:8080/api/1.1/tables/Articles/rows?columns=ArticleID,TranslatorYearBirth,TranslatorYearDeath",
-        {
-            auth: {
-                username : "QvUhn2QWacpcanfDkO5KSe0SwsytMn16"
-            }
-        })
-    }
 
     async listArticles() {
         var resp = await karpGet(MINIENTRY, {
@@ -130,4 +189,4 @@ class KarpBackend {
     // }
 
 }
-export default new KarpBackend()
+export default new DirectusBackend()

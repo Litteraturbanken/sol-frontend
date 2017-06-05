@@ -11,7 +11,7 @@
 
 <script>
 import axios from "axios"
-import backend from "assets/model"
+import backend from "assets/backend"
 var c = console
 
 

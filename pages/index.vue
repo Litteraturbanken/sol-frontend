@@ -10,6 +10,7 @@ var c = console
 
 export default {
   data() {
+    return {}
   }
 }
 </script>

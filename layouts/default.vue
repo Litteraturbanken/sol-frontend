@@ -36,21 +36,6 @@
 <!-- <style src="bootstrap/dist/css/bootstrap.min.css"></style> -->
 
 <style lang="scss">
-  @import "node_modules/bootstrap/scss/variables";
-  @import "node_modules/bootstrap/scss/mixins";
-  @import "node_modules/bootstrap/scss/custom";
-  @import "node_modules/bootstrap/scss/reboot";
-  @import "node_modules/bootstrap/scss/tables";
-  @import "node_modules/bootstrap/scss/buttons";
-
-  @import "node_modules/bootstrap/scss/nav";
-  @import "node_modules/bootstrap/scss/navbar";
-  @import "node_modules/bootstrap/scss/grid";
-
-  @import "node_modules/bootstrap/scss/utilities";
-
-  @import "node_modules/bootstrap/scss/responsive-embed";
-
   .navbar {
     .nav-link:first-child {
       padding-left : 0;
@@ -105,6 +90,9 @@ li {
 }
 header {
   margin-bottom: 3em;
+  h1 {
+    font-size: 2.5em;
+  }
 }
 *, *:before, *:after
 {

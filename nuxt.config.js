@@ -1,4 +1,5 @@
 const axios = require('axios')
+const _ = require('lodash')
 module.exports = {
 
 
@@ -16,6 +17,12 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+
+  css : [
+    { src: '~assets/bootstrap_custom.scss', lang: 'scss' }
+  ],
+    
+  
   /*
   ** Customize the progress-bar color
   */
@@ -42,25 +49,46 @@ module.exports = {
     linkActiveClass: 'router-link-active'
   },
 
+  plugins : ["~plugins/filters.js"],
+
   generate: {
-    // routeParams : {
-    //   '/artiklar/:id': [
+    minify : false,
 
-    //   ]
-    // }    
-
-
-    interval : 100,
+    // interval : 100,
     routes: function () {
-      return ["/artiklar/Herman_Napoleon_Almkvist"]
-      return axios.get('https://ws.spraakbanken.gu.se/ws/karplabb/minientry?q=extended%7C%7Cand%7Cartikelid%7Cexists&resource=sol-articles&mode=sol&size=10000&show=url_name')
-            .then( (resp) => {
-              return resp.data.hits.hits.map((item) => {
-                return "/artiklar/" + decodeURIComponent(item._source.Metadata.URLName)
-              })
-            }, (err) => {
-              console.log("error", err)
-            })
+      let promises = []
+      promises.push(
+        axios.get(`http://demo.spraakdata.gu.se/fklittb/directus/api/1.1/tables/Articles/rows`, {
+          auth: {
+              username : "test-token",
+          },
+          params : {
+            limit : 10000
+          }
+        }).then( ({data}) => {
+          return data.data.map( (item) => {
+            return {route : "/artiklar/" + decodeURIComponent(item.URLName), payload : item}
+          })
+        })
+      )
+      promises.push(
+        axios.get(`http://demo.spraakdata.gu.se/fklittb/directus/api/1.1/tables/Works/rows`, {
+          auth: {
+              username : "test-token"
+          },
+          params : {
+            limit : 200
+          }
+        }).then( ({data}) => {
+          return data.data.map( (item) => {
+            return {route : "/verk/" + item.WorkID, payload : item}
+          })
+        })
+      )
+
+    return Promise.all(promises).then(values => {
+      return _.flatten(values)
+    })
 
     }
   }
