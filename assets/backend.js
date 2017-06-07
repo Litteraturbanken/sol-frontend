@@ -5,7 +5,7 @@ const QUERY = KARP + "query"
 const MINIENTRY = KARP + "minientry"
 const STATS = KARP + "statistics"
 
-const DIRECTUS = "http://demo.spraakdata.gu.se/fklittb/directus"
+const DIRECTUS = "https://ws.spraakbanken.gu.se/ws/sol"
 
 function karpGet(url, params) {
     return axios.get(url, {

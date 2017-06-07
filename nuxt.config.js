@@ -46,7 +46,8 @@ module.exports = {
     }
   },
   router: {
-    linkActiveClass: 'router-link-active'
+    linkActiveClass: 'router-link-active',
+    // base: "/fklittb/sol/"
   },
 
   plugins : ["~plugins/filters.js"],

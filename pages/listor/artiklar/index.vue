@@ -4,7 +4,8 @@
     <ul class="col-12"><li v-for="(items, letter) in groups" v-if="letterHasVisibleArticle(letter)">
         <h2>{{letter}}</h2>
         <ul><li v-for="item in items" v-if="!filterstr || isFilterInArticle(item)">
-            <a :href="'/artiklar/' + item.URLName">{{item.ArticleName}} </a>
+            <nuxt-link :to="'/artiklar/' + item.URLName">{{item.ArticleName}} </nuxt-link>
+            <!-- <a :href="'/artiklar/' + item.URLName">{{item.ArticleName}} </a> -->
             <span v-if="item.TranslatorYearBirth">{{item.TranslatorYearBirth}}–{{item.TranslatorYearDeath}}</span>
         </li></ul>
     </li></ul>

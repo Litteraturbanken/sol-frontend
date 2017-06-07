@@ -77,6 +77,9 @@ a {
   &:hover {
     color : grey;
   }
+  &:active {
+    color : #333;
+  }
 }
 p {
   max-width : 40em;
@@ -99,18 +102,18 @@ header {
   box-sizing: border-box;
   margin: 0;
 }
-.mainmenu {
-  margin-left : 0;
-  padding-left : 0;
-  li {
-    display : inline-block;
-    margin-right: 1em;
-    &:first-child {
-    }
-    .router-link-exact-active {
-      color : darkgrey;
-    }
-  }
+// .mainmenu {
+//   margin-left : 0;
+//   padding-left : 0;
+//   li {
+//     display : inline-block;
+//     margin-right: 1em;
+//     &:first-child {
+//     }
+//   }
+// }
+.nuxt-link-exact-active {
+  color : darkgrey !important;
 }
 
 blockquote {
