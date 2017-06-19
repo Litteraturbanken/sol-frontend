@@ -3,7 +3,7 @@
   <h1>Tema</h1>
     <ul>
         <li v-for="item in items">
-            <a :href="'/artiklar/' + item.Metadata.URLName">{{item.ArticleID}}</a>
+            <a :href="'/artiklar/' + item.URLName">{{item.ArticleName}}</a>
         </li>
     </ul>
   </section>

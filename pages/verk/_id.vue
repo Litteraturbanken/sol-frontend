@@ -2,22 +2,16 @@
 
 
     <div>
-        <h2>{{work.TitleSwedish}}<span v-if="work.SubtitleSwedish">: {{work.SubtitleSwedish}}</span></h2>
-        <ul>
-            <li>{{work.Authors}}</li>
-            <li>{{work.TitleSwedish}}<span v-if="work.SubtitleSwedish">: {{work.SubtitleSwedish}}</span> / PLACEHOLDER – {{work.PublishingHousePlace}} : {{work.PublishingHouseSwedish}}, {{work.PublishingYearSwedish}}</li>
-            <li><ul>
-                <li>Orginaltitel: {{work.TitleOriginal}}</li>
-                <li>Orginalspråk: {{work.LanguageOriginal.data.LanguageName}}</li>
-            </ul></li>
-        </ul>
+        <h3>{{work.TitleSwedish}}<span v-if="work.SubtitleSwedish">: {{work.SubtitleSwedish}}</span></h3>
+        <work :work="work"></work>
         <!-- <pre style="font-size:smaller">{{work | json}}</pre> -->
     </div>
 </template>
 
 <script>
-    import axios from "axios"
+    
     import backend from "assets/backend"
+    import work from "~components/work.vue"
 
     export default {
         name : "Article",
@@ -26,9 +20,12 @@
                 // title : this.article.ArticleID + " – Svenskt översättarlexikon"
             }
         },
-        async asyncData ({ params, error, payload}) {
+        components : {
+            work : work
+        },
+        async asyncData ({ params, error, payload }) {
             if(payload) {
-                return { work : payload}
+                return { work : payload }
             }
             try {
                 var work = await backend.getWork(params.id)

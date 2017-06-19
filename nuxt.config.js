@@ -1,5 +1,11 @@
 const axios = require('axios')
 const _ = require('lodash')
+
+const promiseSerial = funcs =>
+  funcs.reduce((promise, func) =>
+    promise.then(result => func().then(Array.prototype.concat.bind(result))),
+    Promise.resolve([]))
+
 module.exports = {
 
 
@@ -14,12 +20,13 @@ module.exports = {
       { hid: 'description', name: 'description', content: 'Svenskt översättarlexikon' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: 'http://www.oversattarlexikon.se/images/icons/favicon.png' }
+      { rel: 'icon', type: 'image/x-icon', href: 'http://www.oversattarlexikon.se/images/icons/favicon.png' },
+      { href: '/bootstrap.css', rel: "stylesheet" }
     ]
   },
 
   css : [
-    { src: '~assets/bootstrap_custom.scss', lang: 'scss' }
+    // { src: '~assets/bootstrap_custom.scss', lang: 'scss' }
   ],
     
   
@@ -35,61 +42,92 @@ module.exports = {
     ** Run ESLINT on save
     */
     extend (config, ctx) {
-    //   if (ctx.isClient) {
-    //     config.module.rules.push({
-    //       enforce: 'pre',
-    //       test: /\.(js|vue)$/,
-    //       loader: 'eslint-loader',
-    //       exclude: /(node_modules)/
-    //     })
-    //   }
+      if (ctx.isClient) {
+        config.module.rules.push({
+          enforce: 'pre',
+          test: /\.(js|vue)$/,
+          loader: 'eslint-loader',
+          exclude: /(node_modules)/
+        })
+      }
     }
   },
   router: {
     linkActiveClass: 'router-link-active',
     // base: "/fklittb/sol/"
+
+    extendRoutes (routes, resolve) {
+      routes.push({
+        name: 'custom',
+        path: '/listor/avoversattare/:id/:type?/:lang?',
+        component: resolve(__dirname, 'pages/listor/avoversattare/_id.vue')
+      })
+    }
   },
 
   plugins : ["~plugins/filters.js"],
+
 
   generate: {
     minify : false,
 
     // interval : 100,
     routes: function () {
-      let promises = []
-      promises.push(
-        axios.get(`http://demo.spraakdata.gu.se/fklittb/directus/api/1.1/tables/Articles/rows`, {
-          auth: {
-              username : "test-token",
-          },
-          params : {
-            limit : 10000
-          }
-        }).then( ({data}) => {
-          return data.data.map( (item) => {
-            return {route : "/artiklar/" + decodeURIComponent(item.URLName), payload : item}
+
+
+      // http://litteraturbanken.se/sol/api/articles
+      let promises = [
+        () => {
+          return axios.get(`https://ws.spraakbanken.gu.se/ws/sol/api/1.1/tables/Articles/rows`, {
+            auth: {
+                username : "test-token",
+            },
+            params : {
+              limit : 10000
+            }
+          }).then( ({data}) => {
+            return data.data.map( (item) => {
+              return {route : "/artiklar/" + decodeURIComponent(item.URLName), payload : item}
+            })
           })
-        })
-      )
-      promises.push(
-        axios.get(`http://demo.spraakdata.gu.se/fklittb/directus/api/1.1/tables/Works/rows`, {
+        }
+      ]
+
+
+      let upperLimit = 10000
+      let chunkSize = 1000
+      let fetch = (n) => {
+        return axios.get(`https://ws.spraakbanken.gu.se/ws/sol/api/1.1/tables/Works/rows`, {
           auth: {
               username : "test-token"
           },
           params : {
-            limit : 200
+            // limit : 2000
+            offset : n,
+            limit : chunkSize,
           }
         }).then( ({data}) => {
           return data.data.map( (item) => {
             return {route : "/verk/" + item.WorkID, payload : item}
           })
         })
-      )
+        
+      }
+      let n = 0
+      while(true) {
+        if(n > upperLimit) break
+        promises.push(_.partial(fetch, n))
+        n += chunkSize
+      }
 
-    return Promise.all(promises).then(values => {
-      return _.flatten(values)
-    })
+      // execute Promises in serial
+      return promiseSerial(promises).then(values => {
+        return _.flatten(values)
+      })
+
+    // return Promise.all(promises).then(values => {
+    //   return _.flatten(values)
+    // })
 
     }
   }

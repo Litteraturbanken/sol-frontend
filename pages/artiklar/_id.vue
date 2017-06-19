@@ -7,11 +7,16 @@
             <figcaption>{{article.Files[0].Author}}</figcaption>
         </figure>
         <div v-html="article.ArticleText"></div>
-        <div class="bibliography" v-if="article.Works.data.length">
+        <div class="bibliography" v-if="works.length">
             <h3>Bibliografi</h3>
             <ul>
-                <li v-for="work in article.Works.data">
-                    <a :href="'/verk/' + work.WorkID">{{work.TitleSwedish}}</a>
+                <li v-for="works, connection in connectionGroups">
+                    {{connection}}
+                </li>
+            </ul>
+            <ul>
+                <li v-for="work in works">
+                    <a :href="'/verk/' + work.WorkID">{{work.TitleSwedish}}</a> <span v-if="work.Authors">/ {{work.Authors}}</span>
                 </li>
             </ul>            
         </div>
@@ -30,33 +35,33 @@
 </style>
 
 <script>
-    import axios from "axios"
     import backend from "assets/backend"
     export default {
         name : "Article",
         head () {
             return {
-                title : this.article.ArticleID + " – Svenskt översättarlexikon"
+                title : this.article.ArticleName + " – Svenskt översättarlexikon"
             }
         },
-        async asyncData ({ params, error, payload}) {
+        async asyncData ({ params, error, payload }) {
             if(payload) {
-                return { article : payload}
+                return { article : payload }
             }
             try{
-                var article = await backend.getArticle(params.id)
-                console.log("article", article)
-            }
-            catch(err) {
+                var {article, works, connectionGroups} = await backend.getArticle(params.id)
+                console.log("article", article, "works.length", works.length)
+            } catch(err) {
                 console.log("Article fetch error.")
+                console.error(err)
                 error({ message: "Artikeln kunde inte hittas.", statusCode: 404 })
             }
-            return { article }
+            return { article, works, connectionGroups }
         },
         computed : {
             maybeFilename : function() {
-                if(this.article.Files && this.article.Files.length) 
+                if(this.article.Files && this.article.Files.length) {
                     return this.article.Files[0].FileName
+                }
             }
 
         }

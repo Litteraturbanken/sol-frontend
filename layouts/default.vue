@@ -1,5 +1,5 @@
 <template>
-  <div class="container justify-content-center">
+  <div class="container">
     <header class="row">
       <h1 class="col-12"><a href="/">Svenskt översättarlexikon</a></h1>
 
@@ -15,12 +15,22 @@
           </div>
       </nav>
     </header>
-    <nuxt class="mainview row col-12"/>
+    <nuxt class="mainview"/>
   </div>
 
 </template>
 
 <script>
+  import Vue from "vue"
+  // Register a global custom directive called v-focus
+  Vue.directive('focus', {
+    // When the bound element is inserted into the DOM...
+    inserted: function (el) {
+      // Focus the element
+      el.focus()
+    }
+  })
+
   export default {
     data () {
       return {
@@ -69,7 +79,10 @@ body {
     width : 700px;
   }
 }
-
+.container {
+  padding-left: 0;
+  padding-right: 0;
+}
 .mainview {
 }
 a {

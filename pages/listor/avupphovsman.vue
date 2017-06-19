@@ -1,31 +1,40 @@
 <template>
     <div class="">
+    <h2>Verk av {{$route.query.a}}</h2>
+        <ul>
+            <li v-for="work in works">
+                <work :work="work"></work>
+            </li>
+        </ul>
     </div>
 </template>
 
 <style lang="scss">
-
+    .work {
+        margin-bottom: 2em;
+    }
 </style>
 
 <script>
     import backend from "assets/backend"
+    import Work from "~components/work.vue"
     export default {
         name : "AvUpphovsman",
+        components: {work : Work},
         head () {
             return {
                 title : "Av upphovsman" + " – Svenskt översättarlexikon"
             }
         },
-        async asyncData ({ params, error }) {
-            return {}
+        async asyncData ({ params, error, route }) {
             try{
-                // var article = await backend.getArticle(params.id)
-            }
-            catch(err) {
-                console.log("Article fetch error.")
+                var works = await backend.getWorksByAuthorName(route.query.a)
+            } catch(err) {
+                console.error("Article fetch error.")
+                console.error(err)
                 error({ message: "Artikeln kunde inte hittas.", statusCode: 404 })
             }
-            return { article }
+            return { works }
         },
         computed : {
 

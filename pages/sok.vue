@@ -40,12 +40,11 @@ export default {
             console.log("submit", searchstr, articles)
 
             try{
+            } catch(err) {
+                console.error("Article fetch error.")
+                console.error(err)
+                // error({ message: "Artikeln kunde inte hittas.", statusCode: 404 })
             }
-            catch(err) {
-                console.log("Article fetch error.")
-                error({ message: "Artikeln kunde inte hittas.", statusCode: 404 })
-            }
-            console.log("assign")
             this.articles = articles
 
         }

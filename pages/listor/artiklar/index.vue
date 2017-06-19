@@ -1,6 +1,6 @@
 <template>
   <section class="">
-    <input class="col-4" placeholder="Sök" v-model="filterstr">
+    <input v-focus class="col-4" placeholder="Sök" v-model="filterstr">
     <ul class="col-12"><li v-for="(items, letter) in groups" v-if="letterHasVisibleArticle(letter)">
         <h2>{{letter}}</h2>
         <ul><li v-for="item in items" v-if="!filterstr || isFilterInArticle(item)">
@@ -32,7 +32,8 @@ export default {
   },
   async asyncData ({error, env}) {
     try {
-      return {groups : await backend.listArticles()} 
+      let groups = await backend.listArticles()
+      return {groups : groups} 
     } catch(err) {
       console.error(err)
       error("Ett fel uppstod, vänligen försök igen senare.")

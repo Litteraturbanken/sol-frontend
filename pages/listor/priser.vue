@@ -1,9 +1,9 @@
 <template>
   <section class="">
-  <h1>Tema</h1>
+    <h1>Priser</h1>
     <ul>
         <li v-for="item in items">
-            <a :href="'/artiklar/' + item.Metadata.URLName">{{item.ArticleID}}</a>
+            <a :href="'/artiklar/' + item.URLName">{{item.ArticleName}}</a>
         </li>
     </ul>
   </section>
@@ -19,7 +19,9 @@ var c = console
 
 export default {
     name : "Prizes",
-    head : "Priser",
+    head : {
+      title : "Priser"
+    },
     async asyncData ({error, env}) {
       try {
         return {items : await backend.listPrizeArticles()} 
