@@ -42,6 +42,17 @@ async function pythonGet(endpoint, params) {
     return data
 }
 
+function groupConnections(works) {
+    let connectionGroups = _.groupBy(works, "ConnectionType")
+    return _(connectionGroups)
+        .toPairs(connectionGroups)
+        .map(([type, works]) => {
+            return {type: Number(type), works}
+        })
+        .sortBy(({item}) => item * -1)
+        .value()
+}
+
 class PythonBackend {
 
     constructor() {
@@ -60,8 +71,8 @@ class PythonBackend {
             show : "ArticleID,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname"
         }))
         let {article, works} = resp
-        let connectionGroups = _.groupBy(works, "ConnectionType")
-        return {article, works, connectionGroups}
+        
+        return {article, works, connectionGroups : groupConnections(works)}
     }
 
     async listArticles() {
@@ -101,12 +112,11 @@ class PythonBackend {
     }
     
     async getWorksByAuthor(urlname) {
-        let {languages, works} = (await pythonGet(urljoin("/bibliography", urlname)))
+        let {languages, works, article} = (await pythonGet(urljoin("/bibliography", urlname)))
+        console.log("works", works)
         let original = _.filter(languages, "Original")
         let source = _.filter(languages, "Source")
-        let connectionGroups = _.groupBy(works, "ConnectionType")
-        console.log("connectionGroups", connectionGroups)
-        return {source, original, works, connectionGroups}
+        return {source, original, works, article, connectionGroups : groupConnections(works)}
 
     }
 
@@ -114,6 +124,7 @@ class PythonBackend {
         let langMap = (await pythonGet("/languages/1", 
             {show: "Articles.ArticleID,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
         )).data
+        console.log("langMap", langMap)
         return langMap[groupName]
     }
     async listPrizeArticles() {

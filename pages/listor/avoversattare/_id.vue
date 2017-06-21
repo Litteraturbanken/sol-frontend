@@ -3,9 +3,10 @@
     {{langName}} {{langType}}
 
 
+    Språkurval: <a :href="'/listor/avoversattare/' + $route.params.id" >Alla</a>
     
     <ul class="lang-filter list-inline">
-        <li class="list-inline-item">OriginalSpråk:</li>
+        <li class="list-inline-item">Originalspråk:</li>
         <li v-for="lang in original" class="list-inline-item">
             <nuxt-link :to="'/listor/avoversattare/' + $route.params.id + '/original/' + lang.LanguageName">{{lang.LanguageName}}</nuxt-link>
         </li>
@@ -19,11 +20,19 @@
     </ul>
 
     <ul>
-        <li v-for="work in works" v-if="filterLang(work)">
-            <work :work="work"></work>
+        <li v-for="item in connectionGroups">
+            <h2 v-if="item.type == 3">Om {{ article }}</h2>
+            <h2 v-if="item.type == 2">Skrifter av {{ article }}</h2>
+            <h2 v-if="item.type == 1">Översättningar i bokform</h2>
+            <ul>
+                <li v-for="work in item.works" v-if="filterLang(work)">
+                    <work :work="work"></work>
+                </li>
+            </ul>            
+            
         </li>
     </ul>
-    <!-- <pre>{{query | json}}</pre> -->
+
     </div>
 </template>
 
@@ -52,13 +61,13 @@
         async asyncData ({ params, error, route }) {
             try{
                 console.log("params", params)
-                var {source, original, works} = await backend.getWorksByAuthor(params.id)
+                var {source, original, works, article, connectionGroups} = await backend.getWorksByAuthor(params.id)
 
             } catch(err) {
                 console.log("Article fetch error.")
                 error({ message: "Artikeln kunde inte hittas.", statusCode: 404 })
             }
-            return { works, source, original }
+            return { works, source, original, article, connectionGroups }
         },
         methods : {
             filterLang : function(work) {
@@ -67,7 +76,6 @@
                     return this.$route.params.lang == work.LanguageOriginalName
                 } else if(this.$route.params.type == "fran") {
                     return this.$route.params.lang == work.LanguageSourceName
-
                 }
 
             }

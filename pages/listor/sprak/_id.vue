@@ -28,7 +28,7 @@
 </style>
 
 <script>
-import axios from "axios"
+
 import backend from "assets/backend"
 var c = console
 
@@ -45,7 +45,8 @@ export default {
         return {groups: null}
       }
       try {
-        return {groups : await backend.getLangs(params.id), id : params.id} 
+        let groupId = {original : "original", "fran": "source", till: "target"}[params.id]
+        return {groups : await backend.getLangs(groupId), id : params.id} 
       } catch(err) {
         console.log("err", err)
         error("Ett fel uppstod, vänligen försök igen senare.")

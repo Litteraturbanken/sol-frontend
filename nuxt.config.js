@@ -72,58 +72,66 @@ module.exports = {
     minify : false,
 
     // interval : 100,
-    routes: function () {
-
-
-      // http://litteraturbanken.se/sol/api/articles
-      let promises = [
-        () => {
-          return axios.get(`https://ws.spraakbanken.gu.se/ws/sol/api/1.1/tables/Articles/rows`, {
-            auth: {
-                username : "test-token",
-            },
-            params : {
-              limit : 10000
-            }
-          }).then( ({data}) => {
-            return data.data.map( (item) => {
-              return {route : "/artiklar/" + decodeURIComponent(item.URLName), payload : item}
-            })
-          })
-        }
+    routes: async function () {
+      let routes = [
+        "/listor/sprak/original",
+        "/listor/sprak/till",
+        "/listor/sprak/fran",
       ]
+      let resp = await axios.get("http://litteraturbanken.se/sol/api/articles", {
+        // params : {
+        //   show : "ArticleID,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname"
+        // }
+      })
+      for(let item of resp.data.data) {
+        routes.push({route : "/artiklar/" + decodeURIComponent(item.URLName), payload : item})
+        routes.push({route : "/listor/avoversattare/" + decodeURIComponent(item.URLName)})
+      }
+
+      let works = await axios.get("http://litteraturbanken.se/sol/api/bibliography/_all", {
+        // params : {
+        //   show : "ArticleID,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname"
+        // }
+      })
+
+      for(let item of works.data.works) {
+        routes.push({route : "/verk/" + item.WorkID, payload : item})
+        routes.push({route : "/avupphovsman/?a=" + item.Authors})
+      }
+
+      return routes
 
 
-      let upperLimit = 10000
-      let chunkSize = 1000
-      let fetch = (n) => {
-        return axios.get(`https://ws.spraakbanken.gu.se/ws/sol/api/1.1/tables/Works/rows`, {
-          auth: {
-              username : "test-token"
-          },
-          params : {
-            // limit : 2000
-            offset : n,
-            limit : chunkSize,
-          }
-        }).then( ({data}) => {
-          return data.data.map( (item) => {
-            return {route : "/verk/" + item.WorkID, payload : item}
-          })
-        })
+      // let upperLimit = 10000
+      // let chunkSize = 1000
+      // let fetch = (n) => {
+      //   return axios.get(`https://ws.spraakbanken.gu.se/ws/sol/api/1.1/tables/Works/rows`, {
+      //     auth: {
+      //         username : "test-token"
+      //     },
+      //     params : {
+      //       // limit : 2000
+      //       offset : n,
+      //       limit : chunkSize,
+      //     }
+      //   }).then( ({data}) => {
+      //     return data.data.map( (item) => {
+      //       return {route : "/verk/" + item.WorkID, payload : item}
+      //     })
+      //   })
         
-      }
-      let n = 0
-      while(true) {
-        if(n > upperLimit) break
-        promises.push(_.partial(fetch, n))
-        n += chunkSize
-      }
+      // }
+      // let n = 0
+      // while(true) {
+      //   if(n > upperLimit) break
+      //   promises.push(_.partial(fetch, n))
+      //   n += chunkSize
+      // }
 
       // execute Promises in serial
-      return promiseSerial(promises).then(values => {
-        return _.flatten(values)
-      })
+      // return promiseSerial(promises).then(values => {
+      //   return _.flatten(values)
+      // })
 
     // return Promise.all(promises).then(values => {
     //   return _.flatten(values)
