@@ -65,12 +65,34 @@ class PythonBackend {
         }
     }
 
+    async autocomplete(str) {
+        console.log("str", str)
+        let {data} = await axios.get("http://litteraturbanken.se/api/autocomplete/" + str)
+
+        return _(data.data)
+            .filter(item => ["etext", "faksimil", "author"].includes(item.doc_type))
+            .map( (item) => {
+                if(item.doc_type == "author") {
+                    return {
+                        label: item.name_for_index, 
+                        url : "http://litteraturbanken.se/forfattare/" + item.author_id
+                    }
+                } else {
+                    return {
+                        label: item.shorttitle, 
+                        url : `http://litteraturbanken.se/forfattare/titlar/${item.authors[0].author_id}/${item.title_id}/sida/${item.startpagename}/${item.doc_type}`
+                    }
+                }
+            }).value()
+
+    }
 
     async getArticle(articleId) {
         let resp = (await pythonGet(urljoin("article", encodeURIComponent(encodeURIComponent(articleId))), {
             show : "ArticleID,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname"
         }))
         let {article, works} = resp
+        // console.log("article", article)
         
         return {article, works, connectionGroups : groupConnections(works)}
     }
@@ -87,7 +109,7 @@ class PythonBackend {
 
         }
 
-        console.log("articles", articles, articles.length)
+        // console.log("articles", articles, articles.length)
         let groups = _(articles).groupBy((item) => {
             return normalizeSortLetter( (item.TranslatorLastname || item.ArticleName)[0] )
         }).toPairs().sortBy(([key, item]) => {
@@ -100,6 +122,13 @@ class PythonBackend {
 
     }
 
+    async getContributor(name) {
+        return (await pythonGet("/contributor/" + name.replace(/\s/g, "_"), 
+            {show: "ArticleName,Articles.URLName"}
+        )).data
+
+    }
+
     async getWork(workid) {
         let {work} = await pythonGet("/bibliography/" + workid)
         return work[0]
@@ -107,13 +136,13 @@ class PythonBackend {
     
     async getWorksByAuthorName(authorname) {
         let {data} = await pythonGet("/author/" + authorname)
-        console.log("works", data)
+        // console.log("works", data)
         return data
     }
     
     async getWorksByAuthor(urlname) {
         let {languages, works, article} = (await pythonGet(urljoin("/bibliography", urlname)))
-        console.log("works", works)
+        // console.log("works", works)
         let original = _.filter(languages, "Original")
         let source = _.filter(languages, "Source")
         return {source, original, works, article, connectionGroups : groupConnections(works)}
@@ -124,7 +153,7 @@ class PythonBackend {
         let langMap = (await pythonGet("/languages/1", 
             {show: "Articles.ArticleID,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
         )).data
-        console.log("langMap", langMap)
+        // console.log("langMap", langMap)
         return langMap[groupName]
     }
     async listPrizeArticles() {
@@ -194,6 +223,7 @@ class DirectusBackend {
     async listPrizeArticles() {}
     async listThemeArticles() {}
 }
+
 
 export default new PythonBackend()
 // export default new DirectusBackend()

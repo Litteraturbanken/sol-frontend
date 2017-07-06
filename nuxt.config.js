@@ -21,12 +21,13 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: 'http://www.oversattarlexikon.se/images/icons/favicon.png' },
-      { href: '/bootstrap.css', rel: "stylesheet" }
+      { href: '/bootstrap.css', rel: "stylesheet" },
     ]
   },
 
   css : [
     // { src: '~assets/bootstrap_custom.scss', lang: 'scss' }
+    'bootstrap-vue/dist/bootstrap-vue.css'
   ],
     
   
@@ -73,11 +74,12 @@ module.exports = {
 
     // interval : 100,
     routes: async function () {
-      let routes = [
-        "/listor/sprak/original",
-        "/listor/sprak/till",
-        "/listor/sprak/fran",
-      ]
+      // let routes = [
+      //   "/listor/sprak/original",
+      //   "/listor/sprak/till",
+      //   "/listor/sprak/fran",
+      // ]
+      let routes = []
       let resp = await axios.get("http://litteraturbanken.se/sol/api/articles", {
         // params : {
         //   show : "ArticleID,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname"
@@ -85,19 +87,18 @@ module.exports = {
       })
       for(let item of resp.data.data) {
         routes.push({route : "/artiklar/" + decodeURIComponent(item.URLName), payload : item})
-        routes.push({route : "/listor/avoversattare/" + decodeURIComponent(item.URLName)})
+        // routes.push({route : "/listor/avoversattare/" + decodeURIComponent(item.URLName)})
       }
 
-      let works = await axios.get("http://litteraturbanken.se/sol/api/bibliography/_all", {
         // params : {
         //   show : "ArticleID,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname"
         // }
-      })
+      // let works = await axios.get("http://litteraturbanken.se/sol/api/bibliography/_all", {
+      // })
 
-      for(let item of works.data.works) {
-        routes.push({route : "/verk/" + item.WorkID, payload : item})
-        routes.push({route : "/avupphovsman/?a=" + item.Authors})
-      }
+      // for(let item of works.data.works) {
+      //   routes.push({route : "/verk/" + item.WorkID, payload : item})
+      // }
 
       return routes
 

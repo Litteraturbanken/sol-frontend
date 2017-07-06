@@ -20,12 +20,12 @@
     </ul>
 
     <ul>
-        <li v-for="item in connectionGroups">
+        <li v-for="item in connectionGroups" v-if="filterWorks(item.works).length">
             <h2 v-if="item.type == 3">Om {{ article }}</h2>
             <h2 v-if="item.type == 2">Skrifter av {{ article }}</h2>
             <h2 v-if="item.type == 1">Översättningar i bokform</h2>
             <ul>
-                <li v-for="work in item.works" v-if="filterLang(work)">
+                <li v-for="work in filterWorks(item.works)">
                     <work :work="work"></work>
                 </li>
             </ul>            
@@ -70,14 +70,15 @@
             return { works, source, original, article, connectionGroups }
         },
         methods : {
-            filterLang : function(work) {
-                if(!this.$route.params.lang) return true
-                if(this.$route.params.type == "original") {
-                    return this.$route.params.lang == work.LanguageOriginalName
-                } else if(this.$route.params.type == "fran") {
-                    return this.$route.params.lang == work.LanguageSourceName
-                }
-
+            filterWorks : function(works) {
+                return works.filter((work) => {
+                    if(!this.$route.params.lang) return true
+                    if(this.$route.params.type == "original") {
+                        return this.$route.params.lang == work.LanguageOriginalName
+                    } else if(this.$route.params.type == "fran") {
+                        return this.$route.params.lang == work.LanguageSourceName
+                    }
+                })
             }
         },
         computed : {

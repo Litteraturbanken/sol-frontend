@@ -6,9 +6,14 @@
                 onerror="this.style.display='none'">
             <figcaption>{{article.Files[0].Author}}</figcaption>
         </figure>
-        <div v-html="article.ArticleText"></div>
+        
+        <section v-html="article.ArticleText"></section>
+        <a :href="'/medarbetare/' + article.ContributorFirstname + ' ' + article.ContributorLastname" rel="author">{{article.ContributorFirstname}} {{article.ContributorLastname}}</a>
+
+        
         <div class="bibliography" v-if="works.length">
             <h3>Bibliografi</h3>
+            <div><a :href="'/listor/avoversattare/' + $route.params.id">Detaljerad bibliografi</a></div>
             <ul>
                 <li v-for="item in connectionGroups">
                     <h2 v-if="item.type == 3">Om {{ article.ArticleName}}</h2>
@@ -52,7 +57,7 @@
             }
             try{
                 var {article, works, connectionGroups} = await backend.getArticle(params.id)
-                console.log("article", article, "works.length", works.length)
+                // console.log("article", article, "works.length", works.length)
             } catch(err) {
                 console.log("Article fetch error.")
                 console.error(err)

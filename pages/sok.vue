@@ -2,53 +2,77 @@
   <section class="">
     <h1>Sök</h1>
 
-    <form v-on:submit.prevent="onSubmit(searchstr)">
-        <input v-model="searchstr" autofocus>
-    </form>
+    <autocomplete :backend="autocompleteBackend"></autocomplete>
 
     <section class="results">
         <ul>
             <li v-for="article in articles">
                 {{article.ArticleID}}
-                
             </li>
         </ul>
     </section>
   </section>
 </template>
 
+<style lang="scss">
+    .search {
+        position: absolute;
+        .dropdown-menu {
+            display : block;
+        }
+    }
+</style>
+
 <script>
-import axios from "axios"
 import backend from "assets/backend"
-var c = console
+// import _ from "lodash"
+import {debounce} from "assets/utils"
+import Autocomplete from "~components/autocomplete.vue"
+
+
 
 export default {
     data () {
         return {
-            searchstr: "",
-            articles : null
+            
+            articles : null,
+            autocompleteData : []
         }
     },
 
     async asyncData ({ params, error }) {
         
     },
-
+    components : {autocomplete: Autocomplete},
     methods : {
-        onSubmit : async function(searchstr) {
-            var articles = await backend.search(searchstr)
-            console.log("submit", searchstr, articles)
+        
 
-            try{
-            } catch(err) {
-                console.error("Article fetch error.")
-                console.error(err)
-                // error({ message: "Artikeln kunde inte hittas.", statusCode: 404 })
-            }
-            this.articles = articles
+        autocompleteBackend : debounce(async function(str) {
+            console.log("debounce", str)
+            if(!str) return []
+            return await backend.autocomplete(str)
+        }, 150),
+
+        onSubmit : async function(searchstr) {
+            // var articles = await backend.search(searchstr)
+            console.log("submit", searchstr)
+
+            // try{
+            // }
+            // catch(err) {
+            //     console.log("Article fetch error.")
+            //     error({ message: "Artikeln kunde inte hittas.", statusCode: 404 })
+            // }
+            // console.log("assign")
+            // this.articles = articles
 
         }
-    }
+    },
+
+    
+    
+     
+
 }
 
 </script>

@@ -11,6 +11,7 @@
             <nuxt-link class="nav-item nav-link" to="/listor/priser">Översättarpriser</nuxt-link>
             <nuxt-link class="nav-item nav-link" to="/listor/kronologi">Kronologi</nuxt-link>
             <nuxt-link class="nav-item nav-link" to="/listor/sprak">Språk</nuxt-link>
+            <nuxt-link class="nav-item nav-link" to="/om">Om</nuxt-link>
 
           </div>
       </nav>
@@ -22,6 +23,9 @@
 
 <script>
   import Vue from "vue"
+  import BootstrapVue from 'bootstrap-vue'
+  Vue.use(BootstrapVue)
+
   // Register a global custom directive called v-focus
   Vue.directive('focus', {
     // When the bound element is inserted into the DOM...
