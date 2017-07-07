@@ -75,12 +75,14 @@ class PythonBackend {
                 if(item.doc_type == "author") {
                     return {
                         label: item.name_for_index, 
-                        url : "http://litteraturbanken.se/forfattare/" + item.author_id
+                        url : "http://litteraturbanken.se/forfattare/" + item.author_id,
+                        type: "author"
                     }
                 } else {
                     return {
                         label: item.shorttitle, 
-                        url : `http://litteraturbanken.se/forfattare/titlar/${item.authors[0].author_id}/${item.title_id}/sida/${item.startpagename}/${item.doc_type}`
+                        url : `http://litteraturbanken.se/forfattare/${item.authors[0].author_id}/titlar/${item.title_id}/sida/${item.startpagename}/${item.doc_type}`,
+                        type : "work"
                     }
                 }
             }).value()
@@ -169,6 +171,13 @@ class PythonBackend {
         )).data
         return data
     }
+
+    async search(str) {
+        let data = (await pythonGet("/search/" + str, 
+            // {show: "Articles.ArticleID,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
+        ))
+        return data
+    } 
     
 }
 

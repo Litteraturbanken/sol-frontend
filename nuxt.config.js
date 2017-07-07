@@ -29,8 +29,6 @@ module.exports = {
     // { src: '~assets/bootstrap_custom.scss', lang: 'scss' }
     'bootstrap-vue/dist/bootstrap-vue.css'
   ],
-    
-  
   /*
   ** Customize the progress-bar color
   */

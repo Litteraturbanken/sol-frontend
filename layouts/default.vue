@@ -12,7 +12,9 @@
             <nuxt-link class="nav-item nav-link" to="/listor/kronologi">Kronologi</nuxt-link>
             <nuxt-link class="nav-item nav-link" to="/listor/sprak">Språk</nuxt-link>
             <nuxt-link class="nav-item nav-link" to="/om">Om</nuxt-link>
-
+            <form @submit.prevent="$router.push({path : '/sok', query : {'fras' : searchstr}})">
+              <autocomplete :backend="autocompleteBackend" v-model="searchstr"></autocomplete>
+            </form>
           </div>
       </nav>
     </header>
@@ -26,6 +28,10 @@
   import BootstrapVue from 'bootstrap-vue'
   Vue.use(BootstrapVue)
 
+  import Autocomplete from "~components/autocomplete.vue"
+  import {debounce} from "assets/utils"
+  import backend from "assets/backend"
+
   // Register a global custom directive called v-focus
   Vue.directive('focus', {
     // When the bound element is inserted into the DOM...
@@ -36,10 +42,19 @@
   })
 
   export default {
+    components : {autocomplete: Autocomplete},
     data () {
       return {
-        showNav : false
+        showNav : false,
+        searchstr : ""
       }
+    },
+    methods : {
+      // TODO: to use the article search as a typeahead, partial string search must be implemented
+      autocompleteBackend : debounce(async function(str) {
+          if(!str) return []
+          return await backend.search(str)
+      }, 150)
     }
   }
 </script>

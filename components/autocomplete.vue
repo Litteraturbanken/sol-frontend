@@ -1,18 +1,24 @@
 <template>
-  <form class="search" v-on:submit.prevent="onSubmit(searchstr)">
-      <input focus autofocus v-model="searchstr" v-on:focus="backend(searchstr)" >
-      <div v-click-outside="outside" class="dropdown-menu" v-show="autocompleteData.length">
-          <a class="dropdown-item" :href="item.url" v-for="item in autocompleteData">{{item.label}}</a>
+  <div class="search"
+        @keyup.down="down" @keyup.up="up" @submit="enter" @keyup.esc="escape">
+      <input v-model="searchstr" 
+            @focus="backend(searchstr)" 
+            @input="$emit('input', $event.target.value)"
+            >
+      <ul v-click-outside="outside" role="menu" class="dropdown-menu" v-show="autocompleteData.length" >
+          <li class="dropdown-item" :class="{active: item.active}" role="menuitem" v-for="item in autocompleteData">
+            <a :href="item.url" >{{item.label}}</a>
+          </li>
           <!-- <a href="" class="dropdown-item">Hej</a> -->
-      </div>        
-  </form>
+      </ul>        
+  </div>
 </template>
 
 <style scoped>
 </style>
 
 <script>
-
+import _ from "lodash"
 export default {
   data () {
     return {
@@ -20,17 +26,74 @@ export default {
       searchstr: "",
     }
   },
-  // created : function() {
-  // },
-  props : ["backend"],
+  created : function() {
+    this.searchstr = this.value
+  },
+  props : {
+    backend: {type: Function, default : _.identity}, 
+    value: {type : String}
+  },
   methods: {
     outside : function() {
         this.autocompleteData = []
     },
+    enter : function(event) {
+      let active = _.find(this.autocompleteData, "active")
+      if(active) {
+        this.autocompleteData = []
+        window.location.href = active.url
+        event.preventDefault()
+      }
+    },
+    escape : function() {
+      this.autocompleteData = []
+    },
+    down : function() {
+      let d = this.autocompleteData
+      let i = _.findIndex(d, "active")
+      if(i == -1) {
+        d[0].active = true
+        return
+      }
+      d[i].active = false
+      let next = (d[i + 1] || d[0])
+      next.active = true
+      // this.$set(next, "active", true)
+      console.log("next", next)
+    },
+    up : function() {
+      let d = this.autocompleteData
+      let i = _.findIndex(d, "active")
+      d[i].active = false
+
+      if(i == -1) {
+        d[-1].active = true
+        return
+      }
+
+      if(!i) {
+        _.last(d).active = true
+      } else {
+        d[i - 1].active = true
+      }
+    },
+    show : function(data) {
+      this.autocompleteData = _.map(data, item => {
+        item.active = false
+        return item
+      })
+    }
   },
   watch : {
+    value : function(newVal) {
+      this.searchstr = newVal
+    },
     searchstr : async function(newVal) {
-      this.autocompleteData = await this.backend(newVal)
+      let data = await this.backend(newVal)
+      this.autocompleteData = _.map(data, item => {
+        item.active = false
+        return item
+      })
     }
   },
   directives: {
