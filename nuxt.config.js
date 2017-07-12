@@ -21,13 +21,16 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: 'http://www.oversattarlexikon.se/images/icons/favicon.png' },
-      { href: '/bootstrap.css', rel: "stylesheet" },
+      // { href: '/bootstrap.css', rel: "stylesheet" },
+      { rel: 'stylesheet', href: 'https://cloud.typography.com/7426274/628748/css/fonts.css' }
     ]
   },
 
   css : [
-    // { src: '~assets/bootstrap_custom.scss', lang: 'scss' }
-    'bootstrap-vue/dist/bootstrap-vue.css'
+    { src: '~assets/bootstrap_custom.scss', lang: 'scss' },
+    { src: '~assets/styles.scss', lang: 'scss' },
+
+    // 'bootstrap-vue/dist/bootstrap-vue.css'
   ],
   /*
   ** Customize the progress-bar color

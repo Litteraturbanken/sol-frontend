@@ -124,11 +124,27 @@ class PythonBackend {
 
     }
 
-    async getContributor(name) {
-        return (await pythonGet("/contributor/" + name.replace(/\s/g, "_"), 
-            {show: "ArticleName,Articles.URLName"}
+    async getContributors() {
+        return (await pythonGet("/contributors",
+            {show: "URLName,FirstName,LastName"}
         )).data
+    }
+    async getContributor(name) {
+        return (await pythonGet("/contributor/" + encodeURIComponent(name.replace(/\s/g, "_")),
+            // {show: show}
+        )).data
+    }
 
+    async getRandom(type) {
+        return (await pythonGet("/articles/random/" + type,
+            // {show: show}
+        )).data[0]
+    }
+    
+    async getLatest() {
+        return (await pythonGet("/articles/latest",
+            {show: "ArticleName,URLName,DatePublished"}
+        )).data
     }
 
     async getWork(workid) {
@@ -178,6 +194,18 @@ class PythonBackend {
         ))
         return data
     } 
+    
+    async chronology(from, to) {
+        let {articles} = (await pythonGet(`/chronology/${from}/${to}`, 
+            // {show: "Articles.ArticleID,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
+        ))
+        return articles
+    } 
+
+    async getStatic(page) {
+        return (await pythonGet('/static/' + page)).page
+    }
+
     
 }
 

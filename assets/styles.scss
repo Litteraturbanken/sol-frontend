@@ -1,0 +1,232 @@
+@font-face {
+    font-family: "Requiem Text A", "Requiem Text B";
+    font-style: normal;
+    font-weight: 400;
+}
+@font-face {
+    font-family: "Requiem Text A", "Requiem Text B";
+    font-style: italic;
+    font-weight: 400;
+}
+@font-face {
+    font-family: "Requiem Display A", "Requiem Display B";
+    font-style: normal;
+    font-weight: 400;
+}
+@font-face {
+    font-family: "Requiem Display A", "Requiem Display B";
+    font-style: italic;
+    font-weight: 400;
+}
+@font-face {
+    font-family: "Requiem Text SC A", "Requiem Text SC B";
+    font-style: normal;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "Verlag A", "Verlag B";
+    font-style: normal;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "Verlag A", "Verlag B";
+    font-style: italic;
+    font-weight: 800;
+}
+
+
+@mixin dotted($color) {
+    & {
+        background: linear-gradient(90deg, 
+                    $color 26%, transparent 0) /* 60%: ratio between dash-gap */
+                    repeat-x;
+        background-size: .15em 2px; /* .25em: Width of dash+gap, 2px: thickness of underline */
+        background-position: 0 89%; /* vertical position of underline */
+        // text-shadow: .05em 0 white, -.05em 0 white; /* create gap between descenders and underline */
+        
+        /* For hover */
+        // animation: scroll .5s infinite linear;
+        // animation-play-state: paused;
+    }
+
+    // @keyframes scroll {
+    //     to { background-position: .25em 90%; }
+    // }
+
+    // &:hover {
+    //     cursor: pointer;
+    //     color: $primarycolor;
+    //     animation-play-state: running;
+    // }
+
+}
+
+p a {
+  @include dotted(black)
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+html {
+  font-size: 18px;
+  word-spacing: 1px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  // padding : 1em;
+  position: relative;
+  min-height: 100%;
+}
+ul {
+  padding-left: 0;
+}
+body {
+  font-family : "Verlag A", "Verlag B", georgia, serif;
+  padding : 1em;
+}
+h1 {
+  font-weight: 800;
+  margin-bottom: 1.3em;
+}
+h2 {
+  margin-top: 0.6em;
+  font-size: 1.6rem;
+  font-weight : normal;
+}
+h3 {
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
+  font-weight : normal;
+}
+
+figcaption {
+  font-style: italic;
+  font-size: 0.8rem;
+}
+
+.navbar {
+  padding-left : 0;
+}
+
+.sc {
+  text-transform: uppercase;
+  font-size: 0.8em;
+}
+
+.outer {
+  min-height : 100%;
+  margin-bottom: 100px;
+}
+
+.outer-container {
+  display : flex;
+  flex-direction : column;
+  align-items: center;
+  justify-content: center;
+
+  & > * {
+    width : 700px;
+  }
+}
+.container {
+  padding-left: 0;
+  padding-right: 0;
+}
+.mainview {
+}
+a {
+  color : #333;
+  &:hover {
+    color : grey;
+  }
+  &:active {
+    color : #333;
+  }
+}
+p {
+  max-width : 40em;
+  line-height: 143%;
+}
+p + p {
+  margin-top : 1em;
+}
+li {
+  list-style : none;
+}
+.navbar {
+  padding : 0;
+
+}
+.navbar-toggleable-md .navbar-nav .nav-link:first-child {
+  padding-left : 0;
+}
+header {
+  margin-bottom: 3em;
+  h1 {
+    font-size: 3.5em;
+    margin-bottom: 0;
+    letter-spacing : -2px;
+    line-height : 1;
+    a:hover {
+      text-decoration: none;
+    }
+  }
+  input {
+    font-size: 0.8em;
+    margin-top: 5px;
+  }
+  .nav-item {
+    text-transform: uppercase;
+    font-size: 0.8em;
+    &:first-child {
+      padding-left: 0;
+      white-space: nowrap;
+    }
+
+
+    
+  }
+}
+.list-inline {
+  li {
+    display : inline-block;
+  }
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  line-height: 60px;
+  .navbar {
+    border-top: 1px solid lightgrey;
+  }
+}
+
+*, *:before, *:after
+{
+  box-sizing: border-box;
+  margin: 0;
+}
+// .mainmenu {
+//   margin-left : 0;
+//   padding-left : 0;
+//   li {
+//     display : inline-block;
+//     margin-right: 1em;
+//     &:first-child {
+//     }
+//   }
+// }
+.nuxt-link-exact-active {
+  color : darkgrey !important;
+}
+
+blockquote {
+  margin: 0 3em 1em 3em;
+}

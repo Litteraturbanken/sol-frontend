@@ -1,6 +1,6 @@
 <template>
   <section class="">
-    <h1>Sök</h1>
+    <h1>Sök i artiklar och efter verk</h1>
 
     <!-- :backend="autocompleteBackend" -->
     <form @submit.prevent="onSubmit(searchstr)">
@@ -13,7 +13,7 @@
         <h2>Artiklar</h2>
         <ul class="articles">
             <li v-for="article in articles">
-                {{article.ArticleName}}
+                <a :href="'/artiklar/' + article.URLName">{{article.ArticleName}}</a>
             </li>
         </ul>
         
@@ -22,7 +22,10 @@
         <h2>Verk</h2>
         <ul class="works">
             <li v-for="work in works">
-                {{work.TitleSwedish}}
+                <div>
+                    <a :href="'/verk/' + work.WorkID">{{work.TitleSwedish}}</a>, {{work.PublishingYearSwedish}}
+                </div>
+                <div><span v-if="work.Authors">{{work.Authors}}, </span> <em>{{connectionLabel(work.ConnectionType)}}:</em> {{work.Translator}} </div>
             </li>
         </ul>
     </section>
@@ -39,6 +42,11 @@
 </template>
 
 <style lang="scss">
+    .works {
+        li {
+            margin-bottom: 1em;
+        }
+    }
     .search {
         position: relative;
         .dropdown-menu {
@@ -75,7 +83,17 @@ export default {
         }
     },
     components : {autocomplete: Autocomplete},
+    computed : {
+    },
     methods : {
+        connectionLabel : function(type) {
+            return [
+                "översättare",
+                "skrifter av",
+                "handlar om"
+            ][Number(type) - 1]
+
+        },
         
 
         

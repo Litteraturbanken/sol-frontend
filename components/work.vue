@@ -1,35 +1,43 @@
 <template>
     <div class="work row">
         <ul class="col-md-7">
-            <li>{{work.Authors}}</li>
+            <li class=""><strong>{{work.Authors}}</strong></li>
             <li class="row col-md-12">
                 <div>
                     <span>{{work.TitleSwedish}} </span> <span v-if="work.SubtitleSwedish">: {{work.SubtitleSwedish}} </span> <span v-if="getCreatorRole"> / {{getCreatorRole}}</span><span v-if="work.PublishingHousePlace"> – {{work.PublishingHousePlace}} : {{work.PublishingHouseSwedish}}, </span> {{work.PublishingYearSwedish}}
                 </div>
             </li>
             <li><ul>
-                <li v-if="work.TitleOriginal">Orginaltitel: {{work.TitleOriginal}}</li>
-                <li v-if="work.LanguageOriginalName">Orginalspråk: {{work.LanguageOriginalName}}</li>
-                <li v-if="work.TitleSource">Titel på källspråksutgåva: {{work.TitleSource}}</li>
-                <li v-if="work.LanguageSourceName">Källtitelns språk: {{work.LanguageSourceName}}</li>
+                <li v-if="work.TitleOriginal"><span class="sc">Orginaltitel</span> {{work.TitleOriginal}}</li>
+                <li v-if="work.LanguageOriginalName"><span class="sc">Orginalspråk</span> {{work.LanguageOriginalName}}</li>
+                <li v-if="work.TitleSource">Titel på <span class="sc">källspråksutgåva</span> {{work.TitleSource}}</li>
+                <li v-if="work.LanguageSourceName"><span class="sc">Källtitelns språk</span> {{work.LanguageSourceName}}</li>
                 
-                <li v-if="work.PublishingYearOriginal">Utgivnings/tillkomstår för original: {{work.PublishingYearOriginal}}</li>
-                <li v-if="work.PublishingYearSource">Utgivningsår för källspråksutgåva: {{work.PublishingYearSource}}</li>
-                <li v-if="work.PartOf_Title">Ingår i: {{work.PartOf_Title}}</li>
+                <li v-if="work.PublishingYearOriginal"><span class="sc">Utgivnings/tillkomstår för original</span> {{work.PublishingYearOriginal}}</li>
+                <li v-if="work.PublishingYearSource"><span class="sc">Utgivningsår för källspråksutgåva</span> {{work.PublishingYearSource}}</li>
+                <li v-if="work.PartOf_Title"><span class="sc">Ingår i</span> {{work.PartOf_Title}}</li>
             </ul></li>
+            <li>
+                <ul>
+                    <li v-if="!work.NotInLibris"><a class="sc" :href="'http://libris.kb.se/bib/' + work.LibrisID">Titeln i Libris</a></li>
+                    <li><a class="sc" :href='"/listor/avupphovsman/?a=" + work.Authors'>Andra verk av {{work.Authors}}</a></li>
+                </ul>
+            </li>
         </ul>
-        <!-- <pre style="font-size:smaller">{{work | json}}</pre> -->
-        <div class="more-info col-md-5">
+        <!-- <div class="more-info col-md-5">
             <h3>Mer information</h3>
             <ul>
                 <li><a :href='"/listor/avupphovsman/?a=" + work.Authors'>Andra verk av {{work.Authors}}</a></li>
                 <li v-if="!work.NotInLibris"><a :href="'http://libris.kb.se/bib/' + work.LibrisID">Titeln i Libris</a></li>
             </ul>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <style lang="scss">
+    .work > ul > li {
+        line-height : 1.3;
+    }
     .more-info {
         
     }

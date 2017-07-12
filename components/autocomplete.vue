@@ -1,9 +1,11 @@
 <template>
   <div class="search"
-        @keyup.down="down" @keyup.up="up" @submit="enter" @keyup.esc="escape">
+        @keyup.down="down" @keyup.up="up" @keyup.enter="enter" @keyup.esc="escape">
       <input v-model="searchstr" 
+            placeholder="Sök i lexikonet"
             @focus="backend(searchstr)" 
             @input="$emit('input', $event.target.value)"
+            ref="inputField"
             >
       <ul v-click-outside="outside" role="menu" class="dropdown-menu" v-show="autocompleteData.length" >
           <li class="dropdown-item" :class="{active: item.active}" role="menuitem" v-for="item in autocompleteData">
@@ -15,6 +17,12 @@
 </template>
 
 <style scoped>
+  .dropdown-menu {
+    display : block;
+  }
+  .search {
+    position : relative;
+  }
 </style>
 
 <script>
@@ -39,9 +47,10 @@ export default {
     },
     enter : function(event) {
       let active = _.find(this.autocompleteData, "active")
+      console.log("active", active)
       if(active) {
         this.autocompleteData = []
-        window.location.href = active.url
+        this.$router.push(active.url)
         event.preventDefault()
       }
     },
@@ -82,6 +91,9 @@ export default {
         item.active = false
         return item
       })
+    },
+    focus : function() {
+      this.$refs.inputField.focus()
     }
   },
   watch : {
@@ -89,7 +101,8 @@ export default {
       this.searchstr = newVal
     },
     searchstr : async function(newVal) {
-      let data = await this.backend(newVal)
+      let data = (await this.backend(newVal)).slice(0, 10)
+      console.log("data", data)
       this.autocompleteData = _.map(data, item => {
         item.active = false
         return item

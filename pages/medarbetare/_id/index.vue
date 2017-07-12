@@ -41,7 +41,12 @@
                 return { data : payload }
             }
 
-            return {...(await backend.getContributor(params.id))}
+            try {
+                return {...(await backend.getContributor(params.id))}
+            } catch(e) {
+                console.log("error", e)
+            }
+
         }
     }
 </script>

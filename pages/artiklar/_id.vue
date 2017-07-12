@@ -1,27 +1,38 @@
 <template>
-    <div class="container">
-        <h2>{{article.ArticleName}}<span v-if="article.TranslatorYearBirth">, {{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}}</span></h2>
-        <figure v-if="article.Files && article.Files.length">
-            <img :src="'https://spraakbanken.gu.se/karp/data/sol/artikelfiler/' + maybeFilename"
-                onerror="this.style.display='none'">
-            <figcaption>{{article.Files[0].Author}}</figcaption>
-        </figure>
-        
-        <section v-html="article.ArticleText"></section>
-        <a :href="'/medarbetare/' + article.ContributorFirstname + ' ' + article.ContributorLastname" rel="author">{{article.ContributorFirstname}} {{article.ContributorLastname}}</a>
+    <div class="row">
+        <div class="article-text col-md-8">
+            <h2>{{article.ArticleName}}<span v-if="article.TranslatorYearBirth">, {{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}}</span></h2>
+
+
+            <figure >
+                <!-- <img :src="'https://spraakbanken.gu.se/karp/data/sol/artikelfiler/' + maybeFilename"
+                    onerror="this.style.display='none'"> -->
+                <img src="https://spraakbanken.gu.se/karp/data/sol/artikelfiler/Roland_Adlerberth7.jpg"
+                    onerror="this.style.display='none'">
+                <!-- <figcaption>{{article.Files[0].Author}}</figcaption> -->
+                <figcaption>Foto: Privat</figcaption>
+            </figure>
+            
+            <section v-html="article.ArticleText"></section>
+            <p>
+                <a :href="'/medarbetare/' + article.ContributorFirstname + ' ' + article.ContributorLastname" rel="author">{{article.ContributorFirstname}} {{article.ContributorLastname}}</a>
+            </p>
+        </div>
 
         
-        <div class="bibliography" v-if="works.length">
-            <h3>Bibliografi</h3>
-            <div><a :href="'/listor/avoversattare/' + $route.params.id">Detaljerad bibliografi</a></div>
+        <div class="bibliography col-md-4" v-if="works.length">
+            <header>
+                <h3>Bibliografi</h3>
+                <div><a :href="'/listor/avoversattare/' + $route.params.id">Gå till detaljerad bibliografi</a></div>
+            </header>
             <ul>
                 <li v-for="item in connectionGroups">
-                    <h2 v-if="item.type == 3">Om {{ article.ArticleName}}</h2>
-                    <h2 v-if="item.type == 2">Skrifter av {{ article.ArticleName}}</h2>
-                    <h2 v-if="item.type == 1">Översättningar i bokform</h2>
+                    <h3 v-if="item.type == 3">Om {{ article.ArticleName}}</h3>
+                    <h3 v-if="item.type == 2">Skrifter av {{ article.ArticleName}}</h3>
+                    <h3 v-if="item.type == 1">Översättningar i bokform</h3>
                     <ul>
                         <li v-for="work in item.works">
-                            <a :href="'/verk/' + work.WorkID">{{work.TitleSwedish}}</a> <span v-if="work.Authors">/ {{work.Authors}}</span>
+                            <a class="work" :href="'/verk/' + work.WorkID">{{work.TitleSwedish}}</a> <span v-if="work.Authors"> / {{work.Authors}}</span>
                         </li>
                     </ul>            
                     
@@ -36,9 +47,42 @@
         float : right;
         margin-left : 0.5em;
     }
+    figcaption {
+        text-transform: uppercase;
+        font-size: 0.6em;
+        vertical-align: bottom;
+        margin-top: 0.2em;
+    }
 
     .container {
-        max-width: 40em;
+    }
+    .article-text {
+        max-width: 35em;
+        h2:first-child {
+            margin-top: 0;
+        }
+
+    }
+    .bibliography {
+        header {
+            h3:first-child {
+                margin-top: 0;
+            }
+            margin-bottom: 1.5rem;
+        }
+        margin-left: 1em;
+        padding-left : 1.5em;
+        border-left: 1px solid grey;
+        font-size : 0.8em;
+
+        h3 {
+            font-size: 1.2rem;
+            margin-top: 1.2rem;
+        }
+
+        .work {
+            font-weight : 700;
+        }
     }
 </style>
 

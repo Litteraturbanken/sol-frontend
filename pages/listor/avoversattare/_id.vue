@@ -64,7 +64,7 @@
                 var {source, original, works, article, connectionGroups} = await backend.getWorksByAuthor(params.id)
 
             } catch(err) {
-                console.log("Article fetch error.")
+                console.log("Article fetch error.", err)
                 error({ message: "Artikeln kunde inte hittas.", statusCode: 404 })
             }
             return { works, source, original, article, connectionGroups }
