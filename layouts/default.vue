@@ -44,7 +44,7 @@
   import BootstrapVue from 'bootstrap-vue'
   Vue.use(BootstrapVue)
 
-  import Autocomplete from "~components/autocomplete.vue"
+  import Autocomplete from "~/components/autocomplete.vue"
   import {debounce} from "assets/utils"
   import backend from "assets/backend"
   import _ from "lodash"

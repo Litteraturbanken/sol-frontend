@@ -73,6 +73,9 @@ export default {
             padding-top : 0;
             
         }
+        h1 {
+            margin-bottom: 0.5em;
+        }
     }
 
     .left-col {

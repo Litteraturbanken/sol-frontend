@@ -10,11 +10,12 @@
     "babel-polyfill": "^6.23.0",
     "bootstrap": "^4.0.0-alpha.6",
     "bootstrap-vue": "^0.18.0",
-    "nuxt": "^1.0.0-alpha.4",
+    "fs-extra": "^4.0.1",
+    "nuxt": "^1.0.0-rc3",
     "pug": "^2.0.0-rc.1",
     "pug-loader": "^2.3.0",
     "tappable": "^1.0.1",
-    "vue-typeahead": "^2.3.2"
+    "vue": "^2.4.2"
   },
   "scripts": {
     "dev": "nuxt",
@@ -35,6 +36,6 @@
     "eslint-plugin-standard": "^2.0.1",
     "node-sass": "^4.5.2",
     "sass-loader": "^6.0.3",
-    "webpack": "^3.0.0"
+    "webpack": "^3.4.1"
   }
 }

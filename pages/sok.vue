@@ -59,7 +59,7 @@
 import backend from "assets/backend"
 // import _ from "lodash"
 
-import Autocomplete from "~components/autocomplete.vue"
+import Autocomplete from "~/components/autocomplete.vue"
 
 
 

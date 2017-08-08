@@ -64,7 +64,7 @@ export default {
     },
     methods : {
       getUrl : function(item, lang) {
-        return `/listor/avoversattare/${item.URLName}/${this.id}/${lang}`
+        return `/listor/avoversattare/${item.URLName}?lt=${this.id}&l=/${lang}`
       }
     }
 }

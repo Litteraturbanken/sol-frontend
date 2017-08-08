@@ -1,8 +1,6 @@
 <template>
     <div class="">
-    {{langName}} {{langType}}
-
-
+    <h1>Bibliografi – {{article}}</h1>
     Språkurval: <a :href="'/listor/avoversattare/' + $route.params.id" >Alla</a>
     
     <ul class="lang-filter list-inline">
@@ -47,7 +45,7 @@
 
 <script>
     import backend from "assets/backend"
-    import work from "~components/work.vue"
+    import work from "~/components/work.vue"
     export default {
         name : "AvOversattare",
         head () {

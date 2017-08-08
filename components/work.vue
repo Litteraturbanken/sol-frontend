@@ -4,7 +4,7 @@
             <li class=""><strong>{{work.Authors}}</strong></li>
             <li class="row col-md-12">
                 <div>
-                    <span>{{work.TitleSwedish}} </span> <span v-if="work.SubtitleSwedish">: {{work.SubtitleSwedish}} </span> <span v-if="getCreatorRole"> / {{getCreatorRole}}</span><span v-if="work.PublishingHousePlace"> – {{work.PublishingHousePlace}} : {{work.PublishingHouseSwedish}}, </span> {{work.PublishingYearSwedish}}
+                    <span>{{work.TitleSwedish}} </span> <span v-if="work.SubtitleSwedish">: {{work.SubtitleSwedish}} </span> <span v-if="getCreatorRole"> / {{getCreatorRole}}</span><span v-if="work.PublishingHousePlace"> – {{work.PublishingHousePlace}} : {{work.PublishingHouseSwedish}}, </span> {{work.PublishingYearSwedish}}<span v-if="work.SerialTitle">. – ({{work.SerialTitle}})</span>
                 </div>
             </li>
             <li><ul>
@@ -15,7 +15,7 @@
                 
                 <li v-if="work.PublishingYearOriginal"><span class="sc">Utgivnings/tillkomstår för original</span> {{work.PublishingYearOriginal}}</li>
                 <li v-if="work.PublishingYearSource"><span class="sc">Utgivningsår för källspråksutgåva</span> {{work.PublishingYearSource}}</li>
-                <li v-if="work.PartOf_Title"><span class="sc">Ingår i</span> {{work.PartOf_Title}}</li>
+                <li v-if="work.PartOf_Title"><span class="sc">Ingår i</span> {{work.PartOf_Title}}<span v-if="work.PartOf_Localization">. – {{work.PartOf_Localization}}</span></li>
             </ul></li>
             <li>
                 <ul>

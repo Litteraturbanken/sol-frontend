@@ -17,7 +17,7 @@
 
 <script>
     import backend from "assets/backend"
-    import Work from "~components/work.vue"
+    import Work from "~/components/work.vue"
     export default {
         name : "AvUpphovsman",
         components: {work : Work},

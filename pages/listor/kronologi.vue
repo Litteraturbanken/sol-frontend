@@ -1,6 +1,6 @@
 <template>
   <section class="">
-  kronologi
+  <h2>Kronologi</h2>
   <ul>
       <li v-for="article in articles">
           {{article.ArticleName}}

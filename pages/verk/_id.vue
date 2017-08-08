@@ -2,7 +2,7 @@
 
 
     <div>
-        <h3>{{work.TitleSwedish}}<span v-if="work.SubtitleSwedish">: {{work.SubtitleSwedish}}</span></h3>
+        <h2>{{work.TitleSwedish}}<span v-if="work.SubtitleSwedish">: {{work.SubtitleSwedish}}</span></h2>
         <work :work="work"></work>
         <!-- <pre style="font-size:smaller">{{work | json}}</pre> -->
     </div>
@@ -11,7 +11,7 @@
 <script>
     
     import backend from "assets/backend"
-    import work from "~components/work.vue"
+    import work from "~/components/work.vue"
 
     export default {
         name : "Article",
