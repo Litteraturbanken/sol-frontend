@@ -197,7 +197,7 @@ class PythonBackend {
     
     async chronology(from, to) {
         let {articles} = (await pythonGet(`/chronology/${from}/${to}`, 
-            // {show: "Articles.ArticleID,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
+            {show: "Articles.ArticleID,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
         ))
         return articles
     } 

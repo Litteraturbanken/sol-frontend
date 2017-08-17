@@ -27,7 +27,7 @@
   <h3>{{sliderValue[0]}} – {{sliderValue[1]}}</h3>
   <ul class="results" :class="{loading: loading}">
       <li v-for="article in articles">
-          <a :href="'/artiklar/' + article.URLName">{{article.ArticleName}}</a>
+          <a :href="'/artiklar/' + article.URLName">{{article.ArticleName}} ({{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}})</a>
       </li>
   </ul>
   </section>
