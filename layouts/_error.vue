@@ -1,3 +1,4 @@
+<!-- rename to error.vue to override nuxt error page -->
 <template>
   <div class="error-page">
     <div>

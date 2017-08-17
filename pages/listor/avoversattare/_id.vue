@@ -56,7 +56,11 @@
         components : {
             work : work
         },
-        async asyncData ({ params, error, route }) {
+        async asyncData ({ params, error, route, from }) {
+            console.log("from", from)
+            if(from && (from.matched[0].name == "listor-avoversattare-id" || from.matched[0].name == "avoversattare-filter")) {
+                return {}
+            }
             try{
                 console.log("params", params)
                 var {source, original, works, article, connectionGroups} = await backend.getWorksByAuthor(params.id)

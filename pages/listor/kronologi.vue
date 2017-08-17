@@ -1,17 +1,48 @@
 <template>
   <section class="">
   <h2>Kronologi</h2>
-  <ul>
+
+  <div class=""><no-ssr>
+      <range-slider
+         class="slider col-12"
+         :min="startYear"
+         :max="endYear"
+         step="1"
+         v-model="sliderValue"
+         @change="sliderChange">
+       </range-slider>
+    </no-ssr>
+     </div>
+     <div class="ticks row no-gutters justify-content-between" :style="offsetStyle(10, 10)">
+       <span v-for="i in range" class="tick" >
+         
+       </span>
+     </div>
+     <div class="timeline row no-gutters justify-content-between" :style="offsetStyle(-5, -10)">
+       <span v-for="i in range" class="">
+         {{i}}&nbsp;
+       </span>
+     </div>
+  
+  <h3>{{sliderValue[0]}} – {{sliderValue[1]}}</h3>
+  <ul class="results" :class="{loading: loading}">
       <li v-for="article in articles">
-          {{article.ArticleName}}
+          <a :href="'/artiklar/' + article.URLName">{{article.ArticleName}}</a>
       </li>
   </ul>
   </section>
 </template>
 
 <script>
-
+    import _ from "lodash"
     import backend from "assets/backend"
+
+    import RangeSlider from '~/assets/slider/RangeSlider'
+    // you probably need to import built-in style
+    import 'vue-range-slider/dist/vue-range-slider.css'
+
+
+    import NoSSR from 'vue-no-ssr'
 
     export default {
         name : "AvOversattare",
@@ -20,15 +51,104 @@
                 title : "Av översättare" + " – Svenskt översättarlexikon"
             }
         },
-        async asyncData ({ params, error, route }) {
-            let data = await backend.chronology("1983", "1990")
+        components: {
+           RangeSlider,
+           "no-ssr" : NoSSR
+         },
+         methods : {
+          sliderChange : async function([start, end]) {
+            this.loading = true
+            this.articles = await backend.chronology(start, end)
+            this.loading = false
+          },
+          offsetStyle : function(leftOffset, rightOffset) {
+            leftOffset = leftOffset || 0
+            rightOffset = rightOffset || 0
+            return {
+              'margin-left' : `calc(${leftOffset}px + ${this.percentLeftPad}%)`,
+              'margin-right' : `calc(${this.percentRightPad}% + ${rightOffset}px)`
+            }
+          }
+        },
+         computed : {
+          range : function() {
+            let years = _.range(this.startYear, this.endYear + 1).filter((item) => item % 100 == 0)
 
-            console.log("data", data)
-            return {articles : data}
+            let total = this.endYear - this.startYear
+            let first = years[0]
+            let last = _.last(years)
+            this.percentLeftPad = ((first - this.startYear) / total * 100)
+            this.percentRightPad = ((this.endYear - last) / total * 100)
+            return years
+          }
+          
+         },
+         data () {
+          return {
+            loading : false,
+            startYear : null,
+            endYear : null,
+            percentLeftPad : null,
+            percentRightPad : null,
+            sliderValue : [1900, 1950],
+            articles : null
+          }
+         },
+        created : function() {
+
+          if(this.$route.hash) {
+            this.sliderValue = this.$route.hash.replace("#", "").split("-").map(Number)
+          } 
+
+          // TODO: un-hardcode this
+          this.startYear = 1437
+          this.endYear = 2017
+
+          this.sliderChange(this.sliderValue)
+        },
+        async asyncData ({ params, error, route }) {
+          // console.log("route.hash", route.hash.replace("#", ""), route)
+          
+          // return {startYear, endYear}
         }
     }
 
 </script>
 
-<style>
+<style lang="scss">
+  h2 {
+    margin-bottom: 1em;
+    margin-top: 2em;
+  }
+  .slider {
+    width : 100%;
+  }
+  .timeline {
+    margin-right : 0.4em;
+    span {
+      // padding: 0 
+    }
+  }
+  .ticks {
+  }
+  .ticks {
+    // margin: 0 10px;
+    .tick {
+      display : block;
+      width : 1px;
+      height : 4px;
+      border-left: 1px solid black;
+    }
+  }
+
+  .results {
+    
+    columns : 300px 3;
+    opacity : 1;
+    transition: opacity 200ms;
+    &.loading {
+      transition: opacity 200ms;
+      opacity : 0;
+    }
+  }
 </style>

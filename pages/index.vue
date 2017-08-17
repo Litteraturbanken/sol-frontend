@@ -54,6 +54,7 @@ export default {
   },
 
   async asyncData() {
+
     let {PageContent} = await backend.getStatic('Om_Lexikonet_Ingress')
     let article = await backend.getRandom(1)
     let themearticle = await backend.getRandom(4)

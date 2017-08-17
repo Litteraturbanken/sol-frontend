@@ -52,6 +52,9 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
+      const path = require('path')
+      config.resolve.symlinks = false
+      // config.resolveLoader = { fallback: path.join(__dirname, "node_modules") }
     }
   },
   router: {
@@ -60,7 +63,7 @@ module.exports = {
 
     extendRoutes (routes, resolve) {
       routes.push({
-        name: 'custom',
+        name: 'avoversattare-filter',
         path: '/listor/avoversattare/:id/:type?/:lang?',
         component: resolve(__dirname, 'pages/listor/avoversattare/_id.vue')
       })
