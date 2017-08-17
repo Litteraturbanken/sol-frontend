@@ -39,7 +39,7 @@
 
     import RangeSlider from '~/assets/slider/RangeSlider'
     // you probably need to import built-in style
-    import 'vue-range-slider/dist/vue-range-slider.css'
+    // import 'vue-range-slider/dist/vue-range-slider.css'
 
 
     import NoSSR from 'vue-no-ssr'

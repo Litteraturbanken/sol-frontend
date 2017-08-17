@@ -16,8 +16,7 @@
     "pug-loader": "^2.3.0",
     "tappable": "^1.0.1",
     "vue": "^2.4.2",
-    "vue-no-ssr": "^0.1.2",
-    "vue-range-slider": "^0.2.4"
+    "vue-no-ssr": "^0.1.2"
   },
   "scripts": {
     "dev": "nuxt",
