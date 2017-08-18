@@ -3,7 +3,7 @@
   <div class="col-10 no-gutters" >
     <header class="col-12 ">
       <div>
-        <h1 class=""><a href="/">Svenskt översättarlexikon</a></h1>
+        <h1 class=""><nuxt-link to="/">Svenskt översättarlexikon</nuxt-link></h1>
         
         <nav class="navbar navbar-toggleable-md">
             <div class="navbar-nav">
@@ -103,6 +103,6 @@
 
 
 <style lang="scss">
-
+  
 
 </style>

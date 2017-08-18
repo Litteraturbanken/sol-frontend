@@ -15,7 +15,7 @@
             
             <section v-html="article.ArticleText"></section>
             <p>
-                <a :href="'/medarbetare/' + article.ContributorFirstname + ' ' + article.ContributorLastname" rel="author">{{article.ContributorFirstname}} {{article.ContributorLastname}}</a>
+                <nuxt-link :to="'/medarbetare/' + article.ContributorFirstname + ' ' + article.ContributorLastname" rel="author">{{article.ContributorFirstname}} {{article.ContributorLastname}}</nuxt-link>
             </p>
         </div>
 
@@ -23,7 +23,7 @@
         <div class="bibliography col-md-4" v-if="works.length">
             <header>
                 <h3>Bibliografi</h3>
-                <div><a :href="'/listor/avoversattare/' + $route.params.id">Gå till detaljerad bibliografi</a></div>
+                <div><nuxt-link :to="'/listor/avoversattare/' + $route.params.id">Gå till detaljerad bibliografi</nuxt-link></div>
             </header>
             <ul>
                 <li v-for="item in connectionGroups">
@@ -32,7 +32,7 @@
                     <h3 v-if="item.type == 1">Översättningar i bokform</h3>
                     <ul>
                         <li v-for="work in item.works">
-                            <a class="work" :href="'/verk/' + work.WorkID">{{work.TitleSwedish}}</a> <span v-if="work.Authors"> / {{work.Authors}}</span>
+                            <nuxt-link class="work" :to="'/verk/' + work.WorkID">{{work.TitleSwedish}}</nuxt-link> <span v-if="work.Authors"> / {{work.Authors}}</span>
                         </li>
                     </ul>            
                     

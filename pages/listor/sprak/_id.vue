@@ -8,9 +8,9 @@
             <ul>
                 <li class="row" v-for="item in items">
                   <div class="col-6">
-                    <a :href="'/artiklar/' + item.URLName">{{item.ArticleName}}</a> <span v-if="item.TranslatorYearBirth"> ({{item.TranslatorYearBirth}}–{{item.TranslatorYearDeath}})</span>
+                    <nuxt-link :to="'/artiklar/' + item.URLName">{{item.ArticleName}}</nuxt-link> <span v-if="item.TranslatorYearBirth"> ({{item.TranslatorYearBirth}}–{{item.TranslatorYearDeath}})</span>
                   </div>
-                  <div class="col-6 offset-12 lang-link"><a :href="getUrl(item, lang)">Verk från {{lang.toLowerCase()}}</a></div>
+                  <div class="col-6 offset-12 lang-link"><nuxt-link :to="getUrl(item, lang)">Verk från {{lang.toLowerCase()}}</nuxt-link></div>
                 </li>
             </ul>
         </li>

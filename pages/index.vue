@@ -5,7 +5,7 @@
             <h1>Om Svenskt översättarlexikon</h1>
             <div class=" about" v-html="about"></div>
             <div>
-                <a href="/om">Läs mer &gt;&gt;</a>
+                <nuxt-link to="/om">Läs mer &gt;&gt;</nuxt-link>
             </div>
           </section>
           <section class="section row no-gutters">
@@ -23,14 +23,14 @@
             <h1>{{article.ArticleName}}, {{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}}</h1>
             <div class=" about" v-html="article.Ingress"></div>
             <div>
-                <a :href="'/artiklar/' + article.URLName">Läs mer &gt;&gt;</a>
+                <nuxt-link :to="'/artiklar/' + article.URLName">Läs mer &gt;&gt;</nuxt-link>
             </div>
           </section>
           <section class="section row no-gutters">
             <h1>{{themearticle.ArticleName}}</h1>
             <div class=" about" v-html="themearticle.Ingress"></div>
             <div>
-                <a :href="'/artiklar/' + themearticle.URLName">Läs mer &gt;&gt;</a>
+                <nuxt-link :to="'/artiklar/' + themearticle.URLName">Läs mer &gt;&gt;</nuxt-link>
             </div>
           </section>
       </div>
