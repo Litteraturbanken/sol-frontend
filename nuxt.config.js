@@ -17,7 +17,8 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Svenskt översättarlexikon' }
+      { hid: 'description', name: 'description', content: 'Svenskt översättarlexikon' },
+      { name: 'google-site-verification', content: 'N0kL5tDA6UPMmyqv6bJBPNMsvOv27pcF7_ABjT94v5c' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: 'http://www.oversattarlexikon.se/images/icons/favicon.png' },
