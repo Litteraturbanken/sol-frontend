@@ -8,6 +8,13 @@
     </div>
 </template>
 
+<style lang="scss" scoped>
+    .work {
+        max-width : 400px;
+    }
+
+</style>
+
 <script>
     
     import backend from "assets/backend"

@@ -20,7 +20,7 @@
 
 <style lang="scss">
   h2 {
-    text-transform: capitalize;
+    // text-transform: capitalize;
   }
   .lang-link {
     text-align: right;
@@ -64,7 +64,7 @@ export default {
     },
     methods : {
       getUrl : function(item, lang) {
-        return `/listor/avoversattare/${item.URLName}?lt=${this.id}&l=/${lang}`
+        return `/listor/avoversattare/${item.URLName}/${this.id}/${lang}`
       }
     }
 }

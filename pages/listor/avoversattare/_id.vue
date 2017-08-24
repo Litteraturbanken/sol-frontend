@@ -1,23 +1,24 @@
 <template>
     <div class="">
     <h1>Bibliografi – {{article}}</h1>
-    Språkurval: <a :href="'/listor/avoversattare/' + $route.params.id" >Alla</a>
+    <div class="label">Språkurval</div> 
+    <a :href="'/listor/avoversattare/' + $route.params.id" >Alla</a>
     
-    <ul class="lang-filter list-inline">
-        <li class="list-inline-item">Originalspråk:</li>
-        <li v-for="lang in original" class="list-inline-item">
+    <div class="label">Originalspråk</div>
+    <ul class="lang-filter list">
+        <li v-for="lang in original" class="list-item">
             <nuxt-link :to="'/listor/avoversattare/' + $route.params.id + '/original/' + lang.LanguageName">{{lang.LanguageName}}</nuxt-link>
         </li>
     </ul>
     
-    <ul class="lang-filter list-inline">
-        <li class="list-inline-item">Källspråk:</li>
-        <li v-for="lang in source" class="list-inline-item">
+    <div class="label">Källspråk</div>
+    <ul class="lang-filter list">
+        <li v-for="lang in source" class="list-item">
             <nuxt-link :to="'/listor/avoversattare/' + $route.params.id + '/fran/' + lang.LanguageName">{{lang.LanguageName}}</nuxt-link>
         </li>
     </ul>
 
-    <ul>
+    <ul class="results">
         <li v-for="item in connectionGroups" v-if="filterWorks(item.works).length">
             <h2 v-if="item.type == 3">Om {{ article }}</h2>
             <h2 v-if="item.type == 2">Skrifter av {{ article }}</h2>
@@ -34,12 +35,27 @@
     </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .work {
         margin-bottom: 2em;
+        max-width : 400px;
     }
     .list-inline-item:not(:last-child) {
         margin-right: 10px;
+    }
+    .label {
+        font-weight: bold;
+        display : block;
+        &:not(:first-of-type) {
+            margin-top: 1em;
+        }
+    }
+    .lang-filter {
+        columns : 200px 4;
+    }
+
+    .results {
+        margin-top: 3em;
     }
 </style>
 
