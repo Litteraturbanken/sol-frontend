@@ -1,17 +1,17 @@
 <template>
-  <div class="search"
-        @keyup.down="down" @keyup.up="up" @keyup.enter="enter" @keyup.esc="escape">
+  <div class="search" @keydown.enter="onSubmit"
+        @keyup.down="down" @keyup.up="up" @keyup.enter.prevent="enter" @keyup.esc="escape">
       <input v-model="searchstr" 
             placeholder="Sök i lexikonet"
             @focus="backend(searchstr)" 
             @input="$emit('input', $event.target.value)"
             ref="inputField"
+            keyup.enter.prevent=""
             >
       <ul v-click-outside="outside" role="menu" class="dropdown-menu" v-show="autocompleteData.length" >
           <li class="dropdown-item" :class="{active: item.active}" role="menuitem" v-for="item in autocompleteData">
             <a :href="item.url" >{{item.label}}</a>
           </li>
-          <!-- <a href="" class="dropdown-item">Hej</a> -->
       </ul>        
   </div>
 </template>
@@ -45,13 +45,17 @@ export default {
     outside : function() {
         this.autocompleteData = []
     },
+    onSubmit : function(event) {
+      if(_.find(this.autocompleteData, "active")) {
+        event.preventDefault()
+      }
+    },
     enter : function(event) {
       let active = _.find(this.autocompleteData, "active")
       console.log("active", active)
       if(active) {
         this.autocompleteData = []
         this.$router.push(active.url)
-        event.preventDefault()
       }
     },
     escape : function() {

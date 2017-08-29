@@ -7,7 +7,7 @@ const STATS = KARP + "statistics"
 
 // const DIRECTUS = "http://demo.spraakdata.gu.se/fklittb/directus"
 const DIRECTUS = "https://ws.spraakbanken.gu.se/ws/sol"
-const PYTHON_API = "http://litteraturbanken.se/sol/api"
+const PYTHON_API = "https://litteraturbanken.se/sol/api"
 
 
 function karpGet(url, params) {
@@ -37,8 +37,9 @@ function directusGet(table, params) {
 function urljoin(...urls) {
     return "/" + urls.map(item => _.trim(item, "/")).join("/")
 }
-async function pythonGet(endpoint, params) {
-    let {data} = await axios.get(PYTHON_API + endpoint, {params})
+async function pythonGet(endpoint, params, config) {
+
+    let {data} = await axios.get(PYTHON_API + endpoint, {...config, params})
     return data
 }
 
@@ -189,8 +190,18 @@ class PythonBackend {
     }
 
     async search(str) {
-        let data = (await pythonGet("/search/" + str, 
+        if(this.cancel) this.cancel()
+        
+        let CancelToken = axios.CancelToken
+
+        let data = (await pythonGet("/search/" + str, {},
             // {show: "Articles.ArticleID,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
+            {
+                cancelToken: new CancelToken( (c) => {
+                  // An executor function receives a cancel function as a parameter
+                  this.cancel = c
+                })
+            }
         ))
         return data
     } 

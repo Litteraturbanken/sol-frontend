@@ -128,7 +128,7 @@ a:focus, a:hover {
 }
 
 .page-enter-active, .page-leave-active {
-  transition: all .25s;
+  transition: all .15s ease-in-out;
 }
 .page-enter, .page-leave-active {
   opacity: 0;
