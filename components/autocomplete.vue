@@ -20,6 +20,9 @@
   .dropdown-menu {
     display : block;
   }
+  .dropdown-item.active a {
+    color : white;
+  }
   .search {
     position : relative;
   }
@@ -63,6 +66,10 @@ export default {
     },
     down : function() {
       let d = this.autocompleteData
+      console.log("this.autocompleteData", this.autocompleteData)
+      if(!this.autocompleteData.length) {
+        this.fetchData(this.searchstr)
+      }
       let i = _.findIndex(d, "active")
       if(i == -1) {
         d[0].active = true
@@ -98,6 +105,17 @@ export default {
     },
     focus : function() {
       this.$refs.inputField.focus()
+    },
+    async fetchData(val) {
+      let data = (await this.backend(val)).slice(0, 10)
+      console.log("data", data)
+      this.autocompleteData = _.map(data, item => {
+        item.active = false
+        return item
+      })
+      if(this.autocompleteData.length) {
+        this.autocompleteData[0].active = true
+      }
     }
   },
   watch : {
@@ -105,12 +123,7 @@ export default {
       this.searchstr = newVal
     },
     searchstr : async function(newVal) {
-      let data = (await this.backend(newVal)).slice(0, 10)
-      console.log("data", data)
-      this.autocompleteData = _.map(data, item => {
-        item.active = false
-        return item
-      })
+      this.fetchData(newVal)
     }
   },
   directives: {

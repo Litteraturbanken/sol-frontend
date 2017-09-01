@@ -50,7 +50,7 @@ function groupConnections(works) {
         .map(([type, works]) => {
             return {type: Number(type), works}
         })
-        .sortBy(({item}) => item * -1)
+        .sortBy(({type}) => [2,3,1].indexOf(type))
         .value()
 }
 
@@ -91,8 +91,8 @@ class PythonBackend {
     }
 
     async getArticle(articleId) {
-        let resp = (await pythonGet(urljoin("article", encodeURIComponent(encodeURIComponent(articleId))), {
-            show : "ArticleID,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname"
+        let resp = (await pythonGet(urljoin("article", encodeURIComponent(articleId)), {
+            show : "ArticleID,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname,ArticleFiles.FileName,ArticleFiles.Author:FileAuthor"
         }))
         let {article, works} = resp
         // console.log("article", article)
@@ -131,14 +131,16 @@ class PythonBackend {
         )).data
     }
     async getContributor(name) {
-        return (await pythonGet("/contributor/" + encodeURIComponent(name.replace(/\s/g, "_")),
-            // {show: show}
+        console.log("getContributor", encodeURIComponent(name.replace(/\s/g, "_")))
+        // return (await pythonGet("/contributor/" + encodeURIComponent(name.replace(/\s/g, "_")),
+        return (await pythonGet("/contributor/" + encodeURIComponent(name),
+            {show: "ArticleName,Articles.URLName:URLName"}
         )).data
     }
 
     async getRandom(type) {
         return (await pythonGet("/articles/random/" + type,
-            // {show: show}
+            {show: "TranslatorYearBirth,TranslatorYearDeath,ArticleName,URLName,Ingress,FileName,ArticleFiles.FileName"}
         )).data[0]
     }
     

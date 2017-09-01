@@ -5,9 +5,10 @@
         <p v-html="contributor.Description"></p>
         
         <section class="articles">
+            <h4>Artiklar</h4>
             <ul>
                 <li v-for="article in articles">
-                    <a :href="'/artiklar/' + decodeURIComponent(article.URLName)">{{article.ArticleName}}</a>
+                    <a :href="'/artiklar/' + article.URLName">{{article.ArticleName}}</a>
                 </li>
             </ul>
         </section>

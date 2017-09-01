@@ -20,6 +20,8 @@
       </div>
       <div class="right-col col-md-6 ">
           <section class="section row no-gutters">
+            <figure class="col-12"><img :src="'https://spraakbanken.gu.se/karp/data/sol/artikelfiler/' + article.FileName" alt="">
+            </figure>
             <h1>{{article.ArticleName}}, {{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}}</h1>
             <div class=" about" v-html="article.Ingress"></div>
             <div>

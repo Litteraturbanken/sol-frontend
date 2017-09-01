@@ -30,8 +30,8 @@
         </ul>
     </section>
     <section v-if="lb_autocomplete && lb_autocomplete.length">
-        <h2>Från Litteraturbanken</h2>
-        <ul class="works">
+        <button class="btn btn-secondary btn-sm" @click="expand = !expand">Visa {{countLBAuthors}} författare och {{countLBWorks}} verk från Litteraturbankens samlingar</button>
+        <ul class="works collapse" :class="{show : expand}">
             <li v-for="item in lb_autocomplete">
                 <span v-if="item.type == 'author'">Författare: <a  :href="item.url" >{{item.label}}</a></span>
                 <span v-if="item.type == 'work'"> Verk: <a  :href="item.url" >{{item.label}}</a></span>
@@ -41,7 +41,7 @@
   </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .works {
         li {
             margin-bottom: 1em;
@@ -53,11 +53,18 @@
             display : block;
         }
     }
+
+    button {
+        cursor : pointer;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        border-radius : 0;
+    }
 </style>
 
 <script>
 import backend from "assets/backend"
-// import _ from "lodash"
+import _ from "lodash"
 
 import Autocomplete from "~/components/autocomplete.vue"
 
@@ -70,7 +77,8 @@ export default {
             articles : [],
             works : [],
             suggestion : null,
-            lb_autocomplete : []
+            lb_autocomplete : [],
+            expand : false
         }
     },
 
@@ -84,6 +92,12 @@ export default {
     },
     components : {autocomplete: Autocomplete},
     computed : {
+        countLBWorks : function() {
+            return _.filter(this.lb_autocomplete, (item) => item.type == "work").length
+        },
+        countLBAuthors : function() {
+            return _.filter(this.lb_autocomplete, (item) => item.type == "author").length
+        }
     },
     methods : {
         connectionLabel : function(type) {
@@ -102,16 +116,22 @@ export default {
             console.log("submit", searchstr)
             this.searchstr = searchstr
             this.$router.replace({query : {fras : searchstr}})
-            var {articles, works, suggestion} = await backend.search(searchstr)
-            console.log("articles, works", articles, works, suggestion)
-            this.articles = articles
-            this.works = works
-            this.suggestion = suggestion
+            // var {articles, works, suggestion} = await backend.search(searchstr)
 
-            if(!articles.length && !works.length) {
-                // this.$refs.autocomplete.show(await backend.autocomplete(searchstr))
-                this.lb_autocomplete = await backend.autocomplete(searchstr)
-            }
+            let [lbAutocomplete] = await Promise.all([backend.autocomplete(searchstr)])
+            // let [{articles, works, suggestion}, lbAutocomplete] = await Promise.all([backend.search(searchstr), backend.autocomplete(searchstr)])
+
+            // console.log("articles, works", articles, works, suggestion)
+            // this.articles = articles
+            // this.works = works
+            // this.suggestion = suggestion
+            this.lb_autocomplete = lbAutocomplete
+
+
+
+            // if(!articles.length && !works.length) {
+            //     this.lb_autocomplete = await backend.autocomplete(searchstr)
+            // }
 
 
             // try{

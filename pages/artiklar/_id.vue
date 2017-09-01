@@ -5,12 +5,12 @@
 
 
             <figure >
-                <!-- <img :src="'https://spraakbanken.gu.se/karp/data/sol/artikelfiler/' + maybeFilename"
-                    onerror="this.style.display='none'"> -->
-                <img src="https://spraakbanken.gu.se/karp/data/sol/artikelfiler/Roland_Adlerberth7.jpg"
+                <img :src="'https://spraakbanken.gu.se/karp/data/sol/artikelfiler/' + article.FileName"
                     onerror="this.style.display='none'">
+                <!-- <img src="https://spraakbanken.gu.se/karp/data/sol/artikelfiler/Roland_Adlerberth7.jpg"
+                    onerror="this.style.display='none'"> -->
                 <!-- <figcaption>{{article.Files[0].Author}}</figcaption> -->
-                <figcaption>Foto: Privat</figcaption>
+                <figcaption>{{article.FileAuthor}}</figcaption>
             </figure>
             
             <section v-html="article.ArticleText"></section>
@@ -27,8 +27,8 @@
             </header>
             <ul>
                 <li v-for="item in connectionGroups">
-                    <h3 v-if="item.type == 3">Om {{ article.ArticleName}}</h3>
-                    <h3 v-if="item.type == 2">Skrifter av {{ article.ArticleName}}</h3>
+                    <h3 v-if="item.type == 2">Om {{ article.ArticleName}}</h3>
+                    <h3 v-if="item.type == 3">Skrifter av {{ article.ArticleName}}</h3>
                     <h3 v-if="item.type == 1">Översättningar i bokform</h3>
                     <ul>
                         <li v-for="work in item.works">
@@ -111,11 +111,6 @@
             return { article, works, connectionGroups }
         },
         computed : {
-            maybeFilename : function() {
-                if(this.article.Files && this.article.Files.length) {
-                    return this.article.Files[0].FileName
-                }
-            }
         },
     }
 </script>

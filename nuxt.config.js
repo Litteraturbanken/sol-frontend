@@ -23,7 +23,7 @@ module.exports = {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: 'http://www.oversattarlexikon.se/images/icons/favicon.png' },
       // { href: '/bootstrap.css', rel: "stylesheet" },
-      { rel: 'stylesheet', href: 'https://cloud.typography.com/7426274/628748/css/fonts.css' }
+      { rel: 'stylesheet', href: 'https://cloud.typography.com/7426274/6964792/css/fonts.css' }
     ]
   },
 

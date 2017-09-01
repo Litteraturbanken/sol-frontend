@@ -19,7 +19,7 @@
     "vue-no-ssr": "^0.1.2"
   },
   "scripts": {
-    "dev": "nuxt",
+    "dev": "nuxt --hostname '0.0.0.0'",
     "dev2": "node --preserve-symlinks node_modules/nuxt/bin/nuxt-dev",
     "build": "nuxt build",
     "start": "nuxt start --mode spa",

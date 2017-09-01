@@ -20,7 +20,7 @@
             <li>
                 <ul>
                     <li v-if="!work.NotInLibris"><a class="sc" :href="'http://libris.kb.se/bib/' + work.LibrisID">Titeln i Libris</a></li>
-                    <li v-if="work.Authors"><a class="sc" :href='"/listor/avupphovsman/?a=" + work.Authors'>Andra verk av {{work.Authors}}</a></li>
+                    <li v-if="work.Authors && $route.query.a != work.Authors"><a class="sc" :href='"/listor/avupphovsman/?a=" + work.Authors'>Andra verk av {{work.Authors}}</a></li>
                 </ul>
             </li>
         </ul>

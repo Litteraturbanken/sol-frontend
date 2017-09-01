@@ -20,8 +20,8 @@
 
     <ul class="results">
         <li v-for="item in connectionGroups" v-if="filterWorks(item.works).length">
-            <h2 v-if="item.type == 3">Om {{ article }}</h2>
-            <h2 v-if="item.type == 2">Skrifter av {{ article }}</h2>
+            <h2 v-if="item.type == 2">Om {{ article }}</h2>
+            <h2 v-if="item.type == 3">Skrifter av {{ article }}</h2>
             <h2 v-if="item.type == 1">Översättningar i bokform</h2>
             <ul>
                 <li v-for="work in filterWorks(item.works)">
@@ -85,6 +85,7 @@
                 console.log("Article fetch error.", err)
                 error({ message: "Artikeln kunde inte hittas.", statusCode: 404 })
             }
+            console.log("connectionGroups", connectionGroups)
             return { works, source, original, article, connectionGroups }
         },
         methods : {
