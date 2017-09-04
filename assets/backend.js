@@ -132,8 +132,8 @@ class PythonBackend {
     }
     async getContributor(name) {
         console.log("getContributor", encodeURIComponent(name.replace(/\s/g, "_")))
-        // return (await pythonGet("/contributor/" + encodeURIComponent(name.replace(/\s/g, "_")),
-        return (await pythonGet("/contributor/" + encodeURIComponent(name),
+        return (await pythonGet("/contributor/" + encodeURIComponent(name.replace(/\s/g, "_")),
+        // return (await pythonGet("/contributor/" + encodeURIComponent(name),
             {show: "ArticleName,Articles.URLName:URLName"}
         )).data
     }

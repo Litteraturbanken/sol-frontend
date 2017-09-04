@@ -85,7 +85,6 @@
                 console.log("Article fetch error.", err)
                 error({ message: "Artikeln kunde inte hittas.", statusCode: 404 })
             }
-            console.log("connectionGroups", connectionGroups)
             return { works, source, original, article, connectionGroups }
         },
         methods : {

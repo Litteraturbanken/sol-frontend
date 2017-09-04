@@ -41,3 +41,10 @@
         </div>
     </section>
 </template>
+
+<style lang="scss" scoped>
+    li {
+        max-width : 40em;
+    }    
+</style>
+
