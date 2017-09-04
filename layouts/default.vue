@@ -87,10 +87,13 @@
 
         let {articles, suggestion, works} = await backend.search(str)
 
-        return [..._.map(articles, (item) => {
-            return {label : item.ArticleName, url : '/artiklar/' + item.URLName}
-          })
-        ]
+
+        if(articles) {
+          return [..._.map(articles, (item) => {
+              return {label : item.ArticleName, url : '/artiklar/' + item.URLName}
+            })
+          ]
+        }
       }, 150)
     }
   }

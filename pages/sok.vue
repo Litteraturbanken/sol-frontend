@@ -118,13 +118,13 @@ export default {
             this.$router.replace({query : {fras : searchstr}})
             // var {articles, works, suggestion} = await backend.search(searchstr)
 
-            let [lbAutocomplete] = await Promise.all([backend.autocomplete(searchstr)])
-            // let [{articles, works, suggestion}, lbAutocomplete] = await Promise.all([backend.search(searchstr), backend.autocomplete(searchstr)])
+            // let [lbAutocomplete] = await Promise.all([backend.autocomplete(searchstr)])
+            let [{articles, works, suggestion}, lbAutocomplete] = await Promise.all([backend.search(searchstr), backend.autocomplete(searchstr)])
 
             // console.log("articles, works", articles, works, suggestion)
-            // this.articles = articles
-            // this.works = works
-            // this.suggestion = suggestion
+            this.articles = articles
+            this.works = works
+            this.suggestion = suggestion
             this.lb_autocomplete = lbAutocomplete
 
 

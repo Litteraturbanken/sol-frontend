@@ -39,6 +39,11 @@ export default {
     head () {
       return {title : "Språklista"}
     },
+    data() {
+      return {
+        groups : null
+      }
+    },
     async asyncData ({error, env, params, redirect}) {
       if(!params.id) {
         redirect("/listor/sprak/original")

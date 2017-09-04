@@ -115,7 +115,7 @@
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   h2 {
     margin-bottom: 1em;
     margin-top: 2em;

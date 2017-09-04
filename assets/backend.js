@@ -196,15 +196,25 @@ class PythonBackend {
         
         let CancelToken = axios.CancelToken
 
-        let data = (await pythonGet("/search/" + str, {},
-            // {show: "Articles.ArticleID,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
-            {
-                cancelToken: new CancelToken( (c) => {
-                  // An executor function receives a cancel function as a parameter
-                  this.cancel = c
-                })
+        try {
+            var data = (await pythonGet("/search/" + str, {},
+                // {show: "Articles.ArticleID,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
+                {
+                    cancelToken: new CancelToken( (c) => {
+                      // An executor function receives a cancel function as a parameter
+                      this.cancel = c
+                    })
+                }
+            ))
+            
+        } catch(e) {
+            if(e.__CANCEL__) {
+                return {articles : [], suggestion : null, works : null}
+            } else {
+                throw e
             }
-        ))
+        }
+
         return data
     } 
     
