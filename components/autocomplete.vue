@@ -2,7 +2,7 @@
   <div class="search" @keydown.enter="onSubmit"
         @keyup.down="down" @keyup.up="up" @keyup.enter.prevent="enter" @keyup.esc="escape">
       <input v-model="searchstr" 
-            placeholder="Sök i lexikonet"
+            placeholder="Sök"
             @focus="backend(searchstr)" 
             @input="$emit('input', $event.target.value)"
             ref="inputField"
@@ -17,6 +17,12 @@
 </template>
 
 <style scoped>
+  input {
+    text-align: center;
+    font-variant: small-caps;
+    text-transform: lowercase;
+    width : 100px;
+  }
   .dropdown-menu {
     display : block;
   }

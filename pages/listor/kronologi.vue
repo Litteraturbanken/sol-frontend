@@ -1,8 +1,8 @@
 <template>
   <section class="">
-  <h2>Kronologi</h2>
+  <h2>Kronologi: {{sliderValue[0]}}–{{sliderValue[1]}}</h2>
 
-  <div class=""><no-ssr>
+  <div class="row no-gutters"><no-ssr>
       <range-slider
          class="slider col-12"
          :min="startYear"
@@ -24,7 +24,7 @@
        </span>
      </div>
   
-  <h3>{{sliderValue[0]}} – {{sliderValue[1]}}</h3>
+  <!-- <h3>{{sliderValue[0]}} – {{sliderValue[1]}}</h3> -->
   <ul class="results" :class="{loading: loading}">
       <li v-for="article in articles">
           <a :href="'/artiklar/' + article.URLName">{{article.ArticleName}} ({{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}})</a>
@@ -150,5 +150,7 @@
       transition: opacity 200ms;
       opacity : 0;
     }
+    margin-top: 2em;
   }
+
 </style>

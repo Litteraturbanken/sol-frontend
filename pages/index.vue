@@ -28,7 +28,7 @@
                 <nuxt-link :to="'/artiklar/' + article.URLName">Läs mer &gt;&gt;</nuxt-link>
             </div>
           </section>
-          <section class="section row no-gutters">
+          <section class="section row no-gutters" v-if="themearticle">
             <h1>{{themearticle.ArticleName}}</h1>
             <div class=" about" v-html="themearticle.Ingress"></div>
             <div>
@@ -58,9 +58,12 @@ export default {
   async asyncData() {
 
     let {PageContent} = await backend.getStatic('Om_Lexikonet_Ingress')
+    // TODO parallelize
     let article = await backend.getRandom(1)
     let themearticle = await backend.getRandom(4)
     let latest = await backend.getLatest()
+    console.log("article, themearticle, latest", article, themearticle, latest)
+    console.log("PageContent", PageContent)
     return {about : PageContent, article, themearticle, latest}
   }
 }

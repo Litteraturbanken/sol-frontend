@@ -7,7 +7,9 @@ const promiseSerial = funcs =>
     Promise.resolve([]))
 
 module.exports = {
-
+  modules : [
+    '@nuxtjs/font-awesome'
+  ],
 
   /*
   ** Headers of the page

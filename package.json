@@ -5,6 +5,7 @@
   "author": "johan.roxendal@gu.se <johan.roxendal@gu.se>",
   "private": true,
   "dependencies": {
+    "@nuxtjs/font-awesome": "^1.0.2",
     "axios": "^0.16.2",
     "axios-debug": "0.0.4",
     "babel-polyfill": "^6.23.0",

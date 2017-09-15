@@ -45,7 +45,7 @@
 <style lang="scss">
     figure {
         float : right;
-        margin-left : 0.5em;
+        margin-left : 1em;
     }
     figcaption {
         text-transform: uppercase;

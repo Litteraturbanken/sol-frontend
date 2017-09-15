@@ -139,15 +139,24 @@ class PythonBackend {
     }
 
     async getRandom(type) {
-        return (await pythonGet("/articles/random/" + type,
-            {show: "TranslatorYearBirth,TranslatorYearDeath,ArticleName,URLName,Ingress,FileName,ArticleFiles.FileName"}
-        )).data[0]
+        try {
+            return (await pythonGet("/articles/random/" + type,
+                {show: "TranslatorYearBirth,TranslatorYearDeath,ArticleName,URLName,Ingress,FileName,ArticleFiles.FileName"}
+            )).data[0]
+        } catch(e) {
+            console.log("error in random", e)
+            throw e
+        }
     }
     
     async getLatest() {
-        return (await pythonGet("/articles/latest",
-            {show: "ArticleName,URLName,DatePublished"}
-        )).data
+        try {
+            return (await pythonGet("/articles/latest",
+                {show: "ArticleName,URLName,DatePublished"}
+            )).data
+        } catch(e) {
+            console.log("error in /latest", e)
+        }
     }
 
     async getWork(workid) {

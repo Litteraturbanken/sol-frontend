@@ -8,11 +8,15 @@
         <nav class="navbar navbar-toggleable-md">
             <div class="navbar-nav">
         
-              <nuxt-link class="nav-item nav-link" to="/listor/artiklar">Översättare A-Ö</nuxt-link>
-              <nuxt-link class="nav-item nav-link" to="/listor/artiklar/tema">Temaartiklar</nuxt-link>
-              <nuxt-link class="nav-item nav-link" to="/listor/priser">Översättarpriser</nuxt-link>
+              <nuxt-link class="nav-item nav-link" to="/listor/artiklar">Översättare</nuxt-link>
+              <nuxt-link class="nav-item nav-link" to="/listor/artiklar/tema">Teman</nuxt-link>
+              <nuxt-link class="nav-item nav-link" to="/listor/priser">Priser</nuxt-link>
               <nuxt-link class="nav-item nav-link" to="/listor/kronologi">Kronologi</nuxt-link>
               <nuxt-link class="nav-item nav-link" to="/listor/sprak">Språk</nuxt-link>
+              <a class="nav-item nav-link" href="https://litteraturbanken.se">Litteraturbanken</a>
+              <a class="nav-item nav-link" href="https://www.facebook.com/SvensktOversattarlexikon">
+                <i class="fa fa-facebook-square"></i>
+              </a>
               
               <form @submit.prevent="$router.push({path : '/sok', query : {'fras' : searchstr}})">
                 <autocomplete ref="autocomplete" :backend="autocompleteBackend" v-model="searchstr"></autocomplete>

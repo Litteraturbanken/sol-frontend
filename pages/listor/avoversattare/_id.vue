@@ -1,22 +1,49 @@
 <template>
     <div class="">
     <h1>Bibliografi – {{article}}</h1>
-    <div class="label">Språkurval</div> 
-    <a :href="'/listor/avoversattare/' + $route.params.id" >Alla</a>
     
-    <div class="label">Originalspråk</div>
+
+    <h3><div class="label">Språkurval och sortering</div> </h3>
+    <select v-model="lang" @change="onLangChange(lang)">
+      <option value="">Alla språk</option>
+      <optgroup label="Originalspråk" >
+        <option :value="lang.LanguageName" v-for="lang in original">
+            {{lang.LanguageName}}
+        </option>
+      </optgroup>
+      <optgroup label="Källspråk">
+        <option :value="lang.LanguageName" v-for="lang in source">
+            {{lang.LanguageName}}
+        </option>
+      </optgroup>
+    </select>
+
+    <select class="sort" name="" id="">
+        <option value="">År</option>
+        <option value="">Författare</option>
+        <option value="">Titel</option>
+    </select>
+    
+
+    <!-- <a class="sc" :href="'/listor/avoversattare/' + $route.params.id" >Alla</a>
+    
+    <h3>
+        <div class="label">Originalspråk</div>
+    </h3>
     <ul class="lang-filter list">
-        <li v-for="lang in original" class="list-item">
+        <li v-for="lang in original" class="list-item sc">
             <nuxt-link :to="'/listor/avoversattare/' + $route.params.id + '/original/' + lang.LanguageName">{{lang.LanguageName}}</nuxt-link>
         </li>
     </ul>
     
-    <div class="label">Källspråk</div>
+    <h3>
+        <div class="label">Källspråk</div>
+    </h3>
     <ul class="lang-filter list">
-        <li v-for="lang in source" class="list-item">
+        <li v-for="lang in source" class="list-item sc">
             <nuxt-link :to="'/listor/avoversattare/' + $route.params.id + '/fran/' + lang.LanguageName">{{lang.LanguageName}}</nuxt-link>
         </li>
-    </ul>
+    </ul> -->
 
     <ul class="results">
         <li v-for="item in connectionGroups" v-if="filterWorks(item.works).length">
@@ -36,6 +63,12 @@
 </template>
 
 <style lang="scss" scoped>
+    h2 {
+        margin-top: 1.8em;
+    }
+    .sort {
+        margin-left: 2em;
+    }
     .work {
         margin-bottom: 2em;
         max-width : 400px;
@@ -44,14 +77,20 @@
         margin-right: 10px;
     }
     .label {
-        font-weight: bold;
+        // font-weight: bold;
         display : block;
         &:not(:first-of-type) {
             margin-top: 1em;
         }
     }
+    
+    .list-item {
+            
+    }
+
     .lang-filter {
-        columns : 200px 4;
+        columns: 150px 4;
+        max-width: 500px;
     }
 
     .results {
@@ -72,6 +111,11 @@
         components : {
             work : work
         },
+        data() {
+            return {
+                lang : ""
+            }
+        },
         async asyncData ({ params, error, route, from }) {
             console.log("from", from)
             if(from && (from.matched[0].name == "listor-avoversattare-id" || from.matched[0].name == "avoversattare-filter")) {
@@ -88,6 +132,10 @@
             return { works, source, original, article, connectionGroups }
         },
         methods : {
+            onLangChange : function(lang) {
+                this.$router.push(`/listor/avoversattare/${this.$route.params.id}/${lang}`)
+
+            },
             filterWorks : function(works) {
                 return works.filter((work) => {
                     if(!this.$route.params.lang) return true

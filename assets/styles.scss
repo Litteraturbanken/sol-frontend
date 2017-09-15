@@ -119,6 +119,10 @@ a:focus, a:hover {
   // transform-origin: 50% 50%;
 }
 
+.range-slider-fill {
+    background-color: #0275d8 !important;
+}
+
 .outer {
   min-height : 100%;
   margin-bottom: 100px;
@@ -179,7 +183,7 @@ header {
   }
   input {
     font-size: 0.8em;
-    margin-top: 5px;
+    margin-top: 3px;
   }
   form {
     margin-left: 0.4em;
