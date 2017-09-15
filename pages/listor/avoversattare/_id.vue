@@ -1,6 +1,6 @@
 <template>
     <div class="">
-    <h1>Bibliografi – {{article}}</h1>
+    <h2>Bibliografi – {{article}}</h2>
     
 
     <h3><div class="label">Språkurval och sortering</div> </h3>

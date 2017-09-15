@@ -1,7 +1,7 @@
 <template>
 
   <section>
-    <h1>{{header}}</h1>
+    <h2>{{header}}</h2>
     <ul>
         <li v-for="(items, lang) in groups">
             <h2>{{lang}}</h2>

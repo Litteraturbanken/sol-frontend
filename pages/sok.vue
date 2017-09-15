@@ -1,6 +1,6 @@
 <template>
   <section class="">
-    <h1>Sök i artiklar och efter verk</h1>
+    <h2>Sök i artiklar och efter verk</h2>
 
     <!-- :backend="autocompleteBackend" -->
     <form @submit.prevent="onSubmit(searchstr)">

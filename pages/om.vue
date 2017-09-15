@@ -1,7 +1,7 @@
 <template>
     
     <section>
-        <h1>Om svenskt översättarlexikon</h1>
+        <h2>Om svenskt översättarlexikon</h2>
         <div>
             <p>Svenskt översättarlexikon publiceras av Södertörns högskolebibliotek och har utvecklats där under medverkan av litteraturvetare, språkhistoriker, översättare och kritiker. Tjänsten lanserades i maj 2009. Lexikonet utvidgas kontinuerligt med nya artiklar och är fortfarande under utveckling.</p>
 

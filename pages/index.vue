@@ -2,14 +2,14 @@
   <div class="row">
       <div class="left-col col-md-6 ">
           <section class="section row no-gutters">
-            <h1>Om Svenskt översättarlexikon</h1>
+            <h2>Om Svenskt översättarlexikon</h2>
             <div class=" about" v-html="about"></div>
-            <div>
-                <nuxt-link to="/om">Läs mer &gt;&gt;</nuxt-link>
+            <div class="read_more">
+                <nuxt-link class="sc" to="/om">Läs mer <i class="arrow fa fa-play"></i></nuxt-link>
             </div>
           </section>
           <section class="section row no-gutters">
-            <h1>Senast publicerade</h1>
+            <h2>Senast publicerade artiklar</h2>
             <ul class="col-12">
                 <li v-for="article in latest" class="row justify-content-between">
                     <nuxt-link class="col-8" :to="'/artiklar/' + article.URLName">{{article.ArticleName}}</nuxt-link>
@@ -22,17 +22,17 @@
           <section class="section row no-gutters">
             <figure class="col-12"><img :src="'https://spraakbanken.gu.se/karp/data/sol/artikelfiler/' + article.FileName" alt="">
             </figure>
-            <h1>{{article.ArticleName}}, {{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}}</h1>
+            <h2>{{article.ArticleName}}, {{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}}</h2>
             <div class=" about" v-html="article.Ingress"></div>
-            <div>
-                <nuxt-link :to="'/artiklar/' + article.URLName">Läs mer &gt;&gt;</nuxt-link>
+            <div class="read_more">
+                <nuxt-link class="sc" :to="'/artiklar/' + article.URLName">Läs mer <i class="arrow fa fa-play"></i></nuxt-link>
             </div>
           </section>
           <section class="section row no-gutters" v-if="themearticle">
-            <h1>{{themearticle.ArticleName}}</h1>
+            <h2>{{themearticle.ArticleName}}</h2>
             <div class=" about" v-html="themearticle.Ingress"></div>
-            <div>
-                <nuxt-link :to="'/artiklar/' + themearticle.URLName">Läs mer &gt;&gt;</nuxt-link>
+            <div class="read_more">
+                <nuxt-link class="sc" :to="'/artiklar/' + themearticle.URLName">Läs mer <i class="arrow fa fa-play"></i></nuxt-link>
             </div>
           </section>
       </div>
@@ -51,7 +51,15 @@ export default {
   methods : {
     formatDate(datestr) {
         let d = new Date(datestr)
-        return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`
+        let m = d.getMonth()
+        if(m.toString().length == 1) {
+          m = "0" + m
+        }
+        let day = d.getMonth()
+        if(day.toString().length == 1) {
+          day = "0" + day
+        }
+        return `${d.getFullYear()}-${m}-${day}`
     }
   },
 
@@ -69,7 +77,11 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+    h2 {
+      margin-top: 0;
+      margin-bottom : 0.7em;
+    }
     .section {
         padding-top: 2em;
         padding-bottom: 2em;
@@ -79,9 +91,10 @@ export default {
             padding-top : 0;
             
         }
-        h1 {
-            margin-bottom: 0.5em;
-        }
+    }
+
+    .read_more {
+      margin-top: 1em;
     }
 
     .left-col {
@@ -95,5 +108,9 @@ export default {
 
     .date {
         text-align: right;
+    }
+    .arrow {
+      margin-left: 7px;
+      color : grey;
     }
 </style>

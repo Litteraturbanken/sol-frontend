@@ -76,6 +76,7 @@ ul {
 body {
   font-family : "Verlag A", "Verlag B", georgia, serif;
   padding : 1em;
+  line-height : 1.4;
 }
 h1 {
   font-weight: 800;
@@ -125,7 +126,7 @@ a:focus, a:hover {
 
 .outer {
   min-height : 100%;
-  margin-bottom: 100px;
+  margin-bottom: 70px;
 }
 
 .outer-container {
@@ -154,11 +155,11 @@ a {
   }
 }
 p {
-  max-width : 40em;
-  line-height: 143%;
+  max-width : 30em;
+  margin-bottom: 0;
 }
 p + p {
-  margin-top : 1em;
+  text-indent: 1.8em;
 }
 li {
   list-style : none;
@@ -170,13 +171,27 @@ li {
 .navbar-toggleable-md .navbar-nav .nav-link:first-child {
   padding-left : 0;
 }
+
+.logo_container {
+  max-width : 145px;
+  .logo {
+    width : 120px;
+  }
+}
+
 header {
   margin-bottom: 3em;
   h1 {
-    font-size: 3.5em;
+    font-size: 3.9rem;
     margin-bottom: 0;
-    letter-spacing : -2px;
-    line-height : 1;
+    letter-spacing: -1.5px;
+    line-height: 1;
+    margin-top: 28px;
+    text-transform: none;
+    white-space: nowrap;
+    font-weight: 400;
+    text-transform: lowercase;
+    font-variant: small-caps;
     a.router-link-active {
       color : inherit;
     }
@@ -213,7 +228,8 @@ header {
   height: 60px;
   line-height: 40px;
   .navbar {
-    border-top: 1px solid lightgrey;
+    border-top: 1px solid #666;
+    margin: 0 auto;
   }
 }
 

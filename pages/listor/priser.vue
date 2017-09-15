@@ -1,6 +1,6 @@
 <template>
   <section class="">
-    <h1>Priser</h1>
+    <h2>Priser</h2>
     <ul>
         <li v-for="item in items">
             <a :href="'/artiklar/' + item.URLName">{{item.ArticleName}}</a>

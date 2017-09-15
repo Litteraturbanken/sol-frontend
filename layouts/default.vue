@@ -1,8 +1,11 @@
 <template>
   <div class="outer row justify-content-lg-center">
   <div class="col-10 no-gutters" >
-    <header class="col-12 ">
-      <div>
+    <header class="row">
+      <div class="col-md-2 logo_container">
+        <img class="logo" src="/sol_logo_dots.png" alt="">
+      </div>
+      <div class="col-md-10">
         <h1 class=""><nuxt-link to="/">Svenskt översättarlexikon</nuxt-link></h1>
         
         <nav class="navbar navbar-toggleable-md">
@@ -28,14 +31,13 @@
     <nuxt class="mainview"/>
 
   </div>
-    <footer class="footer col-10 no-gutters justify-content-lg-center">
+    <footer class="sc footer col-10 no-gutters justify-content-lg-center">
       <nav class="navbar navbar-toggleable-md">
           <div class="navbar-nav">
           <!-- <nuxt-link class="nav-item" to="" >Om</nuxt-link> -->
           <nuxt-link class="nav-item nav-link" to="/om">Om lexikonet</nuxt-link>
           <nuxt-link class="nav-item nav-link" to="/medarbetare">Medarbetare</nuxt-link>
           <nuxt-link class="nav-item nav-link" to="/kontakt">Kontakt</nuxt-link>
-          <a class="nav-item nav-link" href="http://litteraturbanken.se">Litteraturbanken</a>
         </div>
       </nav>
     </footer>
