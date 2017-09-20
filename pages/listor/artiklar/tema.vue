@@ -36,5 +36,9 @@ export default {
     
 </script>
 
-<style>
+<style scoped>
+  ul {
+    columns: 270px 2;
+    max-width: 840px;
+  }
 </style>

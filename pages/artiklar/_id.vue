@@ -51,7 +51,8 @@
         text-transform: uppercase;
         font-size: 0.6em;
         vertical-align: bottom;
-        margin-top: 0.2em;
+        margin-top: 0.8em;
+        max-width: 200px;
     }
 
     .container {

@@ -112,12 +112,40 @@ a:focus, a:hover {
   text-decoration: none;
 }
 
+.explain {
+  font-size: 0.8em;
+  margin-bottom: 2em;
+}
+
 .page-enter-active, .page-leave-active {
   transition: all .15s ease-in-out;
 }
 .page-enter, .page-leave-active {
   opacity: 0;
   // transform-origin: 50% 50%;
+}
+
+
+.range-slider-knob-from, .range-slider-knob-to {
+  width: 26px !important;
+  height: 26px !important;
+  border-color: #a0a0a0 !important;
+}
+
+.range-slider-rail {
+    width: 100% !important;
+    background-color: #bfbebe !important;
+    border: 1px solid lightgrey !important;
+}
+
+.range-slider-rail, .range-slider-fill {
+    display: block !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 0;
+    height: 10px !important;
+    border-radius: 10px !important;
+    transform: translateY(-50%) !important;
 }
 
 .range-slider-fill {
@@ -253,5 +281,6 @@ header {
 }
 
 blockquote {
-  margin: 0 3em 1em 3em;
+  margin: 1em 3em 1em 3em;
+  font-size: 0.8em;
 }

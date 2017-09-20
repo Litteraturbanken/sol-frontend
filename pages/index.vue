@@ -112,5 +112,8 @@ export default {
     .arrow {
       margin-left: 7px;
       color : grey;
+      font-size: 0.8em;
+      position: relative;
+      top: -1px;
     }
 </style>

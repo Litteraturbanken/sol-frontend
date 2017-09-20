@@ -12,7 +12,7 @@
             <div class="navbar-nav">
         
               <nuxt-link class="nav-item nav-link" to="/listor/artiklar">Översättare</nuxt-link>
-              <nuxt-link class="nav-item nav-link" to="/listor/artiklar/tema">Teman</nuxt-link>
+              <nuxt-link class="nav-item nav-link" to="/listor/artiklar/tema">Tema</nuxt-link>
               <nuxt-link class="nav-item nav-link" to="/listor/priser">Priser</nuxt-link>
               <nuxt-link class="nav-item nav-link" to="/listor/kronologi">Kronologi</nuxt-link>
               <nuxt-link class="nav-item nav-link" to="/listor/sprak">Språk</nuxt-link>

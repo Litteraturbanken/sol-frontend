@@ -1,6 +1,14 @@
 <template>
   <section class="">
-  <h2>Kronologi: {{sliderValue[0]}}–{{sliderValue[1]}}</h2>
+  <h2>Kronologi {{sliderValue[0]}}–{{sliderValue[1]}}</h2>
+
+  <div class="explain">
+    <!-- <h3>Förklaring</h3> -->
+     <p>Kronologin listar lexikonets översättare för en viss tidsperiod. Klicka och dra kontrollerna på tidsaxeln för att avgränsa tidsperioden.
+       
+       Kronologin baseras på utgivningsår för översättarnas verk, begränsat av deras levnadsperiod. Den ger därmed en approximativ bild av deras verksamhetsperiod.</p>
+  </div>
+
 
   <div class="row no-gutters"><no-ssr>
       <range-slider
@@ -13,18 +21,18 @@
        </range-slider>
     </no-ssr>
      </div>
-     <div class="ticks row no-gutters justify-content-between" :style="offsetStyle(10, 10)">
+     <div class="ticks row no-gutters justify-content-between" :style="offsetStyle(0, 0)">
        <span v-for="i in range" class="tick" >
          
        </span>
      </div>
-     <div class="timeline row no-gutters justify-content-between" :style="offsetStyle(-5, -10)">
+     <div class="timeline row no-gutters justify-content-between" :style="offsetStyle(-20, -20)">
        <span v-for="i in range" class="">
          {{i}}&nbsp;
        </span>
      </div>
   
-  <!-- <h3>{{sliderValue[0]}} – {{sliderValue[1]}}</h3> -->
+  
   <ul class="results" :class="{loading: loading}">
       <li v-for="article in articles">
           <a :href="'/artiklar/' + article.URLName">{{article.ArticleName}} ({{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}})</a>
@@ -117,8 +125,6 @@
 
 <style lang="scss" scoped>
   h2 {
-    margin-bottom: 1em;
-    margin-top: 2em;
   }
   .slider {
     width : 100%;
@@ -136,7 +142,7 @@
     .tick {
       display : block;
       width : 1px;
-      height : 4px;
+      height : 7px;
       border-left: 1px solid black;
     }
   }
