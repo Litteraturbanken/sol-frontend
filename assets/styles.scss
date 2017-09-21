@@ -210,16 +210,16 @@ li {
 header {
   margin-bottom: 3em;
   h1 {
-    font-size: 3.9rem;
+    font-size: 2.7rem;
     margin-bottom: 0;
     letter-spacing: -1.5px;
     line-height: 1;
-    margin-top: 28px;
+    margin-top: 1em;
     text-transform: none;
     white-space: nowrap;
     font-weight: 400;
-    text-transform: lowercase;
-    font-variant: small-caps;
+    text-transform: uppercase;
+
     a.router-link-active {
       color : inherit;
     }
