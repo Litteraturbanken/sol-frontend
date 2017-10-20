@@ -50,7 +50,6 @@
     // import 'vue-range-slider/dist/vue-range-slider.css'
 
 
-    import NoSSR from 'vue-no-ssr'
 
     export default {
         name : "AvOversattare",
@@ -61,7 +60,6 @@
         },
         components: {
            RangeSlider,
-           "no-ssr" : NoSSR
          },
          methods : {
           sliderChange : async function([start, end]) {

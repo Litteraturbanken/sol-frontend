@@ -7,21 +7,21 @@
     <select v-model="lang" @change="onLangChange(lang)">
       <option value="">Alla språk</option>
       <optgroup label="Originalspråk" >
-        <option :value="lang.LanguageName" v-for="lang in original">
+        <option :value="[lang.LanguageName, 'original']" v-for="lang in original">
             {{lang.LanguageName}}
         </option>
       </optgroup>
       <optgroup label="Källspråk">
-        <option :value="lang.LanguageName" v-for="lang in source">
+        <option :value="[lang.LanguageName, 'fran']" v-for="lang in source">
             {{lang.LanguageName}}
         </option>
       </optgroup>
     </select>
 
-    <select class="sort" name="" id="">
-        <option value="">År</option>
-        <option value="">Författare</option>
-        <option value="">Titel</option>
+    <select class="sort" name="" id="" v-model="sortVal" @change="onSortChange(sortVal)">
+        <option value="RealYear">År</option>
+        <option value="Authors">Författare</option>
+        <option value="TitleSwedish">Titel</option>
     </select>
     
 
@@ -46,7 +46,7 @@
     </ul> -->
 
     <ul class="results">
-        <li v-for="item in connectionGroups" v-if="filterWorks(item.works).length">
+        <li v-for="item in sortedGroups" v-if="filterWorks(item.works).length">
             <h2 v-if="item.type == 2">Om {{ article }}</h2>
             <h2 v-if="item.type == 3">Skrifter av {{ article }}</h2>
             <h2 v-if="item.type == 1">Översättningar i bokform</h2>
@@ -101,6 +101,10 @@
 <script>
     import backend from "assets/backend"
     import work from "~/components/work.vue"
+    import _ from "lodash"
+
+    import naturalSort from "natural-sort"
+
     export default {
         name : "AvOversattare",
         head () {
@@ -112,14 +116,25 @@
             work : work
         },
         data() {
+            console.log("data")
             return {
-                lang : ""
+                sortVal : "RealYear",
+                connectionGroups : [],
+                lang : "",
+                source : null,
+                original : null,
+                article : null
             }
         },
         async asyncData ({ params, error, route, from }) {
-            console.log("from", from)
+            let lang = ""
+            if(params.lang) {
+                lang = [params.lang, params.type]
+            }
+            let sortVal = route.query.sort || "RealYear"
             if(from && (from.matched[0].name == "listor-avoversattare-id" || from.matched[0].name == "avoversattare-filter")) {
-                return {}
+                console.log("bailed asyncdata")
+                return {lang, sortVal}
             }
             try{
                 console.log("params", params)
@@ -129,12 +144,16 @@
                 console.log("Article fetch error.", err)
                 error({ message: "Artikeln kunde inte hittas.", statusCode: 404 })
             }
-            return { works, source, original, article, connectionGroups }
+            return { works, source, original, article, connectionGroups, lang, sortVal }
         },
         methods : {
-            onLangChange : function(lang) {
-                this.$router.push(`/listor/avoversattare/${this.$route.params.id}/${lang}`)
+            onLangChange : function([lang, type]) {
+                this.$router.push(`/listor/avoversattare/${this.$route.params.id}/${type}/${lang}`)
 
+            },
+            onSortChange : function(sortVal) {
+                console.log("this.$router", this.$router)
+                this.$router.push(window.location.pathname + "?" + "sort=" + sortVal)
             },
             filterWorks : function(works) {
                 return works.filter((work) => {
@@ -145,7 +164,7 @@
                         return this.$route.params.lang == work.LanguageSourceName
                     }
                 })
-            }
+            },
         },
         computed : {
             langName : function() {
@@ -154,6 +173,13 @@
             langType : function() {
                 return this.$route.query.lt
             },
+            sortedGroups : function() {
+                // if(!this.connectionGroups) return []
+                let output = _.map(this.connectionGroups, ({type, works}) => {
+                    return {type, works: _.sortBy(works, this.sortVal)}
+                })
+                return output
+            }
 
         }
     }

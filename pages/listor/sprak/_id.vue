@@ -117,7 +117,10 @@ export default {
     methods : {
       getUrl : function(item, lang) {
         return `/listor/avoversattare/${item.URLName}/${this.id}/${lang}`
-      }
+      },
+      onLangChange : function(lang) {
+          this.$router.push(`/listor/avoversattare/${this.$route.params.id}/${lang}`)
+        }
     }
 }
 

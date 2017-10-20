@@ -10,7 +10,7 @@ module.exports = {
   modules : [
     '@nuxtjs/font-awesome'
   ],
-
+  // mode : "spa",
   /*
   ** Headers of the page
   */
