@@ -1,8 +1,5 @@
 <template>
-
   <section>
-
-
     <h2>Språk</h2>
 
     <p class="explain">
@@ -15,26 +12,26 @@
       <strong>Översatta till</strong> listar de språk, utom svenska, som översatts till.
     </p>
     <div class="filters">
-      <select v-model="langSelect" @change="onLangChange(langSelect)">
-        <option value="">Alla språk</option>
-        <option :value="lang" v-for="lang in langs">{{lang}}</option>
-      </select>
       <select v-model="type" @change="onLangTypeChange(type)">
         <!-- <option value="">Alla språk</option> -->
         <option value="original">Originalspråk</option>
         <option value="fran">Översatta från</option>
         <option value="till">Översatta till</option>
       </select>
+      <select v-model="langSelect" @change="onLangChange(langSelect)">
+        <option value="">Alla språk</option>
+        <option :value="lang" v-for="lang in langs">{{lang}}</option>
+      </select>
 
     </div>
     <!-- <h2>{{header}}</h2> -->
 
-    <ul>
-        <li v-for="(items, lang) in groups">
+    <ul class="results">
+        <li v-for="(items, lang) in getFilteredArticles(langSelect)">
             <h2>{{lang}}</h2>
             <ul>
-                <li class="row" v-for="item in items">
-                  <div class="col-6">
+                <li class="" v-for="item in items">
+                  <div class="">
                     <nuxt-link :to="'/artiklar/' + item.URLName">{{item.ArticleName}}</nuxt-link> <span v-if="item.TranslatorYearBirth"> ({{item.TranslatorYearBirth}}–{{item.TranslatorYearDeath}})</span>
 
                     – <nuxt-link class="sc" :to="getUrl(item, lang)">Verk</nuxt-link>
@@ -48,7 +45,7 @@
   </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
   h2 {
     // text-transform: capitalize;
   }
@@ -67,12 +64,21 @@
     }
     margin-bottom: 2em;
   }
+  .results {
+    columns: 250px 2;
+  }
+
+  @media only screen and (max-width: 800px) {
+      .results {
+          columns: unset;
+      }
+  }
+
 </style>
 
 <script>
 
 import backend from "assets/backend"
-var c = console
 import _ from "lodash"
 
 
@@ -90,15 +96,32 @@ export default {
         type : "original"
       }
     },
-    async asyncData ({error, env, params, redirect}) {
-      if(!params.id) {
+    async asyncData ({error, env, params, redirect, route, from}) {
+      console.log("lang asyncData", params, route.query, from, route)
+
+      if(route.query) {
+        var langSelect = route.query.l
+      }
+      if(params.id) {
+        var type = params.id
+      }
+      let typeHasChanged = from && (from.params.id != route.params.id)
+      if(!typeHasChanged && from && (from.matched[0].name == "listor-sprak-id")) {
+        return {langSelect, type}
+      }
+
+      if(!type) {
         redirect("/listor/sprak/original")
         return {groups: null}
       }
       try {
-        let groupId = {original : "original", "fran": "source", till: "target"}[params.id]
+        let groupId = {original : "original", "fran": "source", till: "target"}[type]
         let groups = await backend.getLangs(groupId)
-        return {groups : groups, langs: _.keys(groups), id : params.id} 
+        if(!groups[langSelect]) {
+          console.log('if', '!groups[langSelect]:', !groups[langSelect])
+          langSelect = ""
+        }
+        return {groups : groups, langs: _.keys(groups), type, langSelect} 
       } catch(err) {
         console.log("err", err)
         error("Ett fel uppstod, vänligen försök igen senare.")
@@ -115,12 +138,24 @@ export default {
       }
     },
     methods : {
+      getFilteredArticles(lang) {
+        if(!lang) {
+          return this.groups
+        } else {
+          return {[lang]: this.groups[lang]}
+        }
+
+      },
       getUrl : function(item, lang) {
         return `/listor/avoversattare/${item.URLName}/${this.id}/${lang}`
       },
       onLangChange : function(lang) {
-          this.$router.push(`/listor/avoversattare/${this.$route.params.id}/${lang}`)
-        }
+        // this.$router.push(`/listor/sprak/${this.type}/${lang}`)
+        this.$router.push(`/listor/sprak/${this.type}?l=${lang}`)
+      },
+      onLangTypeChange : function(type) {
+        this.$router.push(`/listor/sprak/${type}/?l=${this.langSelect || ""}`)
+      }
     }
 }
 

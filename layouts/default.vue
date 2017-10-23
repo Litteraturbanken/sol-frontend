@@ -8,7 +8,7 @@
       <div class="col-md-10">
         <h1 class=""><nuxt-link to="/">Svenskt översättarlexikon</nuxt-link></h1>
         
-        <nav class="navbar navbar-toggleable-md">
+        <nav class="navbar navbar-expand-md">
             <div class="navbar-nav">
         
               <nuxt-link class="nav-item nav-link" to="/listor/artiklar">Översättare</nuxt-link>
@@ -32,7 +32,7 @@
 
   </div>
     <footer class="sc footer col-10 no-gutters justify-content-lg-center">
-      <nav class="navbar navbar-toggleable-md">
+      <nav class="navbar navbar-expand-md">
           <div class="navbar-nav">
           <!-- <nuxt-link class="nav-item" to="" >Om</nuxt-link> -->
           <nuxt-link class="nav-item nav-link" to="/om">Om lexikonet</nuxt-link>
@@ -91,7 +91,7 @@
       autocompleteBackend : debounce(async function(str) {
         if(!str) return []
 
-        let {articles, suggestion, works} = await backend.search(str)
+        let {articles} = await backend.search(str)
 
 
         if(articles) {

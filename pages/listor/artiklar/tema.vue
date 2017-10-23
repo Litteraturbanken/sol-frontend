@@ -10,12 +10,7 @@
 </template>
 
 <script>
-import axios from "axios"
 import backend from "assets/backend"
-var c = console
-
-
-
 
 export default {
     name : "Themes",

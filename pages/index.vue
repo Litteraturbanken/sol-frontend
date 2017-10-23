@@ -1,7 +1,7 @@
 <template>
   <div class="row">
       <div class="left-col col-md-6 ">
-          <section class="section row no-gutters">
+          <section class="section row no-gutters flex-column">
             <h2>Om Svenskt översättarlexikon</h2>
             <div class=" about" v-html="about"></div>
             <div class="read_more">
@@ -19,7 +19,7 @@
           </section>
       </div>
       <div class="right-col col-md-6 ">
-          <section class="section row no-gutters">
+          <section class="section row no-gutters flex-column">
             <figure class="col-12"><img :src="'https://spraakbanken.gu.se/karp/data/sol/artikelfiler/' + article.FileName" alt="">
             </figure>
             <h2>{{article.ArticleName}}, {{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}}</h2>
@@ -28,7 +28,7 @@
                 <nuxt-link class="sc" :to="'/artiklar/' + article.URLName">Läs mer <i class="arrow fa fa-play"></i></nuxt-link>
             </div>
           </section>
-          <section class="section row no-gutters" v-if="themearticle">
+          <section class="section row no-gutters flex-column" v-if="themearticle">
             <h2>{{themearticle.ArticleName}}</h2>
             <div class=" about" v-html="themearticle.Ingress"></div>
             <div class="read_more">

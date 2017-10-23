@@ -1,48 +1,65 @@
 <template>
-    <div class="row">
-        <div class="article-text col-md-8">
-            <h2>{{article.ArticleName}}<span v-if="article.TranslatorYearBirth">, {{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}}</span></h2>
-
-
-            <figure >
-                <img :src="'https://spraakbanken.gu.se/karp/data/sol/artikelfiler/' + article.FileName"
-                    onerror="this.style.display='none'">
-                <!-- <img src="https://spraakbanken.gu.se/karp/data/sol/artikelfiler/Roland_Adlerberth7.jpg"
-                    onerror="this.style.display='none'"> -->
-                <!-- <figcaption>{{article.Files[0].Author}}</figcaption> -->
-                <figcaption>{{article.FileAuthor}}</figcaption>
-            </figure>
-            
-            <section v-html="article.ArticleText"></section>
-            <p>
-                <nuxt-link :to="'/medarbetare/' + article.ContributorFirstname + ' ' + article.ContributorLastname" rel="author">{{article.ContributorFirstname}} {{article.ContributorLastname}}</nuxt-link>
-            </p>
-        </div>
-
+    <section>
+        <div class="row">
+            <div class="article-text col-md-8">
+                <h2>{{article.ArticleName}}<span v-if="article.TranslatorYearBirth">, {{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}}</span></h2>
         
-        <div class="bibliography col-md-4" v-if="works.length">
-            <header>
-                <h3>Bibliografi</h3>
-                <div><nuxt-link :to="'/listor/avoversattare/' + $route.params.id">Gå till detaljerad bibliografi</nuxt-link></div>
-            </header>
+        
+                <figure >
+                    <img :src="'https://spraakbanken.gu.se/karp/data/sol/artikelfiler/' + article.FileName"
+                        onerror="this.style.display='none'">
+                    <!-- <img src="https://spraakbanken.gu.se/karp/data/sol/artikelfiler/Roland_Adlerberth7.jpg"
+                        onerror="this.style.display='none'"> -->
+                    <!-- <figcaption>{{article.Files[0].Author}}</figcaption> -->
+                    <figcaption>{{article.FileAuthor}}</figcaption>
+                </figure>
+                
+                <section v-html="article.ArticleText"></section>
+                <p>
+                    <nuxt-link :to="'/medarbetare/' + article.ContributorFirstname + ' ' + article.ContributorLastname" rel="author">{{article.ContributorFirstname}} {{article.ContributorLastname}}</nuxt-link>
+                </p>
+            </div>
+        
+            
+            <div class="bibliography col-md-4" v-if="works.length">
+                <header>
+                    <h3>Bibliografi</h3>
+                    <div><nuxt-link :to="'/listor/avoversattare/' + $route.params.id">Gå till detaljerad bibliografi</nuxt-link></div>
+                </header>
+                <ul>
+                    <li v-for="item in connectionGroups">
+                        <h3 v-if="item.type == 2">Om {{ article.ArticleName}}</h3>
+                        <h3 v-if="item.type == 3">Skrifter av {{ article.ArticleName}}</h3>
+                        <h3 v-if="item.type == 1">Översättningar i bokform</h3>
+                        <ul>
+                            <li v-for="work in item.works">
+                                <nuxt-link class="work" :to="'/verk/' + work.WorkID">{{work.TitleSwedish}}</nuxt-link> <span v-if="work.Authors"> / {{work.Authors}}</span>
+                            </li>
+                        </ul>            
+                        
+                    </li>
+                </ul>
+            </div>
+        
+        
+        
+        
+        </div>
+        <div class="prizewinners row flex-column no-gutters">
+            <h3>Prisvinnare</h3>
             <ul>
-                <li v-for="item in connectionGroups">
-                    <h3 v-if="item.type == 2">Om {{ article.ArticleName}}</h3>
-                    <h3 v-if="item.type == 3">Skrifter av {{ article.ArticleName}}</h3>
-                    <h3 v-if="item.type == 1">Översättningar i bokform</h3>
-                    <ul>
-                        <li v-for="work in item.works">
-                            <nuxt-link class="work" :to="'/verk/' + work.WorkID">{{work.TitleSwedish}}</nuxt-link> <span v-if="work.Authors"> / {{work.Authors}}</span>
-                        </li>
-                    </ul>            
+                <li v-for="article in prizewinners">
+    
+                    <nuxt-link v-if="article.ArticleName" :to="'/artiklar/' + encodeURIComponent(article.URLName)">{{article.Year}} {{article.PrizeWinner}}</nuxt-link>
                     
+                    <span v-if="!article.ArticleName">{{article.Year}} {{article.PrizeWinner}}</span>
                 </li>
             </ul>
         </div>
-    </div>
+    </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
     figure {
         float : right;
         margin-left : 1em;
@@ -85,6 +102,15 @@
             font-weight : 700;
         }
     }
+    .prizewinners {
+        margin-top: 2em;
+        ul {
+            columns: 250px 2;
+        }
+        li span {
+            color : grey;
+        }
+    }
 </style>
 
 <script>
@@ -92,8 +118,16 @@
     export default {
         name : "Article",
         head () {
+            if(!this.article) {
+                return
+            }
             return {
                 title : this.article.ArticleName + " – Svenskt översättarlexikon"
+            }
+        },
+        data () {
+            return {
+                article : {}
             }
         },
         async asyncData ({ params, error, payload }) {
@@ -101,7 +135,7 @@
                 return { article : payload }
             }
             try{
-                var {article, works, connectionGroups} = await backend.getArticle(params.id)
+                return await backend.getArticle(params.id)
                 // console.log("article", article, "works.length", works.length)
             } catch(err) {
                 console.log("Article fetch error.")
@@ -109,7 +143,6 @@
                 error({ message: "Artikeln kunde inte hittas.", statusCode: 404 })
             }
 
-            return { article, works, connectionGroups }
         },
         computed : {
         },

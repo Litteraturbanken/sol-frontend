@@ -28,9 +28,8 @@
 </style>
 
 <script>
-import _ from "lodash"
+// import _ from "lodash"
 import backend from "assets/backend"
-var c = console
 
 export default {
   name : "ArticleList",

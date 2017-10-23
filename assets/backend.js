@@ -94,10 +94,10 @@ class PythonBackend {
         let resp = (await pythonGet(urljoin("article", encodeURIComponent(articleId)), {
             show : "ArticleID,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname,ArticleFiles.FileName,ArticleFiles.Author:FileAuthor"
         }))
-        let {article, works} = resp
+        let {article, works, prizewinners} = resp
         // console.log("article", article)
         
-        return {article, works, connectionGroups : groupConnections(works)}
+        return {article, works, connectionGroups : groupConnections(works), prizewinners}
     }
 
     async listArticles() {

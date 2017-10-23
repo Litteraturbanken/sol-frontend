@@ -148,7 +148,12 @@
         },
         methods : {
             onLangChange : function([lang, type]) {
-                this.$router.push(`/listor/avoversattare/${this.$route.params.id}/${type}/${lang}`)
+                if(lang) {
+                    this.$router.push(`/listor/avoversattare/${this.$route.params.id}/${type}/${lang}`)
+                } else {
+                    this.$router.push(`/listor/avoversattare/${this.$route.params.id}`)
+                    
+                }
 
             },
             onSortChange : function(sortVal) {

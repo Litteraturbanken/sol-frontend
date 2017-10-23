@@ -12,9 +12,6 @@
 <script>
 
 import backend from "assets/backend"
-var c = console
-
-
 
 
 export default {
