@@ -27,9 +27,9 @@
     <!-- <h2>{{header}}</h2> -->
 
     <ul class="results">
-        <li v-for="(items, lang) in getFilteredArticles(langSelect)">
+        <li v-for="(items, lang) in getFilteredArticles(langSelect)" >
             <h2>{{lang}}</h2>
-            <ul>
+            <ul :class="{'few': items.length < 6}">
                 <li class="" v-for="item in items">
                   <div class="">
                     <nuxt-link :to="'/artiklar/' + item.URLName">{{item.ArticleName}}</nuxt-link> <span v-if="item.TranslatorYearBirth"> ({{item.TranslatorYearBirth}}–{{item.TranslatorYearDeath}})</span>
@@ -65,11 +65,17 @@
     margin-bottom: 2em;
   }
   .results {
-    columns: 250px 2;
+    & > li {
+      // -webkit-column-break-inside: avoid;
+    }
+
+    ul:not(.few) {
+      columns: 250px 2;
+    }
   }
 
   @media only screen and (max-width: 800px) {
-      .results {
+      .results ul {
           columns: unset;
       }
   }
@@ -118,7 +124,6 @@ export default {
         let groupId = {original : "original", "fran": "source", till: "target"}[type]
         let groups = await backend.getLangs(groupId)
         if(!groups[langSelect]) {
-          console.log('if', '!groups[langSelect]:', !groups[langSelect])
           langSelect = ""
         }
         return {groups : groups, langs: _.keys(groups), type, langSelect} 
@@ -150,7 +155,6 @@ export default {
         return `/listor/avoversattare/${item.URLName}/${this.id}/${lang}`
       },
       onLangChange : function(lang) {
-        // this.$router.push(`/listor/sprak/${this.type}/${lang}`)
         this.$router.push(`/listor/sprak/${this.type}?l=${lang}`)
       },
       onLangTypeChange : function(type) {

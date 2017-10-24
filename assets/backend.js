@@ -173,6 +173,9 @@ class PythonBackend {
     async getWorksByAuthor(urlname) {
         let {languages, works, article} = (await pythonGet(urljoin("/bibliography", urlname)))
         // console.log("works", works)
+        for(let work of works) {
+            work.RealYear = Number(work.RealYear)
+        }
         let original = _.filter(languages, "Original")
         let source = _.filter(languages, "Source")
         return {source, original, works, article, connectionGroups : groupConnections(works)}

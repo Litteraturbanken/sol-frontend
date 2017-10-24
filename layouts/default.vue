@@ -47,8 +47,6 @@
 
 <script>
   import Vue from "vue"
-  import BootstrapVue from 'bootstrap-vue'
-  Vue.use(BootstrapVue)
 
   import Autocomplete from "~/components/autocomplete.vue"
   import {debounce} from "assets/utils"

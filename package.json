@@ -10,11 +10,8 @@
     "axios-debug": "0.0.4",
     "babel-polyfill": "^6.23.0",
     "bootstrap": "^4.0.0-alpha.6",
-    "bootstrap-vue": "^0.18.0",
     "loader-utils": "^1.1.0",
-    "natural-sort": "^1.0.0",
-    "nuxt": "^1.0.0-rc11",
-    "vue": "^2.4.4"
+    "natural-sort": "^1.0.0"
   },
   "scripts": {
     "dev": "nuxt --hostname '0.0.0.0'",
