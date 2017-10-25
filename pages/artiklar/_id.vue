@@ -127,7 +127,8 @@
         },
         data () {
             return {
-                article : {}
+                article : {},
+                prizewinners : null
             }
         },
         async asyncData ({ params, error, payload }) {

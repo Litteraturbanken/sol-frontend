@@ -46,13 +46,14 @@
     </ul> -->
 
     <ul class="results">
-        <li v-for="item in sortedGroups" v-if="filterWorks(item.works).length">
+        <li v-for="item in connectionGroups" v-if="filterWorks(item.works).length">
             <h2 v-if="item.type == 2">Om {{ article }}</h2>
             <h2 v-if="item.type == 3">Skrifter av {{ article }}</h2>
             <h2 v-if="item.type == 1">Översättningar i bokform</h2>
             <ul>
                 <li v-for="work in filterWorks(item.works)">
                     <work :work="work"></work>
+                    <!-- <span>{{work.TitleSwedish}}</span> -->
                 </li>
             </ul>            
             
@@ -127,6 +128,7 @@
             }
         },
         async asyncData ({ params, error, route, from }) {
+            console.log("asyncdata")
             let lang = ""
             if(params.lang) {
                 lang = [params.lang, params.type]
@@ -140,13 +142,40 @@
                 console.log("params", params)
                 var {source, original, works, article, connectionGroups} = await backend.getWorksByAuthor(params.id)
 
+
+
             } catch(err) {
                 console.log("Article fetch error.", err)
                 error({ message: "Artikeln kunde inte hittas.", statusCode: 404 })
             }
             return { works, source, original, article, connectionGroups, lang, sortVal }
         },
+
+        created() {
+            this.sortGroups(this.connectionGroups)
+        },
+
         methods : {
+            sortGroups(connectionGroups) {
+                let sorter = naturalSort()
+                let transposer = (char) => {
+                    return {"Ä": "Å", "Å" : "Ä", "ä" : "å", å: "ä"}[char] || char
+                }
+                for(let {works} of connectionGroups) {
+                  
+                    works.sort((a, b) => {
+                        a = a[this.sortVal]
+                        b = b[this.sortVal]
+                        if(typeof a == "string") {
+                            a = _.map(a, transposer).join("")
+                        }
+                        if(typeof b == "string") {
+                            b = _.map(b, transposer).join("")
+                        }
+                        return sorter(a, b)
+                    })
+                }
+            },
             onLangChange : function([lang, type]) {
                 if(lang) {
                     this.$router.push(`/listor/avoversattare/${this.$route.params.id}/${type}/${lang}`)
@@ -170,6 +199,12 @@
                     }
                 })
             },
+            sortedGroups : function(sortval) {
+                // if(!this.connectionGroups) return []
+
+                return  this.connectionGroups
+                
+            }
         },
         computed : {
             langName : function() {
@@ -178,13 +213,7 @@
             langType : function() {
                 return this.$route.query.lt
             },
-            sortedGroups : function() {
-                // if(!this.connectionGroups) return []
-                let output = _.map(this.connectionGroups, ({type, works}) => {
-                    return {type, works: _.sortBy(works, this.sortVal)}
-                })
-                return output
-            }
+            
 
         }
     }
