@@ -151,7 +151,7 @@
             return { works, source, original, article, connectionGroups, lang, sortVal }
         },
 
-        created() {
+        mounted() {
             this.sortGroups(this.connectionGroups)
         },
 
@@ -190,8 +190,8 @@
                 this.$router.push(window.location.pathname + "?" + "sort=" + sortVal)
             },
             filterWorks : function(works) {
+                if(!this.$route.params.lang) return works
                 return works.filter((work) => {
-                    if(!this.$route.params.lang) return true
                     if(this.$route.params.type == "original") {
                         return this.$route.params.lang == work.LanguageOriginalName
                     } else if(this.$route.params.type == "fran") {

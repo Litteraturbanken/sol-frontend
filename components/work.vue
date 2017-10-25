@@ -8,7 +8,7 @@
                      <span v-if="work.SubtitleSwedish">: {{work.SubtitleSwedish}} </span>
                      <span v-if="getCreatorRole"> / {{getCreatorRole}}</span>
                      <span v-if="work.PublishingHousePlace"> – {{work.PublishingHousePlace}} : {{work.PublishingHouseSwedish}}, </span>
-                     {{work.PublishingYearSwedish}}<span v-show="work.SerialTitle">. – ({{work.SerialTitle}})</span>
+                     <span>{{work.PublishingYearSwedish}}</span><span v-if="work.SerialTitle">. – ({{work.SerialTitle}})</span>
 
                 </div>
             </li>
@@ -25,7 +25,7 @@
             <li>
                 <ul>
                     <li v-if="!work.NotInLibris"><a class="sc" :href="'http://libris.kb.se/bib/' + work.LibrisID">Titeln i Libris</a></li>
-                    <li v-show="work.Authors && $route.query.a != work.Authors"><a class="sc" :href='"/listor/avupphovsman/?a=" + work.Authors'>Andra verk av {{work.Authors}}</a></li>
+                    <li v-if="work.Authors && $route.query.a != work.Authors"><a class="sc" :href='"/listor/avupphovsman/?a=" + work.Authors'>Andra verk av {{work.Authors}}</a></li>
                 </ul>
             </li>
         </ul>
