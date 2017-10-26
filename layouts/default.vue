@@ -3,7 +3,9 @@
   <div class="col-10 no-gutters" >
     <header class="row">
       <div class="col-md-2 logo_container">
-        <img class="logo" src="/sol_logo_dots.png" alt="">
+        <nuxt-link to="/">
+          <img class="logo" src="/sol_logo_dots.png" alt="Logotyp">
+        </nuxt-link>
       </div>
       <div class="col-md-10">
         <h1 class=""><nuxt-link to="/">Svenskt översättarlexikon</nuxt-link></h1>

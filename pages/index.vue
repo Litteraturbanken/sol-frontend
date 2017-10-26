@@ -2,13 +2,24 @@
   <div class="row">
       <div class="left-col col-md-6 ">
           <section class="section row no-gutters flex-column">
-            <h2>Om Svenskt översättarlexikon</h2>
+            <nuxt-link to="/om">
+              <h2>Om Svenskt översättarlexikon</h2>
+            </nuxt-link>
             <div class=" about" v-html="about"></div>
             <div class="read_more">
                 <nuxt-link class="sc" to="/om">Läs mer <i class="arrow fa fa-play"></i></nuxt-link>
             </div>
           </section>
-          <section class="section row no-gutters">
+          <section class="section row no-gutters flex-column" v-if="themearticle2">
+            <nuxt-link :to="'/artiklar/' + themearticle2.URLName">
+              <h2>{{themearticle2.ArticleName}}</h2>
+            </nuxt-link>
+            <div class=" about" v-html="themearticle2.Ingress"></div>
+            <div class="read_more">
+                <nuxt-link class="sc" :to="'/artiklar/' + themearticle2.URLName">Läs mer <i class="arrow fa fa-play"></i></nuxt-link>
+            </div>
+          </section>
+          <!-- <section class="section row no-gutters">
             <h2>Senast publicerade artiklar</h2>
             <ul class="col-12">
                 <li v-for="article in latest" class="row justify-content-between">
@@ -16,20 +27,24 @@
                     <span class="col-4 date">{{formatDate(article.DatePublished)}}</span>
                 </li>
             </ul>
-          </section>
+          </section> -->
       </div>
       <div class="right-col col-md-6 ">
           <section class="section row no-gutters flex-column">
-            <figure class="col-12"><img :src="'https://spraakbanken.gu.se/karp/data/sol/artikelfiler/' + article.FileName" alt="">
-            </figure>
-            <h2>{{article.ArticleName}}, {{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}}</h2>
+            <nuxt-link :to="'/artiklar/' + article.URLName">
+              <figure class=""><img :src="'https://spraakbanken.gu.se/karp/data/sol/artikelfiler/' + article.FileName" alt="">
+              </figure>
+              <h2>{{article.ArticleName}}, {{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}}</h2>
+            </nuxt-link>
             <div class=" about" v-html="article.Ingress"></div>
             <div class="read_more">
                 <nuxt-link class="sc" :to="'/artiklar/' + article.URLName">Läs mer <i class="arrow fa fa-play"></i></nuxt-link>
             </div>
           </section>
           <section class="section row no-gutters flex-column" v-if="themearticle">
-            <h2>{{themearticle.ArticleName}}</h2>
+            <nuxt-link :to="'/artiklar/' + themearticle.URLName">
+              <h2>{{themearticle.ArticleName}}</h2>
+            </nuxt-link>
             <div class=" about" v-html="themearticle.Ingress"></div>
             <div class="read_more">
                 <nuxt-link class="sc" :to="'/artiklar/' + themearticle.URLName">Läs mer <i class="arrow fa fa-play"></i></nuxt-link>
@@ -45,7 +60,7 @@ import backend from "assets/backend"
 
 export default {
   data() {
-    return {about : null, article : null, themearticle: null, latest : null}
+    return {about : null, article : null, themearticle: null, themearticle2: null, latest : null}
   },
 
   methods : {
@@ -69,10 +84,11 @@ export default {
     // TODO parallelize
     let article = await backend.getRandom(1)
     let themearticle = await backend.getRandom(4)
+    let themearticle2 = await backend.getRandom(4)
     let latest = await backend.getLatest()
-    console.log("article, themearticle, latest", article, themearticle, latest)
-    console.log("PageContent", PageContent)
-    return {about : PageContent, article, themearticle, latest}
+    // console.log("article, themearticle, latest", article, themearticle, latest)
+    // console.log("PageContent", PageContent)
+    return {about : PageContent, article, themearticle, themearticle2, latest}
   }
 }
 </script>

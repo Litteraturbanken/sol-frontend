@@ -11,13 +11,13 @@
                     <!-- <img src="https://spraakbanken.gu.se/karp/data/sol/artikelfiler/Roland_Adlerberth7.jpg"
                         onerror="this.style.display='none'"> -->
                     <!-- <figcaption>{{article.Files[0].Author}}</figcaption> -->
-                    <figcaption>{{article.FileAuthor}}</figcaption>
+                    <figcaption v-html="article.FileAuthor"></figcaption>
                 </figure>
                 
                 <section v-html="article.ArticleText"></section>
-                <p>
+                <div class="mt-4">
                     <nuxt-link :to="'/medarbetare/' + article.ContributorFirstname + ' ' + article.ContributorLastname" rel="author">{{article.ContributorFirstname}} {{article.ContributorLastname}}</nuxt-link>
-                </p>
+                </div>
             </div>
         
             
@@ -40,12 +40,8 @@
                     </li>
                 </ul>
             </div>
-        
-        
-        
-        
         </div>
-        <div class="prizewinners row flex-column no-gutters">
+        <div class="prizewinners row flex-column no-gutters" v-if="prizewinners">
             <h3>Prisvinnare</h3>
             <ul>
                 <li v-for="article in prizewinners">

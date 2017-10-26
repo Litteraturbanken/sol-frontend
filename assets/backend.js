@@ -95,6 +95,7 @@ class PythonBackend {
             show : "ArticleID,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname,ArticleFiles.FileName,ArticleFiles.Author:FileAuthor"
         }))
         let {article, works, prizewinners} = resp
+        works = _.sortBy(works, "RealYear")
         // console.log("article", article)
         
         return {article, works, connectionGroups : groupConnections(works), prizewinners}

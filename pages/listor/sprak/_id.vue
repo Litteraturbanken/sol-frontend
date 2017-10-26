@@ -126,7 +126,12 @@ export default {
         if(!groups[langSelect]) {
           langSelect = ""
         }
-        return {groups : groups, langs: _.keys(groups), type, langSelect} 
+        return {
+          groups : groups, 
+          langs: _.keys(_.omit(groups, "Flera språk")),
+          type, 
+          langSelect
+        } 
       } catch(err) {
         console.log("err", err)
         error("Ett fel uppstod, vänligen försök igen senare.")
