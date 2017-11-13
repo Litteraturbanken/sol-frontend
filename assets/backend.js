@@ -50,7 +50,17 @@ function groupConnections(works) {
         .map(([type, works]) => {
             return {type: Number(type), works}
         })
-        .sortBy(({type}) => [2,3,1].indexOf(type))
+        .sortBy(({type}) => [2,3,1,4,5,6,7].indexOf(type))
+        .value()
+}
+function groupBiblType(works) {
+    let connectionGroups = _.groupBy(works, "BibliographyType")
+    return _(connectionGroups)
+        .toPairs(connectionGroups)
+        .map(([type, works]) => {
+            return {type: Number(type), works}
+        })
+        .sortBy(({type}) => [1,5,4,6,7,8].indexOf(type))
         .value()
 }
 
@@ -94,11 +104,18 @@ class PythonBackend {
         let resp = (await pythonGet(urljoin("article", encodeURIComponent(articleId)), {
             show : "ArticleID,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname,ArticleFiles.FileName,ArticleFiles.Author:FileAuthor"
         }))
-        let {article, works, prizewinners} = resp
+        let {article, works, prizewinners, bibliography_types} = resp
         works = _.sortBy(works, "RealYear")
         // console.log("article", article)
         
-        return {article, works, connectionGroups : groupConnections(works), prizewinners}
+        return {
+            article,
+            works,
+            connectionGroups : groupConnections(works),
+            prizewinners,
+            biblTypeGroups : groupBiblType(works),
+            biblTypeData : _.groupBy(bibliography_types, "BibliographyTypeID")
+        }
     }
 
     async listArticles() {
@@ -172,14 +189,23 @@ class PythonBackend {
     }
     
     async getWorksByAuthor(urlname) {
-        let {languages, works, article} = (await pythonGet(urljoin("/bibliography", urlname)))
+        let {languages, works, article, bibliography_types} = (await pythonGet(urljoin("/bibliography", urlname)))
         // console.log("works", works)
         for(let work of works) {
             work.RealYear = Number(work.RealYear)
         }
         let original = _.filter(languages, "Original")
         let source = _.filter(languages, "Source")
-        return {source, original, works, article, connectionGroups : groupConnections(works)}
+
+        bibliography_types = _.map(bibliography_types, (item) => {
+            item.BibliographyTypeID = String(item.BibliographyTypeID)
+            return item
+        })
+        let biblTypeData = _.groupBy(bibliography_types, "BibliographyTypeID")
+        console.log('biblTypeGroups', biblTypeGroups)
+        let biblTypeGroups = groupBiblType(works)
+
+        return {source, original, article, biblTypeGroups, biblTypeData, connectionGroups : groupConnections(works)}
 
     }
 

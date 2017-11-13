@@ -24,7 +24,8 @@ module.exports = {
           "comma-dangle" : "off",
           "no-multi-spaces" : "off",
           "keyword-spacing" : "off",
-          "eqeqeq" : "off"
+          "eqeqeq" : "off",
+          "camelcase" : "off"
 
           },
   globals: {}

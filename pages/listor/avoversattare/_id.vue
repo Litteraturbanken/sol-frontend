@@ -48,14 +48,27 @@
     <ul class="results">
         <li v-for="item in connectionGroups" v-if="filterWorks(item.works).length">
             <h2 v-if="item.type == 2">Om {{ article }}</h2>
-            <h2 v-if="item.type == 3">Skrifter av {{ article }}</h2>
-            <h2 v-if="item.type == 1">Översättningar i bokform</h2>
-            <ul>
+            <h2 v-else-if="item.type == 3">Skrifter av {{ article }}</h2>
+            <ul v-if="item.type == 2 || item.type == 3">
                 <li v-for="work in filterWorks(item.works)">
                     <work :work="work"></work>
-                    <!-- <span>{{work.TitleSwedish}}</span> -->
                 </li>
             </ul>            
+            
+            <template v-else-if="item.type == 1">
+                <h2>Översättningar i bokform</h2>
+                
+
+                <div v-for="obj in biblTypeGroups">
+                    <h3 v-if="obj.type != 1">{{biblTypeData[String(obj.type)][0].BibliographyTypeName}}</h3>
+                    <ul>
+                        <li v-for="work in filterWorks(obj.works)">
+                            <work :work="work"></work>
+                        </li>
+                    
+                    </ul>
+                </div>
+            </template>
             
         </li>
     </ul>
@@ -124,7 +137,9 @@
                 lang : "",
                 source : null,
                 original : null,
-                article : null
+                article : null,
+                biblTypeGroups : null,
+                biblTypeData : null
             }
         },
         async asyncData ({ params, error, route, from }) {
@@ -139,8 +154,11 @@
                 return {lang, sortVal}
             }
             try{
-                console.log("params", params)
-                var {source, original, works, article, connectionGroups} = await backend.getWorksByAuthor(params.id)
+
+                var {source, original, article, biblTypeGroups, biblTypeData, connectionGroups} = await backend.getWorksByAuthor(params.id)
+                console.log("params", params, _.keys(connectionGroups))
+                // eslint-disable-next-line
+                // debugger
 
 
 
@@ -148,7 +166,7 @@
                 console.log("Article fetch error.", err)
                 error({ message: "Artikeln kunde inte hittas.", statusCode: 404 })
             }
-            return { works, source, original, article, connectionGroups, lang, sortVal }
+            return { source, original, article, connectionGroups, biblTypeData, biblTypeGroups, lang, sortVal }
         },
 
         mounted() {

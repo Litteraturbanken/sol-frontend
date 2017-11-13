@@ -83,12 +83,12 @@ module.exports = {
 
     // interval : 100,
     routes: async function () {
-      // let routes = [
-      //   "/listor/sprak/original",
-      //   "/listor/sprak/till",
-      //   "/listor/sprak/fran",
-      // ]
-      let routes = []
+      let routes = [
+        "/listor/sprak/original",
+        "/listor/sprak/till",
+        "/listor/sprak/fran",
+      ]
+      // let routes = []
       let resp = await axios.get("http://litteraturbanken.se/sol/api/articles", {
         // params : {
         //   show : "ArticleID,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname"

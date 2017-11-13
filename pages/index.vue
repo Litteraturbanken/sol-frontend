@@ -109,6 +109,15 @@ export default {
         }
     }
 
+    .about {
+      p {
+        margin-top: 0.7em;
+      }
+      h2 {
+        margin-bottom: 0;
+      }
+    }
+
     .read_more {
       margin-top: 1em;
     }
@@ -132,4 +141,22 @@ export default {
       position: relative;
       top: -1px;
     }
+
+
+    @media only screen and (max-width: 576px) {
+      img {
+        max-width: calc(100% - 30px);
+      }
+      .left-col, .right-col {
+        border : none;
+      }
+      .left-col {
+        padding-right: 15px;
+      }
+      .right-col {
+        padding-left: 15px;
+      }
+      
+    }
+
 </style>

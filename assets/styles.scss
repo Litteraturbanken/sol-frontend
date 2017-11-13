@@ -207,6 +207,7 @@ li {
   }
 }
 
+
 header {
   margin-bottom: 3em;
   h1 {
@@ -284,3 +285,40 @@ blockquote {
   margin: 1em 3em 1em 3em;
   font-size: 0.8em;
 }
+
+
+
+@media only screen and (max-width: 576px) {
+  header {
+    h1 {
+      
+      font-size : 140%;
+    }
+    
+    nav {
+      margin-top: 1em;
+    }
+    form {
+      margin-left: 0;
+    }
+    .search {
+      input {
+        text-align: left;
+        outline: 1px solid lightgrey;
+      }
+    }
+    
+    // max-width : 145px;
+    .logo {
+      // width : 120px;
+    }
+
+  }
+  .footer {
+    line-height : 1;
+  }
+
+}
+
+
+

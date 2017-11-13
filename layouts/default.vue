@@ -1,6 +1,6 @@
 <template>
   <div class="outer row justify-content-lg-center">
-  <div class="col-10 no-gutters" >
+  <div class="col-md-10 no-gutters" >
     <header class="row">
       <div class="col-md-2 logo_container">
         <nuxt-link to="/">

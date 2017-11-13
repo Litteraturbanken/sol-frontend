@@ -29,14 +29,29 @@
                 <ul>
                     <li v-for="item in connectionGroups">
                         <h3 v-if="item.type == 2">Om {{ article.ArticleName}}</h3>
-                        <h3 v-if="item.type == 3">Skrifter av {{ article.ArticleName}}</h3>
-                        <h3 v-if="item.type == 1">Översättningar i bokform</h3>
-                        <ul>
+                        <h3 v-else-if="item.type == 3">Skrifter av {{ article.ArticleName}}</h3>
+
+                        <ul v-if="item.type == 2 || item.type == 3">
                             <li v-for="work in item.works">
                                 <nuxt-link class="work" :to="'/verk/' + work.WorkID">{{work.TitleSwedish}}</nuxt-link> <span v-if="work.Authors"> / {{work.Authors}}</span>
                             </li>
-                        </ul>            
+                        </ul>
+
+
                         
+                        <template v-else-if="item.type == 1">
+                            <h3>Översättningar i bokform</h3>
+                            
+
+                            <div v-for="obj in biblTypeGroups">
+                                <h4 v-if="obj.type != 1">{{biblTypeData[String(obj.type)][0].BibliographyTypeName}}</h4>
+                                <ul>
+                                    <li v-for="work in obj.works">
+                                        <nuxt-link class="work" :to="'/verk/' + work.WorkID">{{work.TitleSwedish}}</nuxt-link> <span v-if="work.Authors"> / {{work.Authors}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </template>
                     </li>
                 </ul>
             </div>
@@ -94,6 +109,12 @@
             margin-top: 1.2rem;
         }
 
+        h4 {
+            font-size: 1.2rem;
+            margin-top: 1em;
+            font-weight: normal;
+        }
+
         .work {
             font-weight : 700;
         }
@@ -124,7 +145,10 @@
         data () {
             return {
                 article : {},
-                prizewinners : null
+                prizewinners : null,
+                biblTypeGroups : null,
+                biblTypeData : null,
+                connectionGroups : null
             }
         },
         async asyncData ({ params, error, payload }) {

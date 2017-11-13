@@ -99,7 +99,7 @@ export default {
         groups : null,
         langs : null,
         langSelect : "",
-        type : "original"
+        type : "original",
       }
     },
     async asyncData ({error, env, params, redirect, route, from}) {
@@ -144,7 +144,7 @@ export default {
           "original" : "Originalspråk",
           "fran" : "Språk, översatta från",
           "till" : "Språk, översatta till",
-        }[this.id]
+        }[this.type]
       }
     },
     methods : {
@@ -157,7 +157,7 @@ export default {
 
       },
       getUrl : function(item, lang) {
-        return `/listor/avoversattare/${item.URLName}/${this.id}/${lang}`
+        return `/listor/avoversattare/${item.URLName}/${this.type}/${lang}`
       },
       onLangChange : function(lang) {
         this.$router.push(`/listor/sprak/${this.type}?l=${lang}`)
