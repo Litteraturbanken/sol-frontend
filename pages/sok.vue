@@ -23,7 +23,7 @@
         <ul class="works">
             <li v-for="work in works">
                 <div>
-                    <a :href="'/verk/' + work.WorkID">{{work.TitleSwedish}}</a>, {{work.PublishingYearSwedish}}
+                    <a :href="'/verk/' + work.id">{{work.TitleSwedish}}</a>, {{work.PublishingYearSwedish}}
                 </div>
                 <div><span v-if="work.Authors">{{work.Authors}}, </span> <em>{{connectionLabel(work.ConnectionType)}}:</em> {{work.Translator}} </div>
             </li>

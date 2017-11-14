@@ -33,7 +33,7 @@
 
                         <ul v-if="item.type == 2 || item.type == 3">
                             <li v-for="work in item.works">
-                                <nuxt-link class="work" :to="'/verk/' + work.WorkID">{{work.TitleSwedish}}</nuxt-link> <span v-if="work.Authors"> / {{work.Authors}}</span>
+                                <nuxt-link class="work" :to="'/verk/' + work.id">{{work.TitleSwedish}}</nuxt-link> <span v-if="work.Authors"> / {{work.Authors}}</span>
                             </li>
                         </ul>
 
@@ -44,10 +44,10 @@
                             
 
                             <div v-for="obj in biblTypeGroups">
-                                <h4 v-if="obj.type != 1">{{biblTypeData[String(obj.type)][0].BibliographyTypeName}}</h4>
+                                <h4 v-if="obj.type != 1">{{getBiblTypeName(obj.type)}}</h4>
                                 <ul>
                                     <li v-for="work in obj.works">
-                                        <nuxt-link class="work" :to="'/verk/' + work.WorkID">{{work.TitleSwedish}}</nuxt-link> <span v-if="work.Authors"> / {{work.Authors}}</span>
+                                        <nuxt-link class="work" :to="'/verk/' + work.id">{{work.TitleSwedish}}</nuxt-link> <span v-if="work.Authors"> / {{work.Authors}}</span>
                                     </li>
                                 </ul>
                             </div>
@@ -167,5 +167,10 @@
         },
         computed : {
         },
+        methods : {
+            getBiblTypeName(type) {
+                return this.biblTypeData[String(type)][0].BibliographyTypeName
+            }
+        }
     }
 </script>

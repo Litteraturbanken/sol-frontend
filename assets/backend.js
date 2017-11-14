@@ -39,6 +39,7 @@ function urljoin(...urls) {
 }
 async function pythonGet(endpoint, params, config) {
 
+    console.log("PYTHON_API + endpoint", PYTHON_API + endpoint + "?" + _.toPairs(params).map(a => a.join("=")).join("&"))
     let {data} = await axios.get(PYTHON_API + endpoint, {...config, params})
     return data
 }
@@ -102,7 +103,7 @@ class PythonBackend {
 
     async getArticle(articleId) {
         let resp = (await pythonGet(urljoin("article", encodeURIComponent(articleId)), {
-            show : "ArticleID,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname,ArticleFiles.FileName,ArticleFiles.Author:FileAuthor"
+            show : "id,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname,ArticleFiles.FileName,ArticleFiles.Author:FileAuthor"
         }))
         let {article, works, prizewinners, bibliography_types} = resp
         works = _.sortBy(works, "RealYear")
@@ -114,13 +115,13 @@ class PythonBackend {
             connectionGroups : groupConnections(works),
             prizewinners,
             biblTypeGroups : groupBiblType(works),
-            biblTypeData : _.groupBy(bibliography_types, "BibliographyTypeID")
+            biblTypeData : _.groupBy(bibliography_types, "id")
         }
     }
 
     async listArticles() {
         let articles = (await pythonGet("/articles", 
-            {show: "ArticleID,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
+            {show: "id,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
         )).data
 
         function normalizeSortLetter(letter) {
@@ -198,12 +199,12 @@ class PythonBackend {
         let source = _.filter(languages, "Source")
 
         bibliography_types = _.map(bibliography_types, (item) => {
-            item.BibliographyTypeID = String(item.BibliographyTypeID)
+            item.id = String(item.id)
             return item
         })
-        let biblTypeData = _.groupBy(bibliography_types, "BibliographyTypeID")
-        console.log('biblTypeGroups', biblTypeGroups)
+        let biblTypeData = _.groupBy(bibliography_types, "id")
         let biblTypeGroups = groupBiblType(works)
+        console.log('biblTypeGroups', biblTypeGroups)
 
         return {source, original, article, biblTypeGroups, biblTypeData, connectionGroups : groupConnections(works)}
 
@@ -211,21 +212,21 @@ class PythonBackend {
 
     async getLangs(groupName) {
         let langMap = (await pythonGet("/languages/1", 
-            {show: "Articles.ArticleID,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
+            {show: "Articles.id,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
         )).data
         // console.log("langMap", langMap)
         return langMap[groupName]
     }
     async listPrizeArticles() {
         let data = (await pythonGet("/articles/2", 
-            {show: "Articles.ArticleID,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
+            {show: "Articles.id,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
         )).data
         return data
     }
         
     async listThemeArticles() {
         let data = (await pythonGet("/articles/4", 
-            {show: "Articles.ArticleID,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
+            {show: "Articles.id,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
         )).data
         return data
     }
@@ -237,7 +238,7 @@ class PythonBackend {
 
         try {
             var data = (await pythonGet("/search/" + str, {},
-                // {show: "Articles.ArticleID,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
+                // {show: "Articles.id,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
                 {
                     cancelToken: new CancelToken( (c) => {
                       // An executor function receives a cancel function as a parameter
@@ -259,7 +260,7 @@ class PythonBackend {
     
     async chronology(from, to) {
         let {articles} = (await pythonGet(`/chronology/${from}/${to}`, 
-            {show: "Articles.ArticleID,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
+            {show: "Articles.id,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
         ))
         return articles
     } 
@@ -284,7 +285,7 @@ class DirectusBackend {
     async listArticles() {
         let resp = await directusGet("Articles", {
             limit : 10000,
-            columns : "ArticleID,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"
+            columns : "id,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"
         })
 
         // console.log("datas", resp)
@@ -310,8 +311,8 @@ class DirectusBackend {
 
     async getWork(workid) {
         let resp = await directusGet("Works", {
-            // columns : "id,ArticleID,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname"
-            "filters[WorkID][eq]" : workid
+            // columns : "id,id,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname"
+            "filters[id][eq]" : workid
         })
         // console.log("resp", resp)  
 

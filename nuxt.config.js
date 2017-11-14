@@ -91,7 +91,7 @@ module.exports = {
       // let routes = []
       let resp = await axios.get("http://litteraturbanken.se/sol/api/articles", {
         // params : {
-        //   show : "ArticleID,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname"
+        //   show : "id,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname"
         // }
       })
       for(let item of resp.data.data) {
@@ -100,13 +100,13 @@ module.exports = {
       }
 
         // params : {
-        //   show : "ArticleID,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname"
+        //   show : "id,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname"
         // }
       // let works = await axios.get("http://litteraturbanken.se/sol/api/bibliography/_all", {
       // })
 
       // for(let item of works.data.works) {
-      //   routes.push({route : "/verk/" + item.WorkID, payload : item})
+      //   routes.push({route : "/verk/" + item.id, payload : item})
       // }
 
       return routes
@@ -126,7 +126,7 @@ module.exports = {
       //     }
       //   }).then( ({data}) => {
       //     return data.data.map( (item) => {
-      //       return {route : "/verk/" + item.WorkID, payload : item}
+      //       return {route : "/verk/" + item.id, payload : item}
       //     })
       //   })
         
