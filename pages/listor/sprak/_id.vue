@@ -95,6 +95,11 @@ export default {
       return {title : "Språklista"}
     },
     data() {
+      console.log("lang data init")
+      // let params = document.location.search()
+
+      // let lang = params.get("l")
+      // console.log("data", arguments)
       return {
         groups : null,
         langs : null,
@@ -111,11 +116,6 @@ export default {
       if(params.id) {
         var type = params.id
       }
-      let typeHasChanged = from && (from.params.id != route.params.id)
-      if(!typeHasChanged && from && (from.matched[0].name == "listor-sprak-id")) {
-        return {langSelect, type}
-      }
-
       if(!type) {
         redirect("/listor/sprak/original")
         return {groups: null}
@@ -124,6 +124,7 @@ export default {
         let groupId = {original : "original", "fran": "source", till: "target"}[type]
         let groups = await backend.getLangs(groupId)
         if(!groups[langSelect]) {
+          console.log("reset langSelect", langSelect)
           langSelect = ""
         }
         return {
@@ -160,10 +161,10 @@ export default {
         return `/listor/avoversattare/${item.URLName}/${this.type}/${lang}`
       },
       onLangChange : function(lang) {
-        this.$router.push(`/listor/sprak/${this.type}?l=${lang}`)
+        this.$router.push({query: {l: lang}})
       },
       onLangTypeChange : function(type) {
-        this.$router.push(`/listor/sprak/${type}/?l=${this.langSelect || ""}`)
+        this.$router.push({path: `/listor/sprak/${type}/`, query: {l: this.langSelect || ""}})
       }
     }
 }

@@ -39,8 +39,8 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  // loading: { color: '#3B8070' },
-  loading: false,
+  loading: { color: '#0275d8' },
+  // loading: false,
   /*
   ** Build configuration
   */
@@ -60,7 +60,10 @@ module.exports = {
       const path = require('path')
       config.resolve.symlinks = false
       // config.resolveLoader = { fallback: path.join(__dirname, "node_modules") }
-    }
+    },
+    vendor : [
+      "axios"
+    ]
   },
   router: {
     linkActiveClass: 'router-link-active',
@@ -95,7 +98,7 @@ module.exports = {
         // }
       })
       for(let item of resp.data.data) {
-        routes.push({route : "/artiklar/" + decodeURIComponent(item.URLName), payload : item})
+        // routes.push({route : "/artiklar/" + decodeURIComponent(item.URLName), payload : item})
         // routes.push({route : "/listor/avoversattare/" + decodeURIComponent(item.URLName)})
       }
 
@@ -109,6 +112,7 @@ module.exports = {
       //   routes.push({route : "/verk/" + item.id, payload : item})
       // }
 
+      console.log("routes", routes)
       return routes
 
 

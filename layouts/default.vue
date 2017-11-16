@@ -39,7 +39,7 @@
           <!-- <nuxt-link class="nav-item" to="" >Om</nuxt-link> -->
           <nuxt-link class="nav-item nav-link" to="/om">Om lexikonet</nuxt-link>
           <nuxt-link class="nav-item nav-link" to="/medarbetare">Medarbetare</nuxt-link>
-          <nuxt-link class="nav-item nav-link" to="/kontakt">Kontakt</nuxt-link>
+          <a class="nav-item nav-link" href="https://litteraturbanken.se/om/kontakt?sol">Kontakt</a>
         </div>
       </nav>
     </footer>

@@ -151,7 +151,7 @@
                 connectionGroups : null
             }
         },
-        async asyncData ({ params, error, payload }) {
+        async asyncData ({ params, error, payload, from }) {
             if(payload) {
                 return { article : payload }
             }

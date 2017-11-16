@@ -39,7 +39,7 @@ function urljoin(...urls) {
 }
 async function pythonGet(endpoint, params, config) {
 
-    console.log("PYTHON_API + endpoint", PYTHON_API + endpoint + "?" + _.toPairs(params).map(a => a.join("=")).join("&"))
+    // console.log("PYTHON_API + endpoint", PYTHON_API + endpoint + "?" + _.toPairs(params).map(a => a.join("=")).join("&"))
     let {data} = await axios.get(PYTHON_API + endpoint, {...config, params})
     return data
 }

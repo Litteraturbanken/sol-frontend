@@ -205,7 +205,7 @@
             },
             onSortChange : function(sortVal) {
                 console.log("this.$router", this.$router)
-                this.$router.push(window.location.pathname + "?" + "sort=" + sortVal)
+                this.$router.push({query : {sort: sortVal}})
             },
             filterWorks : function(works) {
                 if(!this.$route.params.lang) return works
