@@ -12,7 +12,7 @@ services:
   testcafe:
     image: testcafe/testcafe:latest
     volumes:
-      - /Users/johan/Development/sol_nuxt/e2e:/tests
+      - ./e2e:/tests
     entrypoint: /opt/testcafe/docker/testcafe-docker.sh 'chromium:headless --no-sandbox' /tests/tests.js
     environment:
       - TEST_SERVER=sol
