@@ -15,15 +15,16 @@
     "nuxt": "^1.0.0-rc11"
   },
   "scripts": {
-    "dev": "nuxt --hostname '0.0.0.0'",
+    "dev": "nuxt --hostname ${DOCKER_HOST:-'0.0.0.0'}",
     "dev2": "node --preserve-symlinks node_modules/nuxt/bin/nuxt-dev",
     "build": "nuxt build",
-    "start": "nuxt start",
+    "start": "nuxt start --hostname ${DOCKER_HOST:-'0.0.0.0'}",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint",
     "debug": "node --inspect node_modules/nuxt/bin/nuxt-dev",
-    "spa": "nuxt --spa"
+    "spa": "nuxt --spa",
+    "test": "docker-compose up --force-recreate --exit-code-from testcafe"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",

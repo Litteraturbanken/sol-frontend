@@ -92,25 +92,25 @@ module.exports = {
         "/listor/sprak/fran",
       ]
       // let routes = []
-      let resp = await axios.get("http://litteraturbanken.se/sol/api/articles", {
+      let resp = await axios.get("https://litteraturbanken.se/sol/api/articles", {
         // params : {
         //   show : "id,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname"
         // }
       })
       for(let item of resp.data.data) {
-        // routes.push({route : "/artiklar/" + decodeURIComponent(item.URLName), payload : item})
-        // routes.push({route : "/listor/avoversattare/" + decodeURIComponent(item.URLName)})
+        routes.push({route : "/artiklar/" + decodeURIComponent(item.URLName), payload : item})
+        routes.push({route : "/listor/avoversattare/" + decodeURIComponent(item.URLName)})
       }
 
         // params : {
         //   show : "id,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname"
         // }
-      // let works = await axios.get("http://litteraturbanken.se/sol/api/bibliography/_all", {
-      // })
+      let works = await axios.get("'https://litteraturbanken.se/sol/api/bibliography/_all'", {
+      })
 
-      // for(let item of works.data.works) {
-      //   routes.push({route : "/verk/" + item.id, payload : item})
-      // }
+      for(let item of works.data.works) {
+        routes.push({route : "/verk/" + item.id, payload : item})
+      }
 
       console.log("routes", routes)
       return routes

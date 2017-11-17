@@ -130,7 +130,6 @@
             work : work
         },
         data() {
-            console.log("data")
             return {
                 sortVal : "RealYear",
                 connectionGroups : [],
@@ -143,6 +142,7 @@
             }
         },
         async asyncData ({ params, error, route, from }) {
+
             console.log("asyncdata")
             let lang = ""
             if(params.lang) {
@@ -154,19 +154,13 @@
                 return {lang, sortVal}
             }
             try{
-
-                var {source, original, article, biblTypeGroups, biblTypeData, connectionGroups} = await backend.getWorksByAuthor(params.id)
-                console.log("params", params, _.keys(connectionGroups))
-                // eslint-disable-next-line
-                // debugger
-
-
+                var backendData = await backend.getWorksByAuthor(params.id)
 
             } catch(err) {
                 console.log("Article fetch error.", err)
                 error({ message: "Artikeln kunde inte hittas.", statusCode: 404 })
             }
-            return { source, original, article, connectionGroups, biblTypeData, biblTypeGroups, lang, sortVal }
+            return { ...backendData, lang, sortVal }
         },
 
         mounted() {
