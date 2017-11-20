@@ -161,10 +161,13 @@ export default {
         return `/listor/avoversattare/${item.URLName}/${this.type}/${lang}`
       },
       onLangChange : function(lang) {
-        this.$router.push({query: {l: lang}})
+        this.$router.push({query: {l: lang || null}})
       },
       onLangTypeChange : function(type) {
-        this.$router.push({path: `/listor/sprak/${type}/`, query: {l: this.langSelect || ""}})
+        if(this.langSelect) {
+          var query = {l: this.langSelect}
+        }
+        this.$router.push({path: `/listor/sprak/${type}/`, query})
       }
     }
 }
