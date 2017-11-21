@@ -38,7 +38,6 @@ function urljoin(...urls) {
     return "/" + urls.map(item => _.trim(item, "/")).join("/")
 }
 async function pythonGet(endpoint, params, config) {
-
     // console.log("PYTHON_API + endpoint", PYTHON_API + endpoint + "?" + _.toPairs(params).map(a => a.join("=")).join("&"))
     let {data} = await axios.get(PYTHON_API + endpoint, {...config, params})
     return data
@@ -190,7 +189,7 @@ class PythonBackend {
     }
     
     async getWorksByAuthor(urlname) {
-        let {languages, works, article, bibliography_types} = (await pythonGet(urljoin("/bibliography", urlname)))
+        let {languages, works, article, bibliography_types} = (await pythonGet(urljoin("/bibliography", encodeURIComponent(urlname))))
         // console.log("works", works)
         for(let work of works) {
             work.RealYear = Number(work.RealYear)
@@ -204,7 +203,7 @@ class PythonBackend {
         })
         let biblTypeData = _.groupBy(bibliography_types, "id")
         let biblTypeGroups = groupBiblType(works)
-        console.log('biblTypeGroups', biblTypeGroups)
+        // console.log('biblTypeGroups', biblTypeGroups)
 
         return {source, original, article, biblTypeGroups, biblTypeData, connectionGroups : groupConnections(works)}
 

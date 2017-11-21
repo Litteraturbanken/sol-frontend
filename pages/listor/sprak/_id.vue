@@ -107,8 +107,8 @@ export default {
         type : "original",
       }
     },
-    async asyncData ({error, env, params, redirect, route, from}) {
-      console.log("lang asyncData", params, route.query, from, route)
+    async asyncData ({error, env, params, redirect, route}) {
+      console.log("lang asyncData", params, route.query, route)
 
       if(route.query) {
         var langSelect = route.query.l

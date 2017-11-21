@@ -13,7 +13,7 @@ services:
     image: testcafe/testcafe:latest
     volumes:
       - ./e2e:/tests
-    entrypoint: /opt/testcafe/docker/testcafe-docker.sh 'chromium:headless --no-sandbox' /tests/tests.js
+    entrypoint: /opt/testcafe/docker/testcafe-docker.sh -c 2 'chromium:headless --no-sandbox' /tests/tests.js
     environment:
       - TEST_SERVER=sol
     depends_on:

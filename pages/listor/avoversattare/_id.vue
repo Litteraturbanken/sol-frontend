@@ -60,7 +60,9 @@
                 
 
                 <div v-for="obj in biblTypeGroups">
-                    <h3 v-if="obj.type != 1">{{biblTypeData[String(obj.type)][0].BibliographyTypeName}}</h3>
+                    <h3 v-if="obj.type != 1 && filterWorks(obj.works).length">
+                        {{biblTypeData[String(obj.type)][0].BibliographyTypeName}}
+                    </h3>
                     <ul>
                         <li v-for="work in filterWorks(obj.works)">
                             <work :work="work"></work>
@@ -143,7 +145,7 @@
         },
         async asyncData ({ params, error, route, from }) {
 
-            console.log("asyncdata")
+            console.log("asyncdata", from)
             let lang = ""
             if(params.lang) {
                 lang = [params.lang, params.type]

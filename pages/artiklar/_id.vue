@@ -24,7 +24,7 @@
             <div class="bibliography col-md-4" v-if="works.length">
                 <header>
                     <h3>Bibliografi</h3>
-                    <div><nuxt-link :to="'/listor/avoversattare/' + $route.params.id">Gå till detaljerad bibliografi</nuxt-link></div>
+                    <div><nuxt-link class="detailed" :to="'/listor/avoversattare/' + $route.params.id">Gå till detaljerad bibliografi</nuxt-link></div>
                 </header>
                 <ul>
                     <li v-for="item in connectionGroups">
