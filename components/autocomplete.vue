@@ -3,13 +3,17 @@
         @keyup.down="down" @keyup.up="up" @keyup.enter.prevent="enter" @keyup.esc="escape">
       <input v-model="searchstr" 
             placeholder="Sök"
-            @focus="backend(searchstr)" 
+            @focus="fetchData(searchstr)" 
             @input="$emit('input', $event.target.value)"
             ref="inputField"
             keyup.enter.prevent=""
             >
+      <transition name="fade">
+        <i class="loading icon icon-spinner" v-show="isLoading"></i>
+        </transition>
       <ul v-click-outside="outside" role="menu" class="dropdown-menu" v-show="autocompleteData.length" >
-          <li class="dropdown-item" :class="{active: item.active}" role="menuitem" v-for="item in autocompleteData">
+          <li class="dropdown-item" :class="{active: isFirstActive}"><a  :href="'/sok?fras=' + searchstr">Sök på "{{searchstr}}"</a></li>
+          <li class="dropdown-item" :class="{active: item.active}" role="menuitem" v-for="item in autocompleteData.slice(1, autocompleteData.length)" ng-if="item.label">
             <a :href="item.url" >{{item.label}}</a>
           </li>
       </ul>        
@@ -17,6 +21,15 @@
 </template>
 
 <style scoped>
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0
+  }
+  .loading {
+  }
+
   input {
     text-align: center;
     font-variant: small-caps;
@@ -41,6 +54,7 @@ export default {
     return {
       autocompleteData : [],
       searchstr: "",
+      isLoading : false
     }
   },
   created : function() {
@@ -64,7 +78,11 @@ export default {
       console.log("active", active)
       if(active) {
         this.autocompleteData = []
+      }
+      if(active.url) {
         this.$router.push(active.url)
+      } else {
+        this.$router.push({path: "/sok", query: {fras : this.searchstr}})
       }
     },
     escape : function() {
@@ -72,13 +90,17 @@ export default {
     },
     down : function() {
       let d = this.autocompleteData
-      console.log("this.autocompleteData", this.autocompleteData)
-      if(!this.autocompleteData.length) {
+      console.log("this.autocompleteData", d)
+      if(!d.length) {
         this.fetchData(this.searchstr)
+        return
       }
       let i = _.findIndex(d, "active")
+      console.log("i", i)
+      // eslint-disable-next-line
+      // debugger
       if(i == -1) {
-        d[0].active = true
+        // d[0].active = true
         return
       }
       d[i].active = false
@@ -89,6 +111,9 @@ export default {
     },
     up : function() {
       let d = this.autocompleteData
+      if(!d.length) {
+        return
+      }
       let i = _.findIndex(d, "active")
       d[i].active = false
 
@@ -113,15 +138,32 @@ export default {
       this.$refs.inputField.focus()
     },
     async fetchData(val) {
+      if(!val) {
+        return
+      }
+      this.isLoading = true
       let data = (await this.backend(val)).slice(0, 10)
-      console.log("data", data)
+      this.isLoading = false
+      let i = _.findIndex(this.autocompleteData, "active")
+      let firstObj = {
+        stringsearch: true
+      }
+      data.splice(0, 0, firstObj)
       this.autocompleteData = _.map(data, item => {
         item.active = false
         return item
       })
-      if(this.autocompleteData.length) {
+      
+      if(this.autocompleteData[i]) {
+        this.autocompleteData[i].active = true
+      } else {
         this.autocompleteData[0].active = true
       }
+    }
+  },
+  computed : {
+    isFirstActive : function() {
+      return this.autocompleteData.length && this.autocompleteData[0].active
     }
   },
   watch : {

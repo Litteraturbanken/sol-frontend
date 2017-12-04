@@ -8,7 +8,7 @@ const promiseSerial = funcs =>
 
 module.exports = {
   modules : [
-    '@nuxtjs/font-awesome'
+    // '@nuxtjs/font-awesome'
   ],
   // mode : "spa",
   /*
@@ -25,12 +25,15 @@ module.exports = {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: 'http://www.oversattarlexikon.se/images/icons/favicon.png' },
       // { href: '/bootstrap.css', rel: "stylesheet" },
-      { rel: 'stylesheet', href: 'https://cloud.typography.com/7426274/770508/css/fonts.css' }
+      { rel: 'stylesheet', href: 'https://cloud.typography.com/7426274/770508/css/fonts.css' },
+      // { rel: 'stylesheet', href: '/font/fa-custom.otf' }
       // <link rel="stylesheet" type="text/css" href="https://cloud.typography.com/7426274/770508/css/fonts.css" />
     ]
   },
 
   css : [
+    { src: '~assets/fontawesome-custom/css/fa-custom.css', },
+    { src: '~assets/fontawesome-custom/css/animation.css', },
     { src: '~assets/bootstrap_custom.scss', lang: 'scss' },
     { src: '~assets/styles.scss', lang: 'scss' },
 
@@ -45,6 +48,8 @@ module.exports = {
   ** Build configuration
   */
   build: {
+      extractCSS: true,
+
     /*
     ** Run ESLINT on save
     */
@@ -83,20 +88,33 @@ module.exports = {
 
   generate: {
     minify : false,
+    scrape: true,
 
-    // interval : 100,
+    interval : 100,
     routes: async function () {
-      let routes = [
-        "/listor/sprak/original",
-        "/listor/sprak/till",
-        "/listor/sprak/fran",
-      ]
+      /* eslint-disable */
+      // return ["/medarbetare/Barbro_Ek"]
+      return []
+      let routes = []
+      let resp = await axios.get("https://litteraturbanken.se/sol/api/contributors?show=URLName,FirstName,LastName", {
+
+      })
+      for(let item of resp.data.data) {
+        routes.push({route: "/medarbetare/" + item.URLName})
+      }
+      return routes
+      
+      // let routes = [
+      //   "/listor/sprak/original",
+      //   "/listor/sprak/till",
+      //   "/listor/sprak/fran",
+      // ]
       // let routes = []
-      let resp = await axios.get("https://litteraturbanken.se/sol/api/articles", {
+      // let resp = await axios.get("https://litteraturbanken.se/sol/api/articles", {
         // params : {
         //   show : "id,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname"
         // }
-      })
+      // })
       for(let item of resp.data.data) {
         routes.push({route : "/artiklar/" + decodeURIComponent(item.URLName), payload : item})
         routes.push({route : "/listor/avoversattare/" + decodeURIComponent(item.URLName)})
@@ -105,51 +123,17 @@ module.exports = {
         // params : {
         //   show : "id,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname"
         // }
-      let works = await axios.get("'https://litteraturbanken.se/sol/api/bibliography/_all'", {
+      let works = await axios.get('https://litteraturbanken.se/sol/api/bibliography/_all', {
       })
 
       for(let item of works.data.works) {
         routes.push({route : "/verk/" + item.id, payload : item})
       }
 
-      console.log("routes", routes)
+      // console.log("routes", routes)
       return routes
 
 
-      // let upperLimit = 10000
-      // let chunkSize = 1000
-      // let fetch = (n) => {
-      //   return axios.get(`https://ws.spraakbanken.gu.se/ws/sol/api/1.1/tables/Works/rows`, {
-      //     auth: {
-      //         username : "test-token"
-      //     },
-      //     params : {
-      //       // limit : 2000
-      //       offset : n,
-      //       limit : chunkSize,
-      //     }
-      //   }).then( ({data}) => {
-      //     return data.data.map( (item) => {
-      //       return {route : "/verk/" + item.id, payload : item}
-      //     })
-      //   })
-        
-      // }
-      // let n = 0
-      // while(true) {
-      //   if(n > upperLimit) break
-      //   promises.push(_.partial(fetch, n))
-      //   n += chunkSize
-      // }
-
-      // execute Promises in serial
-      // return promiseSerial(promises).then(values => {
-      //   return _.flatten(values)
-      // })
-
-    // return Promise.all(promises).then(values => {
-    //   return _.flatten(values)
-    // })
 
     }
   }

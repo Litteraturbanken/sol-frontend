@@ -1,6 +1,6 @@
 <template>
   <div class="outer row justify-content-lg-center">
-  <div class="col-md-10 no-gutters" >
+  <div class="col-xl-10 no-gutters" >
     <header class="row">
       <div class="col-md-2 logo_container">
         <nuxt-link to="/">
@@ -17,10 +17,10 @@
               <nuxt-link class="nav-item nav-link" to="/listor/artiklar/tema">Tema</nuxt-link>
               <nuxt-link class="nav-item nav-link" to="/listor/priser">Priser</nuxt-link>
               <nuxt-link class="nav-item nav-link" to="/listor/kronologi">Kronologi</nuxt-link>
-              <nuxt-link class="nav-item nav-link" to="/listor/sprak">Språk</nuxt-link>
+              <nuxt-link class="nav-item nav-link" to="/listor/sprak/original">Språk</nuxt-link>
               <a class="nav-item nav-link" href="https://litteraturbanken.se">Litteraturbanken</a>
               <a class="nav-item nav-link" href="https://www.facebook.com/SvensktOversattarlexikon">
-                <i class="fa fa-facebook-square"></i>
+                <i class="icon icon-facebook-squared"></i>
               </a>
               
               <form @submit.prevent="$router.push({path : '/sok', query : {'fras' : searchstr}})">

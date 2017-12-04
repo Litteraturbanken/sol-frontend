@@ -50,3 +50,8 @@ test.page(`${host}/listor/avoversattare/Gunnar_Ekelöf`)(
             .expect(Selector(".works").count).lt(nInitialWorks)
 })
 
+test.page(`${host}/listor/avupphovsman/?a=Ibn%20Baṭṭūṭa,%20Muḥammad`)(
+    'arabic writer has works', async t => {
+        await t
+            .expect(Selector(".work").count).gt(0)
+})

@@ -20,7 +20,7 @@
     import backend from "assets/backend"
 
     export default {
-        name : "Medarbetare",
+        name : "MedarbetareIndex",
         head () {
             return {
                 // title : this.data.ContributerLastname + " – Svenskt översättarlexikon"

@@ -90,6 +90,7 @@
         h2:first-child {
             margin-top: 0;
         }
+        margin-bottom: 2em;
 
     }
     .bibliography {
@@ -128,6 +129,16 @@
             color : grey;
         }
     }
+
+    @media only screen and (max-width: 987px) {
+        .bibliography {
+            border: none;
+            padding-left: 15px;
+            margin-left: 0;
+        }
+    }
+
+
 </style>
 
 <script>
@@ -148,7 +159,8 @@
                 prizewinners : null,
                 biblTypeGroups : null,
                 biblTypeData : null,
-                connectionGroups : null
+                connectionGroups : null,
+                works : []
             }
         },
         async asyncData ({ params, error, payload, from }) {

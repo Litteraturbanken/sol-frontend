@@ -9,7 +9,7 @@
     <section class="suggestion" v-if="!works.length && !articles.length && suggestion">
         Menade du <a :href="'?fras=' + suggestion" @click.prevent="onSubmit(suggestion)">{{suggestion}}</a>?
     </section>
-    <section class="" v-if="articles.length">
+    <section class="articles_section" v-if="articles.length">
         <h2>Artiklar</h2>
         <ul class="articles">
             <li v-for="article in articles">
@@ -46,6 +46,12 @@
         li {
             margin-bottom: 1em;
         }
+    }
+    .articles {
+        columns: 200px 2;
+    }
+    .articles_section {
+        margin-bottom: 2em;
     }
     .search {
         position: relative;

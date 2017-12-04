@@ -78,7 +78,13 @@ class PythonBackend {
 
     async autocomplete(str) {
         console.log("str", str)
-        let {data} = await axios.get("http://litteraturbanken.se/api/autocomplete/" + str)
+        try {
+            var {data} = await axios.get("https://litteraturbanken.se/api/autocomplete/" + str)
+        } catch(e) {
+            console.error("Error in Littb autocomplete api:")
+            console.error(e)
+            return
+        }
 
         return _(data.data)
             .filter(item => ["etext", "faksimil", "author"].includes(item.doc_type))
@@ -86,13 +92,13 @@ class PythonBackend {
                 if(item.doc_type == "author") {
                     return {
                         label: item.name_for_index, 
-                        url : "http://litteraturbanken.se/forfattare/" + item.author_id,
+                        url : "https://litteraturbanken.se/forfattare/" + item.author_id,
                         type: "author"
                     }
                 } else {
                     return {
                         label: item.shorttitle, 
-                        url : `http://litteraturbanken.se/forfattare/${item.authors[0].author_id}/titlar/${item.title_id}/sida/${item.startpagename}/${item.doc_type}`,
+                        url : `https://litteraturbanken.se/forfattare/${item.authors[0].author_id}/titlar/${item.title_id}/sida/${item.startpagename}/${item.doc_type}`,
                         type : "work"
                     }
                 }
@@ -183,7 +189,7 @@ class PythonBackend {
     }
     
     async getWorksByAuthorName(authorname) {
-        let {data} = await pythonGet("/author/" + authorname)
+        let {data} = await pythonGet("/author/" + encodeURIComponent(authorname))
         // console.log("works", data)
         return data
     }

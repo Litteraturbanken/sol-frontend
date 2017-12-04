@@ -39,13 +39,15 @@
 
         async asyncData ({ params, error, payload }) {
             if(payload) {
-                return { data : payload }
+                return payload
             }
 
             try {
-                return {...(await backend.getContributor(params.id))}
+                let data = await backend.getContributor(params.id)
+                console.log("constributor data", data)
+                return data
             } catch(e) {
-                console.log("error", e)
+                console.log("Contributor fetch error:", e)
             }
 
         }
