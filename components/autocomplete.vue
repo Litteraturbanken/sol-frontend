@@ -38,8 +38,17 @@
   }
   .dropdown-menu {
     display : block;
+    font-size: 0.8rem;
+  }
+  .dropdown-item a {
+    color : #333;
+    transition : none;
+  }
+  .dropdown-item.active, .dropdown-item:active {
+    background-color : #777;
   }
   .dropdown-item.active a {
+    transition : none;
     color : white;
   }
   .search {

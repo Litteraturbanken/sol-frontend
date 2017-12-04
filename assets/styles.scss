@@ -20,6 +20,8 @@
     font-weight: 400;
 }
 
+$primary : #618296;
+$secondary: #EBC493;
 
 @mixin dotted($color) {
     & {
@@ -48,19 +50,19 @@
 }
 
 .dotted {
-  @include dotted(black)
+  // @include dotted(black)
 }
-
 p a {
-  @include dotted(black)
+  color : #EBC493;
+  // @include dotted(black)
   &:hover {
     text-decoration: none;
   }
 }
 
 html {
-  background-color : rgb(165,63,15);
-  font-size: 18px;
+  // background-color : rgb(165,63,15);
+  font-size: 20px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
@@ -79,7 +81,10 @@ body {
   font-family : "Verlag A", "Verlag B", georgia, serif;
   padding : 1em;
   line-height : 1.4;
-  background-color : rgb(165,63,15);
+  // background-color : rgb(226,145,0); 
+  // background-color : #618296; 
+  background: linear-gradient(to bottom, rgba(97,130,150,1) 0%,rgba(29,101,140,1) 100%);
+  //
 }
 h1 {
   font-weight: 800;
@@ -96,6 +101,10 @@ h3 {
   font-weight : normal;
 }
 
+h1,h2,h3,h4,h5,h6 {
+  color : white;
+}
+
 figcaption {
   font-style: italic;
   font-size: 0.8rem;
@@ -103,6 +112,9 @@ figcaption {
 
 .navbar {
   padding-left : 0;
+  a {
+    color: white;
+  }
 }
 
 .sc {
@@ -152,7 +164,7 @@ a:focus, a:hover {
 }
 
 .range-slider-fill {
-    background-color: #0275d8 !important;
+    background-color: $secondary !important;
 }
 
 .outer {
@@ -177,9 +189,10 @@ a:focus, a:hover {
 .mainview {
 }
 a {
-  color : white;
+  transition: 200ms color;
+  color : $secondary;
   &:hover {
-    color : grey;
+    color : black;
   }
   &:active {
     color : white;
@@ -204,10 +217,13 @@ li {
 }
 
 .logo_container {
-  max-width : 145px;
+  max-width : 155px;
   .logo {
-    width : 120px;
+    width : 140px;
+    position: relative;
+    left: -10px;
   }
+
 }
 
 
@@ -228,9 +244,27 @@ header {
       color : inherit;
     }
   }
+  input::-webkit-input-placeholder {
+    color : white;
+  }
   input {
     font-size: 0.8em;
     margin-top: 3px;
+
+    background-color: transparent;
+    border: 1px solid white;
+    // border-left: 1px solid white;
+    // border-bottom: 1px solid white;
+    color: white;
+
+    text-align: center;
+    padding-left : 4px;
+    padding-bottom : 2px;
+    padding-top : 0;
+    height : 15px;
+    vertical-align: bottom;
+
+    
   }
   form {
     margin-left: 0.4em;
@@ -260,7 +294,7 @@ header {
   height: 60px;
   line-height: 40px;
   .navbar {
-    border-top: 1px solid #666;
+    border-top: 1px solid white;
     margin: 0 auto;
   }
 }
@@ -306,8 +340,7 @@ blockquote {
     }
     .search {
       input {
-        text-align: left;
-        outline: 1px solid lightgrey;
+        // outline: 1px solid lightgrey;
       }
     }
     

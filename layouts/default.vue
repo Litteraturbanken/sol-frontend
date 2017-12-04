@@ -4,7 +4,7 @@
     <header class="row">
       <div class="col-md-2 logo_container">
         <nuxt-link to="/">
-          <img class="logo" src="/sol_logo_dots.png" alt="Logotyp">
+          <img class="logo" src="/sol_logo_dots_white.png" alt="Logotyp">
         </nuxt-link>
       </div>
       <div class="col-md-10">

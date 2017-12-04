@@ -75,6 +75,9 @@
         float : right;
         margin-left : 1em;
     }
+    img {
+        border: 1px solid white;
+    }
     figcaption {
         text-transform: uppercase;
         font-size: 0.6em;
@@ -102,7 +105,7 @@
         }
         margin-left: 1em;
         padding-left : 1.5em;
-        border-left: 1px solid grey;
+        border-left: 1px solid white;
         font-size : 0.8em;
 
         h3 {
@@ -126,7 +129,7 @@
             columns: 250px 2;
         }
         li span {
-            color : grey;
+            color : white;
         }
     }
 
