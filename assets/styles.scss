@@ -59,6 +59,7 @@ p a {
 }
 
 html {
+  background-color : rgb(165,63,15);
   font-size: 18px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
@@ -74,9 +75,11 @@ ul {
   padding-left: 0;
 }
 body {
+  color : white;
   font-family : "Verlag A", "Verlag B", georgia, serif;
   padding : 1em;
   line-height : 1.4;
+  background-color : rgb(165,63,15);
 }
 h1 {
   font-weight: 800;
@@ -174,12 +177,12 @@ a:focus, a:hover {
 .mainview {
 }
 a {
-  color : #333;
+  color : white;
   &:hover {
     color : grey;
   }
   &:active {
-    color : #333;
+    color : white;
   }
 }
 p {
