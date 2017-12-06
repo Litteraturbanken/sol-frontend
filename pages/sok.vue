@@ -11,7 +11,7 @@
     </section>
     <section class="articles_section" v-if="articles.length">
         <h2>Artiklar</h2>
-        <ul class="articles">
+        <ul class="articles resultlist">
             <li v-for="article in articles">
                 <a :href="'/artiklar/' + article.URLName">{{article.ArticleName}}</a>
             </li>
@@ -23,7 +23,7 @@
         <ul class="works resultlist">
             <li v-for="work in works">
                 <div>
-                    <a :href="'/verk/' + work.id">{{work.TitleSwedish}}</a>, {{work.PublishingYearSwedish}}
+                    <a class="work" :href="'/verk/' + work.id">{{work.TitleSwedish}}</a>, {{work.PublishingYearSwedish}}
                 </div>
                 <div><span v-if="work.Authors">{{work.Authors}}, </span> <em>{{connectionLabel(work.ConnectionType)}}:</em> {{work.Translator}} </div>
             </li>
@@ -31,7 +31,7 @@
     </section>
     <section v-if="lb_autocomplete && lb_autocomplete.length">
         <button class="btn btn-secondary btn-sm" @click="expand = !expand">Visa {{countLBAuthors}} författare och {{countLBWorks}} verk från Litteraturbankens samlingar</button>
-        <ul class="works collapse" :class="{show : expand}">
+        <ul class="works collapse resultlist" :class="{show : expand}">
             <li v-for="item in lb_autocomplete">
                 <span v-if="item.type == 'author'">Författare: <a  :href="item.url" >{{item.label}}</a></span>
                 <span v-if="item.type == 'work'"> Verk: <a  :href="item.url" >{{item.label}}</a></span>
@@ -46,6 +46,9 @@
         li {
             margin-bottom: 1em;
         }
+    }
+    .work {
+        font-weight : bold;
     }
     .articles {
         columns: 200px 2;

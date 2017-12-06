@@ -2,18 +2,22 @@
   <div class="row">
       <div class="left-col col-md-6 ">
           <section class="section row no-gutters flex-column">
-            <nuxt-link to="/om">
-              <h2>Om Svenskt översättarlexikon</h2>
-            </nuxt-link>
+            
+              <h2>
+                <nuxt-link to="/om">Om Svenskt översättarlexikon</nuxt-link>
+              </h2>
+            
             <div class=" about" v-html="about"></div>
             <div class="read_more">
                 <nuxt-link class="sc" to="/om">Läs mer <i class="arrow icon icon-play"></i></nuxt-link>
             </div>
           </section>
           <section class="section row no-gutters flex-column" v-if="themearticle2">
-            <nuxt-link :to="'/artiklar/' + themearticle2.URLName">
-              <h2>{{themearticle2.ArticleName}}</h2>
-            </nuxt-link>
+            
+            <h2>
+              <nuxt-link :to="'/artiklar/' + themearticle2.URLName">{{themearticle2.ArticleName}}</nuxt-link>
+            </h2>
+            
             <div class=" about" v-html="themearticle2.Ingress"></div>
             <div class="read_more">
                 <nuxt-link class="sc" :to="'/artiklar/' + themearticle2.URLName">Läs mer <i class="arrow icon icon-play"></i></nuxt-link>
@@ -34,16 +38,17 @@
             <nuxt-link :to="'/artiklar/' + article.URLName">
               <figure class=""><img :src="'https://spraakbanken.gu.se/karp/data/sol/artikelfiler/' + article.FileName" alt="">
               </figure>
-              <h2>{{article.ArticleName}}, {{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}}</h2>
             </nuxt-link>
+            
+              <h2><nuxt-link :to="'/artiklar/' + article.URLName">{{article.ArticleName}}, {{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}}</nuxt-link></h2>
             <div class=" about" v-html="article.Ingress"></div>
             <div class="read_more">
                 <nuxt-link class="sc" :to="'/artiklar/' + article.URLName">Läs mer <i class="arrow icon icon-play"></i></nuxt-link>
             </div>
           </section>
           <section class="section row no-gutters flex-column" v-if="themearticle">
-            <nuxt-link :to="'/artiklar/' + themearticle.URLName">
-              <h2>{{themearticle.ArticleName}}</h2>
+              <h2><nuxt-link :to="'/artiklar/' + themearticle.URLName">{{themearticle.ArticleName}}</nuxt-link>
+              </h2>
             </nuxt-link>
             <div class=" about" v-html="themearticle.Ingress"></div>
             <div class="read_more">
@@ -102,6 +107,9 @@ export default {
         padding-top: 2em;
         padding-bottom: 2em;
         // width : 85%;
+        p {
+          max-width : 15em;
+        }
         &:first-child {
             border-bottom: 1px solid white;
             padding-top : 0;

@@ -16,7 +16,9 @@
 </template>
 
 <style lang="scss">
-    
+    .articles {
+        margin-top: 2em;
+    }
 </style>
 
 <script>

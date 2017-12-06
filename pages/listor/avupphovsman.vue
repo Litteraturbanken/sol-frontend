@@ -1,7 +1,7 @@
 <template>
     <div class="">
     <h2>Verk av {{$route.query.a}}</h2>
-        <ul>
+        <ul class="col-md-5">
             <li v-for="work in works">
                 <work :work="work"></work>
             </li>
