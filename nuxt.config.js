@@ -1,10 +1,21 @@
 const axios = require('axios')
 const _ = require('lodash')
+const resolve = require('path').resolve
 
-const promiseSerial = funcs =>
-  funcs.reduce((promise, func) =>
-    promise.then(result => func().then(Array.prototype.concat.bind(result))),
-    Promise.resolve([]))
+const isVueRule = (rule) => {
+  return rule.test.toString() === '/\\.vue$/'
+}
+const isSASSRule = (rule) => {
+  return ['/\\.sass$/', '/\\.scss$/'].indexOf(rule.test.toString()) !== -1
+}
+const sassResourcesLoader = {
+  loader: 'sass-resources-loader',
+  options: {
+    resources: [
+      resolve(__dirname, 'assets/_imports.scss')
+    ]
+  }
+}
 
 module.exports = {
   modules : [
@@ -61,7 +72,18 @@ module.exports = {
           loader: 'eslint-loader',
           exclude: /(node_modules)/
         })
+
       }
+
+      config.module.rules.forEach((rule) => {
+        if (isVueRule(rule)) {
+          rule.options.loaders.scss.push(sassResourcesLoader)
+        }
+        if (isSASSRule(rule)) {
+          rule.use.push(sassResourcesLoader)
+        }
+      })
+      
       const path = require('path')
       config.resolve.symlinks = false
       // config.resolveLoader = { fallback: path.join(__dirname, "node_modules") }
@@ -88,21 +110,25 @@ module.exports = {
 
   generate: {
     minify : false,
-    scrape: true,
+    // scrape: true,
 
     interval : 100,
+    done ({ duration, errors, workerInfo }) {
+      console.log("done", duration, errors, workerInfo)
+
+      if (errors.length) {
+      }
+    },
     routes: async function () {
-      /* eslint-disable */
       // return ["/medarbetare/Barbro_Ek"]
-      return []
       let routes = []
-      let resp = await axios.get("https://litteraturbanken.se/sol/api/contributors?show=URLName,FirstName,LastName", {
+      let resp
+      resp = await axios.get("https://litteraturbanken.se/sol/api/contributors?show=URLName,FirstName,LastName", {
 
       })
       for(let item of resp.data.data) {
-        routes.push({route: "/medarbetare/" + item.URLName})
+        routes.push({route: "/medarbetare/" + item.URLName, payload: item})
       }
-      return routes
       
       // let routes = [
       //   "/listor/sprak/original",
@@ -110,19 +136,16 @@ module.exports = {
       //   "/listor/sprak/fran",
       // ]
       // let routes = []
-      // let resp = await axios.get("https://litteraturbanken.se/sol/api/articles", {
-        // params : {
-        //   show : "id,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname"
-        // }
-      // })
+      resp = await axios.get("https://litteraturbanken.se/sol/api/articles", {
+        params : {
+          show : "id,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"
+        }
+      })
       for(let item of resp.data.data) {
         routes.push({route : "/artiklar/" + decodeURIComponent(item.URLName), payload : item})
         routes.push({route : "/listor/avoversattare/" + decodeURIComponent(item.URLName)})
       }
 
-        // params : {
-        //   show : "id,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,AuthorID,ArticleText,ArticleTypes.ArticleTypeName,Contributors.FirstName:ContributorFirstname,Contributors.LastName:ContributorLastname"
-        // }
       let works = await axios.get('https://litteraturbanken.se/sol/api/bibliography/_all', {
       })
 

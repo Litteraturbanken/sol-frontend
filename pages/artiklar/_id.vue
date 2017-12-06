@@ -16,7 +16,7 @@
                 
                 <section v-html="article.ArticleText"></section>
                 <div class="mt-4">
-                    <nuxt-link :to="'/medarbetare/' + article.ContributorFirstname + ' ' + article.ContributorLastname" rel="author">{{article.ContributorFirstname}} {{article.ContributorLastname}}</nuxt-link>
+                    <nuxt-link :to="'/medarbetare/' + contributors[0].URLName" rel="author">{{contributors[0].FirstName}} {{contributors[0].LastName}}</nuxt-link>
                 </div>
             </div>
         
@@ -54,6 +54,14 @@
                         </template>
                     </li>
                 </ul>
+                <template v-if="links.length">
+                    <h3>Externa länkar</h3>
+                    <ul>
+                        <li v-for="link in links">
+                            <a :href="link.ArticleLinkURL">{{link.ArticleLinkTitle}}</a>
+                        </li>
+                    </ul>
+                </template>
             </div>
         </div>
         <div class="prizewinners row flex-column no-gutters" v-if="prizewinners">
@@ -80,7 +88,7 @@
     }
     figcaption {
         text-transform: uppercase;
-        font-size: 0.6em;
+        font-size: 0.5em;
         vertical-align: bottom;
         margin-top: 0.8em;
         max-width: 200px;
@@ -163,12 +171,13 @@
                 biblTypeGroups : null,
                 biblTypeData : null,
                 connectionGroups : null,
-                works : []
+                works : [],
+                links : null
             }
         },
         async asyncData ({ params, error, payload, from }) {
             if(payload) {
-                return { article : payload }
+                return payload
             }
             try{
                 return await backend.getArticle(params.id)

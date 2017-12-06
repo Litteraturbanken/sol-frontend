@@ -7,7 +7,7 @@
             </nuxt-link>
             <div class=" about" v-html="about"></div>
             <div class="read_more">
-                <nuxt-link class="sc" to="/om">Läs mer <i class="arrow fa fa-play"></i></nuxt-link>
+                <nuxt-link class="sc" to="/om">Läs mer <i class="arrow icon icon-play"></i></nuxt-link>
             </div>
           </section>
           <section class="section row no-gutters flex-column" v-if="themearticle2">
@@ -16,7 +16,7 @@
             </nuxt-link>
             <div class=" about" v-html="themearticle2.Ingress"></div>
             <div class="read_more">
-                <nuxt-link class="sc" :to="'/artiklar/' + themearticle2.URLName">Läs mer <i class="arrow fa fa-play"></i></nuxt-link>
+                <nuxt-link class="sc" :to="'/artiklar/' + themearticle2.URLName">Läs mer <i class="arrow icon icon-play"></i></nuxt-link>
             </div>
           </section>
           <!-- <section class="section row no-gutters">
@@ -38,7 +38,7 @@
             </nuxt-link>
             <div class=" about" v-html="article.Ingress"></div>
             <div class="read_more">
-                <nuxt-link class="sc" :to="'/artiklar/' + article.URLName">Läs mer <i class="arrow fa fa-play"></i></nuxt-link>
+                <nuxt-link class="sc" :to="'/artiklar/' + article.URLName">Läs mer <i class="arrow icon icon-play"></i></nuxt-link>
             </div>
           </section>
           <section class="section row no-gutters flex-column" v-if="themearticle">
@@ -47,7 +47,7 @@
             </nuxt-link>
             <div class=" about" v-html="themearticle.Ingress"></div>
             <div class="read_more">
-                <nuxt-link class="sc" :to="'/artiklar/' + themearticle.URLName">Läs mer <i class="arrow fa fa-play"></i></nuxt-link>
+                <nuxt-link class="sc" :to="'/artiklar/' + themearticle.URLName">Läs mer <i class="arrow icon icon-play"></i></nuxt-link>
             </div>
           </section>
       </div>
@@ -136,7 +136,6 @@ export default {
     }
     .arrow {
       margin-left: 7px;
-      color : grey;
       font-size: 0.8em;
       position: relative;
       top: -1px;

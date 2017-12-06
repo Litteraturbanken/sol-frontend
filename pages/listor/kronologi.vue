@@ -33,7 +33,7 @@
      </div>
   
   
-  <ul class="results" :class="{loading: loading}">
+  <ul class="results resultlist" :class="{loading: loading}">
       <li v-for="article in articles">
           <a :href="'/artiklar/' + article.URLName">{{article.ArticleName}} ({{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}})</a>
       </li>

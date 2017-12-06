@@ -20,7 +20,7 @@
     </section>
     <section v-if="works.length">
         <h2>Verk</h2>
-        <ul class="works">
+        <ul class="works resultlist">
             <li v-for="work in works">
                 <div>
                     <a :href="'/verk/' + work.id">{{work.TitleSwedish}}</a>, {{work.PublishingYearSwedish}}

@@ -11,7 +11,9 @@
     "babel-polyfill": "^6.23.0",
     "bootstrap": "^4.0.0-beta.2",
     "loader-utils": "^1.1.0",
-    "natural-sort": "^1.0.0"
+    "natural-sort": "^1.0.0",
+    "nuxt-generate-cluster": "^1.0.0-rc11",
+    "sass-resources-loader": "^1.3.1"
   },
   "scripts": {
     "dev": "nuxt --hostname ${DOCKER_HOST:-'0.0.0.0'}",
@@ -23,7 +25,8 @@
     "precommit": "npm run lint",
     "debug": "node --inspect node_modules/nuxt/bin/nuxt-dev",
     "spa": "nuxt --spa",
-    "test": "docker-compose up --force-recreate --exit-code-from testcafe"
+    "test": "docker-compose up --force-recreate --exit-code-from testcafe",
+    "cluster-generate": "nuxt-generate -w 4"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",

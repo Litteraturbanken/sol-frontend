@@ -1,7 +1,7 @@
 <template>
   <section class="">
     <h2>Priser för översättare</h2>
-    <ul>
+    <ul class="resultlist">
         <li v-for="item in items">
             <a :href="'/artiklar/' + item.URLName">{{item.ArticleName}}</a>
         </li>

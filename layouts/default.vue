@@ -7,7 +7,7 @@
           <img class="logo" src="/sol_logo_dots_white.png" alt="Logotyp">
         </nuxt-link>
       </div>
-      <div class="col-md-10">
+      <div class="col-md-8">
         <h1 class=""><nuxt-link to="/">Svenskt översättarlexikon</nuxt-link></h1>
         
         <nav class="navbar navbar-expand-md">
@@ -29,6 +29,7 @@
             </div>
         </nav>
       </div>
+      
     </header>
     <nuxt class="mainview"/>
 
@@ -37,9 +38,11 @@
       <nav class="navbar navbar-expand-md">
           <div class="navbar-nav">
           <!-- <nuxt-link class="nav-item" to="" >Om</nuxt-link> -->
-          <nuxt-link class="nav-item nav-link" to="/om">Om lexikonet</nuxt-link>
-          <nuxt-link class="nav-item nav-link" to="/medarbetare">Medarbetare</nuxt-link>
-          <a class="nav-item nav-link" href="https://litteraturbanken.se/om/kontakt?sol">Kontakt</a>
+            <nuxt-link class="nav-item nav-link" to="/om">Om lexikonet</nuxt-link>
+            <nuxt-link class="nav-item nav-link" to="/medarbetare">Medarbetare</nuxt-link>
+            <a class="nav-item nav-link" href="https://litteraturbanken.se/om/kontakt?sol">Kontakt</a>
+            <!-- <img class="nav-item" src="https://litteraturbanken.se/img/lb_monogram_white_white.svg" alt=""
+              width="40px" height="40px" style="margin-top: 10px"> -->
         </div>
       </nav>
     </footer>

@@ -93,6 +93,7 @@ export default {
       } else {
         this.$router.push({path: "/sok", query: {fras : this.searchstr}})
       }
+      this.searchstr = ""
     },
     escape : function() {
       this.autocompleteData = []

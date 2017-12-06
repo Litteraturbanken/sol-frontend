@@ -6,7 +6,7 @@
         
         <section class="articles">
             <h4>Artiklar</h4>
-            <ul>
+            <ul class="resultlist">
                 <li v-for="article in articles">
                     <a :href="'/artiklar/' + article.URLName">{{article.ArticleName}}</a>
                 </li>

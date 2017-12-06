@@ -26,7 +26,7 @@
     </div>
     <!-- <h2>{{header}}</h2> -->
 
-    <ul class="results">
+    <ul class="results resultlist">
         <li v-for="(items, lang) in getFilteredArticles(langSelect)" >
             <h2>{{lang}}</h2>
             <ul :class="{'few': items.length < 6}">

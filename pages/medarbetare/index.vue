@@ -1,7 +1,7 @@
 <template>
     <section>
         <h2>Översättarlexikonets artikelförfattare</h2>
-        <ul>
+        <ul class="resultlist">
             <li v-for="contributor in contributors">
                 <!-- <a :href="'/medarbetare/' + encodeURIComponent(contributor.FirstName) + ' ' + encodeURIComponent(contributor.LastName)">{{contributor.FirstName}} {{contributor.LastName}}</a> -->
                 <a :href="'/medarbetare/' + contributor.URLName">{{contributor.FirstName}} {{contributor.LastName}}</a>
