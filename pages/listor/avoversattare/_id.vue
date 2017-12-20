@@ -49,7 +49,9 @@
         <li v-for="item in connectionGroups" v-if="filterWorks(item.works).length">
             <h2 v-if="item.type == 2">Om {{ article }}</h2>
             <h2 v-else-if="item.type == 3">Skrifter av {{ article }}</h2>
-            <ul v-if="item.type == 2 || item.type == 3">
+            <h2 v-else-if="item.type == 4">Referenser</h2>
+            <h2 v-else-if="item.type == 5">{{ article }} handlar om verket</h2>
+            <ul v-if="[2,3,4,5].includes(item.type)">
                 <li v-for="work in filterWorks(item.works)">
                     <work :work="work"></work>
                 </li>
@@ -125,7 +127,7 @@
         name : "AvOversattare",
         head () {
             return {
-                title : "Av översättare" + " – Svenskt översättarlexikon"
+                title : "Av översättare"
             }
         },
         components : {

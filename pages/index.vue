@@ -23,15 +23,6 @@
                 <nuxt-link class="sc" :to="'/artiklar/' + themearticle2.URLName">Läs mer <i class="arrow icon icon-play"></i></nuxt-link>
             </div>
           </section>
-          <!-- <section class="section row no-gutters">
-            <h2>Senast publicerade artiklar</h2>
-            <ul class="col-12">
-                <li v-for="article in latest" class="row justify-content-between">
-                    <nuxt-link class="col-8" :to="'/artiklar/' + article.URLName">{{article.ArticleName}}</nuxt-link>
-                    <span class="col-4 date">{{formatDate(article.DatePublished)}}</span>
-                </li>
-            </ul>
-          </section> -->
       </div>
       <div class="right-col col-md-6 ">
           <section class="section row no-gutters flex-column">
@@ -103,13 +94,13 @@ export default {
       margin-top: 0;
       margin-bottom : 0.7em;
     }
+    section {
+      max-width : 23em;
+    }
     .section {
         padding-top: 2em;
         padding-bottom: 2em;
         // width : 85%;
-        p {
-          max-width : 15em;
-        }
         &:first-child {
             border-bottom: 1px solid white;
             padding-top : 0;

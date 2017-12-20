@@ -24,7 +24,7 @@
         name : "Article",
         head () {
             return {
-                // title : this.article.id + " – Svenskt översättarlexikon"
+                // title : this.article.id
             }
         },
         components : {

@@ -4,9 +4,10 @@
     <ul class="resultlist col-12"><li v-for="(items, letter) in groups" v-if="letterHasVisibleArticle(letter)">
         <h2>{{letter}}</h2>
         <ul class="inner"><li v-for="item in items" v-if="!filterstr || isFilterInArticle(item)">
-            <nuxt-link :to="'/artiklar/' + item.URLName">{{item.ArticleName}} </nuxt-link>
+            <nuxt-link :to="'/artiklar/' + item.URLName">{{item.ArticleName}} 
             <!-- <a :href="'/artiklar/' + item.URLName">{{item.ArticleName}} </a> -->
             <span v-if="item.TranslatorYearBirth">{{item.TranslatorYearBirth}}–{{item.TranslatorYearDeath}}</span>
+            </nuxt-link>
         </li></ul>
     </li></ul>
   </section>
@@ -34,14 +35,15 @@ import backend from "assets/backend"
 export default {
   name : "ArticleList",
   head : {
-      title : "Alla artiklar – Svenskt översättarlexikon",
+      title : "Artikellista – Svenskt översättarlexikon",
       meta : [{
         vmid : "description", name: "description", content : "Alla artiklar – Svenskt översättarlexikon",
       }]
   },
   data() {
     return {
-      filterstr : ""
+      filterstr : "",
+      groups: null
     }
   },
   async asyncData ({error, env}) {

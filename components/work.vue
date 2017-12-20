@@ -21,6 +21,7 @@
                 <li v-if="work.PublishingYearOriginal"><span class="sc">Utgivnings- eller tillkomstår för original</span> {{work.PublishingYearOriginal}}</li>
                 <li v-if="work.PublishingYearSource"><span class="sc">Utgivningsår för källspråksutgåva</span> {{work.PublishingYearSource}}</li>
                 <li v-if="work.PartOf_Title"><span class="sc">Ingår i</span> {{work.PartOf_Title}}<span v-if="work.PartOf_Localization">. – {{work.PartOf_Localization}}</span></li>
+                <li v-if="work.Remark" v-html="work.Remark"></li>
             </ul></li>
             <li>
                 <ul>

@@ -28,7 +28,7 @@
         name : "Medarbetare",
         head () {
             return {
-                // title : this.data.ContributerLastname + " – Svenskt översättarlexikon"
+                // title : this.data.ContributerLastname
                 title : "Medarbetare – Svenskt översättarlexikon"
             }
         },

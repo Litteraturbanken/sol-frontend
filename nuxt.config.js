@@ -26,7 +26,11 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'Svenskt översättarlexikon',
+    // titleTemplate: (titleChunk) => {
+    //   console.log("titleChunk", titleChunk)
+    //   // If undefined or blank then we don't need the hyphen
+    //   return titleChunk ? `${titleChunk} - Svenskt översättarlexikon` : 'Svenskt översättarlexikon';
+    // },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -36,7 +40,7 @@ module.exports = {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: 'http://www.oversattarlexikon.se/images/icons/favicon.png' },
       // { href: '/bootstrap.css', rel: "stylesheet" },
-      { rel: 'stylesheet', href: 'https://cloud.typography.com/7426274/770508/css/fonts.css' },
+      { rel: 'stylesheet', href: 'https://cloud.typography.com/7426274/6964792/css/fonts.css' },
       // { rel: 'stylesheet', href: '/font/fa-custom.otf' }
       // <link rel="stylesheet" type="text/css" href="https://cloud.typography.com/7426274/770508/css/fonts.css" />
     ]

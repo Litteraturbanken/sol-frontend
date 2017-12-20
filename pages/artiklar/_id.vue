@@ -30,14 +30,15 @@
                     <li v-for="item in connectionGroups">
                         <h3 v-if="item.type == 2">Om {{ article.ArticleName}}</h3>
                         <h3 v-else-if="item.type == 3">Skrifter av {{ article.ArticleName}}</h3>
-
-                        <ul v-if="item.type == 2 || item.type == 3">
+                        <h3 v-else-if="item.type == 4">Referenser</h3>
+                        <h3 v-else-if="item.type == 5">I artikeln omnämnda verk</h3>
+                        <ul v-if="[2,3,4,5].includes(item.type)">
                             <li v-for="work in item.works">
                                 <nuxt-link class="work" :to="'/verk/' + work.id">{{work.TitleSwedish}}</nuxt-link> <span v-if="work.Authors"> / {{work.Authors}}</span>
                             </li>
                         </ul>
 
-
+                        
                         
                         <template v-else-if="item.type == 1">
                             <h3>Översättningar i bokform</h3>
@@ -161,7 +162,7 @@
                 return
             }
             return {
-                title : this.article.ArticleName + " – Svenskt översättarlexikon"
+                title : this.article.ArticleName
             }
         },
         data () {

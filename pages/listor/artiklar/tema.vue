@@ -3,7 +3,7 @@
   <h2>Tema</h2>
     <ul class="resultlist">
         <li v-for="item in items">
-            <a :href="'/artiklar/' + item.URLName">{{item.ArticleName}}</a>
+            <nuxt-link :to="'/artiklar/' + item.URLName">{{item.ArticleName}}</nuxt-link>
         </li>
     </ul>
   </section>
@@ -15,7 +15,12 @@ import backend from "assets/backend"
 export default {
     name : "Themes",
     head : {
-      title : "Tema"
+      title : "Temaartilar – Svenskt översättarlexikon"
+    },
+    data() {
+      return {
+        items: null
+      }
     },
     async asyncData ({error, env}) {
       try {

@@ -52,10 +52,10 @@
 
 
     export default {
-        name : "AvOversattare",
+        name : "Kronologi",
         head () {
             return {
-                title : "Av översättare" + " – Svenskt översättarlexikon"
+                title : "Kronologi – Svenskt översättarlexikon"
             }
         },
         components: {

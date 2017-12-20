@@ -92,7 +92,7 @@ import _ from "lodash"
 export default {
     name : "Languages",
     head () {
-      return {title : "Språklista"}
+      return {title : "Språklista – Svenskt översättarlexikon"}
     },
     data() {
       console.log("lang data init")

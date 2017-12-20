@@ -17,7 +17,12 @@ import backend from "assets/backend"
 export default {
     name : "Prizes",
     head : {
-      title : "Priser"
+      title : "Priser för översättare – Svenskt översättarlexikon"
+    },
+    data() {
+      return {
+        items: null
+      }
     },
     async asyncData ({error, env}) {
       try {

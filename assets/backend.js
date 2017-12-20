@@ -54,6 +54,7 @@ function groupConnections(works) {
         .value()
 }
 function groupBiblType(works) {
+    works = _.filter(works, work => work.ConnectionType == "1")
     let connectionGroups = _.groupBy(works, "BibliographyType")
     return _(connectionGroups)
         .toPairs(connectionGroups)

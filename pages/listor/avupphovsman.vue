@@ -23,7 +23,7 @@
         components: {work : Work},
         head () {
             return {
-                title : "Av upphovsman" + " – Svenskt översättarlexikon"
+                title : "Av upphovsman"
             }
         },
         async asyncData ({ params, error, route }) {
