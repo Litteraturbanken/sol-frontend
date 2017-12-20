@@ -20,7 +20,7 @@ test.page(`${host}/listor/sprak/original`)(
         await t
             .click(Selector(".filters select").nth(0))
             .click(Selector("option[value='till']"))
-            .wait(100)
+            .wait(200)
             .expect(getLocation()).eql(`${host}/listor/sprak/till/`)
 
         let initialLis = await Selector("li").count
