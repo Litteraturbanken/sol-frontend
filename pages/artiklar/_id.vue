@@ -6,8 +6,10 @@
         
         
                 <figure >
-                    <img :src="'https://spraakbanken.gu.se/karp/data/sol/artikelfiler/' + article.FileName"
+                    <img :src="'https://ws.spraakbanken.gu.se/ws/sol/storage/uploads/' + article.FileName"
                         onerror="this.style.display='none'">
+                    <!-- <img :src="'https://spraakbanken.gu.se/karp/data/sol/artikelfiler/' + article.FileName"
+                        onerror="this.style.display='none'"> -->
                     <!-- <img src="https://spraakbanken.gu.se/karp/data/sol/artikelfiler/Roland_Adlerberth7.jpg"
                         onerror="this.style.display='none'"> -->
                     <!-- <figcaption>{{article.Files[0].Author}}</figcaption> -->

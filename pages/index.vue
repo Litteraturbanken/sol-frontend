@@ -102,7 +102,7 @@ export default {
         padding-bottom: 2em;
         // width : 85%;
         &:first-child {
-            border-bottom: 1px solid white;
+            border-bottom: 1px solid #333;
             padding-top : 0;
             
         }
@@ -123,7 +123,7 @@ export default {
 
     .left-col {
         padding-right : 2em;
-        border-right: 1px solid white;
+        border-right: 1px solid #333;
     }
     .right-col {
         // border-left: 1px solid lightgrey;
@@ -141,7 +141,7 @@ export default {
     }
 
     img {
-      border: 1px solid white;
+      border: 1px solid #333;
     }
 
 

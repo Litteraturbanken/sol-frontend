@@ -52,7 +52,6 @@
 }
 
 html {
-  // background-color : rgb(165,63,15);
   font-size: 20px;
   word-spacing: 1px;
   -moz-osx-font-smoothing: grayscale;
@@ -77,8 +76,11 @@ ul.resultlist {
   }
 }
 body {
+  // background-color : #f7fdf4;
+  background: url("cloud_blue.jpg" ) no-repeat;
+  background-position-y: -500px;
   color : $textcolor;
-  font-family : "Verlag A", "Verlag B", georgia, serif;
+  font-family : "Verlag A", "Verlag B", sans-serif;
   padding : 1em;
   line-height : 1.4;
   // background-color : rgb(226,145,0); 
@@ -232,8 +234,23 @@ li {
 
 }
 
-
+// .outer {
+//   &:before {
+//     content: "";
+//     display : block;
+//     position: absolute;
+//     background-color : $primary_color;
+//     left: 0;
+//     right : 0;
+//     top : 0;
+//     height : 205px;
+//     box-shadow: 1px 2px 6px;
+//   }
+// }
 header {
+  // * {
+  //   color : white !important;
+  // }
   margin-bottom: 3em;
   h1 {
     font-size: 2.7rem;
@@ -257,8 +274,8 @@ header {
     font-size: 0.8em;
     margin-top: 3px;
 
-    background-color: transparent;
-    border: 1px solid #999;
+    background-color: rgba(255,255,255,0.4);
+    border: 1px solid #333;
     // border-left: 1px solid white;
     // border-bottom: 1px solid white;
     // color: white;
@@ -304,7 +321,7 @@ header {
     padding-left: 0;
   }
   .navbar {
-    border-top: 1px solid white;
+    border-top: 1px solid #333;
     margin: 0 auto;
     padding-top: 0.5em;
   }
