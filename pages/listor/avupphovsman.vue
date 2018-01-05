@@ -1,6 +1,6 @@
 <template>
-    <div class="">
-    <h2>Verk av {{$route.query.a}}</h2>
+    <div class="row flex-column no-gutters">
+    <h2 class="">Verk av {{$route.query.a}}</h2>
         <ul class="col-md-5">
             <li v-for="work in works">
                 <work :work="work"></work>

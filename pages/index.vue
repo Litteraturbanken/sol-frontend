@@ -55,6 +55,11 @@
 import backend from "assets/backend"
 
 export default {
+  head: {
+    bodyAttrs: {
+        class: 'page-start'
+    }
+  },
   data() {
     return {about : null, article : null, themearticle: null, themearticle2: null, latest : null}
   },

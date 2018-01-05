@@ -77,8 +77,13 @@ ul.resultlist {
 }
 body {
   // background-color : #f7fdf4;
-  background: url("cloud_blue.jpg" ) no-repeat;
-  background-position-y: -500px;
+  &.page-start {
+    background: url("cloud_blue.jpg" ) ;
+
+    a:hover {
+      color : black;
+    }
+  }
   color : $textcolor;
   font-family : "Verlag A", "Verlag B", sans-serif;
   padding : 1em;
@@ -172,7 +177,7 @@ a:focus, a:hover {
 }
 
 .range-slider-fill {
-    background-color: $secondary_color !important;
+    background-color: $primary_color !important;
 }
 
 .outer {

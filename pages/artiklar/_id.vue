@@ -18,7 +18,7 @@
                 
                 <section v-html="article.ArticleText"></section>
                 <div class="mt-4">
-                    <nuxt-link :to="'/medarbetare/' + contributors[0].URLName" rel="author">{{contributors[0].FirstName}} {{contributors[0].LastName}}</nuxt-link>
+                    <nuxt-link :to="'/medarbetare/' + mainContributor.URLName" rel="author">{{mainContributor.FirstName}} {{mainContributor.LastName}}</nuxt-link>
                 </div>
             </div>
         
@@ -140,7 +140,7 @@
             columns: 250px 2;
         }
         li span {
-            color : white;
+            color : grey;
         }
     }
 
@@ -183,7 +183,9 @@
                 return payload
             }
             try{
-                return await backend.getArticle(params.id)
+                let article = await backend.getArticle(params.id)
+                console.log("article", article)
+                return article
                 // console.log("article", article, "works.length", works.length)
             } catch(err) {
                 console.log("Article fetch error.")
@@ -193,6 +195,10 @@
 
         },
         computed : {
+            mainContributor : function() {
+                if(!this.contributor || !this.contributor.length) return {} 
+                return this.contributor[0]
+            }
         },
         methods : {
             getBiblTypeName(type) {
