@@ -8,12 +8,16 @@
             ref="inputField"
             keyup.enter.prevent=""
             >
-      <!-- <transition name="fade">
-        <i class="loading icon icon-spinner" v-show="isLoading"></i>
-      </transition> -->
+      <transition name="fade">
+        <i class="loading icon icon-spinner animate-spin" v-show="isLoading"></i>
+      </transition>
       <ul v-click-outside="outside" role="menu" class="dropdown-menu" v-show="autocompleteData.length" >
           <li class="dropdown-item" :class="{active: isFirstActive}"><a  :href="'/sok?fras=' + searchstr">Sök på "{{searchstr}}"</a></li>
-          <li class="dropdown-item" :class="{active: item.active}" role="menuitem" v-for="item in autocompleteData.slice(1, autocompleteData.length)" ng-if="item.label">
+          <li class="dropdown-item"
+              :class="{active: item.active}"
+              role="menuitem"
+              v-for="item in autocompleteData.slice(1, autocompleteData.length)" 
+              ng-if="item.label">
             <a :href="item.url" >{{item.label}}</a>
           </li>
       </ul>        
@@ -28,6 +32,8 @@
     opacity: 0
   }
   .loading {
+    position: relative;
+    top: 6px;
   }
 
   input {
@@ -53,6 +59,7 @@
   }
   .search {
     position : relative;
+    white-space: nowrap;
   }
 </style>
 
@@ -148,7 +155,8 @@ export default {
       this.$refs.inputField.focus()
     },
     async fetchData(val) {
-      if(!val) {
+      if(!val.trim(/\s/)) {
+        this.autocompleteData = []
         return
       }
       this.isLoading = true
