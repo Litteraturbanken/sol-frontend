@@ -12,6 +12,9 @@
     .work {
         max-width : 400px;
     }
+    h2 {
+        max-width : 600px;
+    }
 
 </style>
 

@@ -13,17 +13,26 @@
         <h2>Artiklar</h2>
         <ul class="articles resultlist">
             <li v-for="article in articles">
-                <a :href="'/artiklar/' + article.URLName">{{article.ArticleName}}</a>
+                <figure v-if="article.FileName" class="d-inline">
+                    <img class="mr-3 align-top" :src="'https://ws.spraakbanken.gu.se/ws/sol/storage/uploads/' + article.FileName"
+                        onerror="this.style.display='none'">
+                </figure>
+
+                <div class="d-inline-block">
+                    <a :href="'/artiklar/' + article.URLName">{{article.ArticleName}}</a>
+                    <span v-if="article.TranslatorYearBirth"> ({{article.TranslatorYearBirth}}-{{article.TranslatorYearDeath}})</span>
+                    <div class="articletype">{{articleTypeLabel(article.Type)}}</div>
+                </div>
             </li>
         </ul>
         
     </section>
-    <section v-if="works.length">
+    <section class="bibliography" v-if="works.length">
         <h2>Verk</h2>
         <ul class="works resultlist">
             <li v-for="work in works">
                 <div>
-                    <a class="work" :href="'/verk/' + work.id">{{work.TitleSwedish}}</a>, {{work.PublishingYearSwedish}}
+                    <a class="work" :href="'/verk/' + work.id">{{work.TitleSwedish}} <span v-if="work.SubtitleSwedish">: {{work.SubtitleSwedish}}</span></a><span v-if="work.PublishingYearSwedish">, {{work.PublishingYearSwedish}}</span>
                 </div>
                 <div><span v-if="work.Authors">{{work.Authors}}, </span> <em>{{connectionLabel(work.ConnectionType)}}:</em> {{work.Translator}} </div>
             </li>
@@ -50,12 +59,26 @@
     .work {
         font-weight : bold;
     }
+    input {
+        padding-left: 0.4em;
+    }
     .articles {
         columns: 200px 2;
+        max-width : 50em;
+        li {
+            margin-bottom: 1em;
+        }
+        .articletype {
+            font-size: 0.8rem;
+        }
     }
     .articles_section {
         margin-bottom: 2em;
     }
+    .bibliography {
+        max-width : 30em;
+    }
+
     .search {
         position: relative;
         .dropdown-menu {
@@ -109,11 +132,22 @@ export default {
         }
     },
     methods : {
-        connectionLabel : function(type) {
+        articleTypeLabel(type) {
+            return [
+                "Översättare",
+                "Översättarpris",
+                "Förlag",
+                "Temaartikel"
+            ][Number(type) - 1]
+        },
+        connectionLabel(type) {
+            // TODO: not working
             return [
                 "översättare",
-                "skrifter av",
-                "handlar om"
+                "handlar om",
+                "författare",
+                "referens till",
+                "handlar om verket"
             ][Number(type) - 1]
 
         },
@@ -125,13 +159,10 @@ export default {
             console.log("submit", searchstr)
             this.searchstr = searchstr
             this.$router.replace({query : {fras : searchstr}})
-            // var {articles, works, suggestion} = await backend.search(searchstr)
+            
+            let [{articles, works, suggestion, prizes}, lbAutocomplete] = await Promise.all([backend.search(searchstr), backend.autocomplete(searchstr)])
 
-            // let [lbAutocomplete] = await Promise.all([backend.autocomplete(searchstr)])
-            let [{articles, works, suggestion}, lbAutocomplete] = await Promise.all([backend.search(searchstr), backend.autocomplete(searchstr)])
-
-            // console.log("articles, works", articles, works, suggestion)
-            this.articles = articles
+            this.articles = articles.concat(prizes)
             this.works = works
             this.suggestion = suggestion
             this.lb_autocomplete = lbAutocomplete

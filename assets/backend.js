@@ -277,58 +277,6 @@ class PythonBackend {
     
 }
 
-class DirectusBackend {
-    
-    async getArticle(articleId) {
-        
-        let {data} = await directusGet("Articles", {
-            "filters[URLName][eq]" : encodeURIComponent(articleId)
-        })
-
-        return data.data[0]
-    }
-    async listArticles() {
-        let resp = await directusGet("Articles", {
-            limit : 10000,
-            columns : "id,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"
-        })
-
-        // console.log("datas", resp)
-        let data = resp.data.data
-
-        function normalizeSortLetter(letter) {
-            return {
-                "Ü" : "U"
-            }[letter.toUpperCase()] || letter.toUpperCase() 
-
-        }
-
-        let groups = _(data).groupBy((item) => {
-            return normalizeSortLetter( (item.TranslatorLastname || item.ArticleName)[0] )
-        }).toPairs().sortBy(([key, item]) => {
-            return key
-        }).fromPairs().value()
-        for (let letter in groups) {
-            groups[letter] = _.sortBy(groups[letter], (item) => item.TranslatorLastname || item.ArticleName)
-        }
-        return groups
-    }
-
-    async getWork(workid) {
-        let resp = await directusGet("Works", {
-            // columns : "id,id,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname"
-            "filters[id][eq]" : workid
-        })
-        // console.log("resp", resp)  
-
-        return resp.data.data[0]
-    }
-
-    async getLangs() {}
-    async listPrizeArticles() {}
-    async listThemeArticles() {}
-}
-
 
 export default new PythonBackend()
 // export default new DirectusBackend()
