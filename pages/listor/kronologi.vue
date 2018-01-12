@@ -35,7 +35,7 @@
   
   <ul class="results resultlist" :class="{loading: loading}">
       <li v-for="article in articles">
-          <a :href="'/artiklar/' + article.URLName">{{article.ArticleName}} ({{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}})</a>
+          <a :href="'/artiklar/' + article.URLName">{{article.ArticleName}}<span v-if="article.TranslatorYearBirth || article.TranslatorYearDeath"> ({{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}})</span></a>
       </li>
   </ul>
   </section>
@@ -66,6 +66,8 @@
             this.loading = true
             this.articles = await backend.chronology(start, end)
             this.loading = false
+            // this.$route.hash = start
+            window.location.hash = `${start}-${end}`
           },
           offsetStyle : function(leftOffset, rightOffset) {
             leftOffset = leftOffset || 0
