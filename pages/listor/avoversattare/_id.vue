@@ -89,7 +89,7 @@
     }
     .work {
         margin-bottom: 2em;
-        max-width : 400px;
+        max-width : 500px;
     }
     .list-inline-item:not(:last-child) {
         margin-right: 10px;
@@ -104,11 +104,6 @@
     
     .list-item {
             
-    }
-
-    .lang-filter {
-        columns: 150px 4;
-        max-width: 500px;
     }
 
     .results {
@@ -169,6 +164,7 @@
 
         mounted() {
             this.sortGroups(this.connectionGroups)
+            this.sortGroups(this.biblTypeGroups)
         },
 
         methods : {
@@ -206,6 +202,7 @@
                 this.$router.push({query : {sort: sortVal}})
                 this.sortVal = sortVal
                 this.sortGroups(this.connectionGroups)
+                this.sortGroups(this.biblTypeGroups)
             },
             filterWorks : function(works) {
                 if(!this.$route.params.lang) return works
