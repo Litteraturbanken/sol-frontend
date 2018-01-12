@@ -37,7 +37,7 @@ export default {
   head : {
       title : "Artikellista – Svenskt översättarlexikon",
       meta : [{
-        vmid : "description", name: "description", content : "Alla artiklar – Svenskt översättarlexikon",
+        hid : "description", name: "description", content : "Alla artiklar – Svenskt översättarlexikon",
       }]
   },
   data() {

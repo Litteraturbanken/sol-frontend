@@ -29,12 +29,11 @@ module.exports = {
     titleTemplate: (titleChunk) => {
       console.log("titleChunk", titleChunk)
       // If undefined or blank then we don't need the hyphen
-      return titleChunk ? `${titleChunk} - Svenskt översättarlexikon` : 'Svenskt översättarlexikon';
+      return titleChunk ? `${titleChunk} - Svenskt översättarlexikon` : 'Svenskt översättarlexikon'
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Svenskt översättarlexikon' },
       { name: 'google-site-verification', content: 'N0kL5tDA6UPMmyqv6bJBPNMsvOv27pcF7_ABjT94v5c' }
     ],
     link: [

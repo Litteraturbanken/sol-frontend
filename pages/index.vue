@@ -58,7 +58,17 @@ export default {
   head: {
     bodyAttrs: {
         class: 'page-start'
-    }
+    },
+    meta: [
+      {
+        hid: 'description', 
+        name: 'description', 
+        content: `
+        I Svenskt översättarlexikon blir översättarna – de som har skapat halva den svenska nationallitteraturen – synliga med biografi, porträtt och verkförteckning. 
+        Lexikonet utvidgas kontinuerligt med nya artiklar och är fortfarande under utveckling. I första omgången presenteras avlidna svenska och finlandssvenska översättare.
+        `.trim() 
+      },
+    ]
   },
   data() {
     return {about : null, article : null, themearticle: null, themearticle2: null, latest : null}
