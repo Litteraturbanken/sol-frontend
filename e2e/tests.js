@@ -36,6 +36,7 @@ test.page(`${host}/artiklar/Gunnar_Ekelöf`)(
     'detailed bibliography has works', async t => {
         await t
             .click(Selector(".bibliography .detailed"))
+            .wait(200)
             .expect(getLocation()).eql(`${host}/listor/avoversattare/Gunnar_Ekel%C3%B6f`)
             .expect(Selector(".work").count).gt(0)
 })
