@@ -26,11 +26,11 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    // titleTemplate: (titleChunk) => {
-    //   console.log("titleChunk", titleChunk)
-    //   // If undefined or blank then we don't need the hyphen
-    //   return titleChunk ? `${titleChunk} - Svenskt översättarlexikon` : 'Svenskt översättarlexikon';
-    // },
+    titleTemplate: (titleChunk) => {
+      console.log("titleChunk", titleChunk)
+      // If undefined or blank then we don't need the hyphen
+      return titleChunk ? `${titleChunk} - Svenskt översättarlexikon` : 'Svenskt översättarlexikon';
+    },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

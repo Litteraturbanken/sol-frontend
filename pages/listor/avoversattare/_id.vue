@@ -127,7 +127,7 @@
         name : "AvOversattare",
         head () {
             return {
-                title : "Av översättare"
+                title : "Verk för " + this.article
             }
         },
         components : {
