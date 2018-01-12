@@ -16,7 +16,7 @@
                     <figcaption v-html="article.FileAuthor"></figcaption>
                 </figure>
                 
-                <section v-html="article.ArticleText"></section>
+                <section class="textbody" v-html="article.ArticleText"></section>
                 <div class="mt-4">
                     <nuxt-link :to="'/medarbetare/' + mainContributor.URLName" rel="author">{{mainContributor.FirstName}} {{mainContributor.LastName}}</nuxt-link>
                 </div>

@@ -161,8 +161,8 @@
                 var backendData = await backend.getWorksByAuthor(params.id)
 
             } catch(err) {
-                console.log("Article fetch error.", err)
-                error({ message: "Artikeln kunde inte hittas.", statusCode: 404 })
+                console.log("Hittade ingen översättare vid det namnet.", err)
+                error({ message: "Hittade ingen översättare vid det namnet.", statusCode: 404 })
             }
             return { ...backendData, lang, sortVal }
         },
@@ -204,6 +204,8 @@
             onSortChange : function(sortVal) {
                 console.log("this.$router", this.$router)
                 this.$router.push({query : {sort: sortVal}})
+                this.sortVal = sortVal
+                this.sortGroups(this.connectionGroups)
             },
             filterWorks : function(works) {
                 if(!this.$route.params.lang) return works

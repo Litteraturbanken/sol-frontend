@@ -115,6 +115,8 @@ class PythonBackend {
         works = _.sortBy(works, "RealYear")
         // console.log("article", article)
         
+        rest.article.ArticleText = rest.article.ArticleText.replace(/<p>\s*<img/g, "<p class='has_img'><img")
+
         return {
             ...rest,
             works,
@@ -197,6 +199,9 @@ class PythonBackend {
     async getWorksByAuthor(urlname) {
         let {languages, works, article, bibliography_types} = (await pythonGet(urljoin("/bibliography", encodeURIComponent(urlname))))
         // console.log("works", works)
+        if(!works.length) {
+            throw Error("No works found.")
+        }
         for(let work of works) {
             work.RealYear = Number(work.RealYear)
         }
@@ -264,10 +269,10 @@ class PythonBackend {
     } 
     
     async chronology(from, to) {
-        let {articles} = (await pythonGet(`/chronology/${from}/${to}`, 
+        let resultObj = (await pythonGet(`/chronology/${from}/${to}`, 
             {show: "Articles.id,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
         ))
-        return articles
+        return resultObj
     } 
 
     async getStatic(page) {

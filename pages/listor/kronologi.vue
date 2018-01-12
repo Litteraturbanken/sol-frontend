@@ -13,8 +13,8 @@
   <div class="row no-gutters"><no-ssr>
       <range-slider
          class="slider col-12"
-         :min="startYear"
-         :max="endYear"
+         :min="min"
+         :max="max"
          step="1"
          v-model="sliderValue"
          @change="sliderChange">
@@ -64,9 +64,8 @@
          methods : {
           sliderChange : async function([start, end]) {
             this.loading = true
-            this.articles = await backend.chronology(start, end)
+            Object.assign(this, await backend.chronology(start, end))
             this.loading = false
-            // this.$route.hash = start
             window.location.hash = `${start}-${end}`
           },
           offsetStyle : function(leftOffset, rightOffset) {
@@ -80,13 +79,13 @@
         },
          computed : {
           range : function() {
-            let years = _.range(this.startYear, this.endYear + 1).filter((item) => item % 100 == 0)
+            let years = _.range(this.min, this.max + 1).filter((item) => item % 100 == 0)
 
-            let total = this.endYear - this.startYear
+            let total = this.max - this.min
             let first = years[0]
             let last = _.last(years)
-            this.percentLeftPad = ((first - this.startYear) / total * 100)
-            this.percentRightPad = ((this.endYear - last) / total * 100)
+            this.percentLeftPad = ((first - this.min) / total * 100)
+            this.percentRightPad = ((this.max - last) / total * 100)
             return years
           }
           
@@ -94,8 +93,8 @@
          data () {
           return {
             loading : false,
-            startYear : null,
-            endYear : null,
+            min : null,
+            max : null,
             percentLeftPad : null,
             percentRightPad : null,
             sliderValue : [1900, 1950],
@@ -109,8 +108,8 @@
           } 
 
           // TODO: un-hardcode this
-          this.startYear = 1437
-          this.endYear = 2017
+          // this.startYear = 1437
+          // this.endYear = 2017
 
           this.sliderChange(this.sliderValue)
         },

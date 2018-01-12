@@ -4,9 +4,9 @@
     <div>
       <h1 class="error-code">{{ error.statusCode }}</h1>
       <div class="error-wrapper-message">
-        <h2 class="error-message">{{ error.message }}</h2>
+        <h2 class="error-message"><em>{{ error.message }}</em></h2>
       </div>
-      <p v-if="error.statusCode === 404"><nuxt-link class="error-link" to="/">Back to the home page</nuxt-link></p>
+      <p v-if="error.statusCode === 404"><nuxt-link class="error-link" to="/">Tillbaka till startsidan</nuxt-link></p>
     </div>
   </div>
 </template>
@@ -24,7 +24,7 @@ export default {
 </script>
 
 <style scoped>
-.error-page {
+/*.error-page {
   color: #000;
   background: #fff;
   top: 0;
@@ -63,5 +63,5 @@ export default {
   font-weight: normal;
   text-decoration: none;
   font-size: 14px;
-}
+}*/
 </style>

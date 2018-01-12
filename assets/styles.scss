@@ -214,10 +214,34 @@ a {
 p {
   max-width : 30em;
   margin-bottom: 0;
+  a {
+    color : $primary_color;
+    &:hover {
+      color : darken($primary_color, 20%)
+    }
+  }
 }
 p + p {
   text-indent: 1.8em;
 }
+
+.textbody {
+    p.has_img {
+      margin-top: 0.5em;  
+      margin-bottom: 0.5em;  
+      text-indent: 0;
+    }
+    p.has_img + p {
+      text-indent: 0;
+      font-size: 0.8em;
+      margin-bottom: 0.7em;
+    }
+
+    p.has_img + p + p {
+      text-indent: 0;
+    }
+}
+
 li {
   list-style : none;
 }
