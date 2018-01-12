@@ -12,13 +12,13 @@
     <section class="articles_section" v-if="articles.length">
         <h2>Artiklar</h2>
         <ul class="articles resultlist">
-            <li v-for="article in articles">
-                <figure v-if="article.FileName" class="d-inline">
+            <li v-for="article in articles" class="d-flex">
+                <figure v-if="article.FileName">
                     <img class="mr-3 align-top" :src="'https://ws.spraakbanken.gu.se/ws/sol/storage/uploads/' + article.FileName"
                         onerror="this.style.display='none'">
                 </figure>
 
-                <div class="d-inline-block">
+                <div>
                     <a :href="'/artiklar/' + article.URLName">{{article.ArticleName}}</a>
                     <span v-if="article.TranslatorYearBirth"> ({{article.TranslatorYearBirth}}-{{article.TranslatorYearDeath}})</span>
                     <div class="articletype">{{articleTypeLabel(article.Type)}}</div>
@@ -64,9 +64,10 @@
     }
     .articles {
         columns: 200px 2;
-        max-width : 50em;
+        max-width : 60em;
         li {
             margin-bottom: 1em;
+            break-inside: avoid;
         }
         .articletype {
             font-size: 0.8rem;
