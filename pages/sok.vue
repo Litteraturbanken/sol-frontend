@@ -104,6 +104,7 @@ import Autocomplete from "~/components/autocomplete.vue"
 
 
 export default {
+    name: "Sok",
     data () {
         return {
             searchstr : this.$route.query.fras || "",
@@ -121,6 +122,12 @@ export default {
     mounted : function() {
         if(this.searchstr) {
             this.onSubmit(this.searchstr)
+        }
+    },
+    watch: {
+        "$route.query.fras": function(val) {
+            console.log("val", val)
+            this.onSubmit(val)
         }
     },
     components : {autocomplete: Autocomplete},

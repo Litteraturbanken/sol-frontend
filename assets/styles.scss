@@ -313,10 +313,9 @@ header {
     padding-left : 0;
     padding-bottom : 2px;
     padding-top : 0;
-    height : 15px;
     vertical-align: bottom;
-    line-height: 0.8;
-
+    line-height : 1.2;
+    height: 19px;
     
   }
   form {
@@ -334,6 +333,10 @@ header {
 
     
   }
+}
+[is-safari] header input {
+  // height: auto;
+  // vertical-align: middle;
 }
 .list-inline {
   li {

@@ -109,7 +109,7 @@ class PythonBackend {
 
     async getArticle(articleId) {
         let resp = (await pythonGet(urljoin("article", encodeURIComponent(articleId)), {
-            show : "id,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,ArticleText,ArticleTypes.ArticleTypeName,ArticleFiles.FileName,ArticleFiles.Author:FileAuthor"
+            show : "id,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,ArticleText,ArticleTypes.ArticleTypeName,ArticleFiles.FileName,ArticleFiles.Author:FileAuthor,ArticleFiles.FileDescription"
         }))
         let {works, bibliography_types, ...rest} = resp
         works = _.sortBy(works, "RealYear")

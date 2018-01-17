@@ -89,8 +89,7 @@ export default {
     }
   },
 
-  async asyncData() {
-
+  async asyncData(context) {
     let {PageContent} = await backend.getStatic('Om_Lexikonet_Ingress')
     // TODO parallelize
     let article = await backend.getRandom(1)

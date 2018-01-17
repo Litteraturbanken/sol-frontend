@@ -13,13 +13,13 @@
                     <!-- <img src="https://spraakbanken.gu.se/karp/data/sol/artikelfiler/Roland_Adlerberth7.jpg"
                         onerror="this.style.display='none'"> -->
                     <!-- <figcaption>{{article.Files[0].Author}}</figcaption> -->
-                    <figcaption v-html="article.FileAuthor"></figcaption>
+                    <figcaption v-html="article.FileAuthor || article.FileDescription"></figcaption>
                 </figure>
                 
                 <section class="textbody" v-html="article.ArticleText"></section>
-                <div class="mt-4">
+                <p class="mt-4">
                     <nuxt-link :to="'/medarbetare/' + mainContributor.URLName" rel="author">{{mainContributor.FirstName}} {{mainContributor.LastName}}</nuxt-link>
-                </div>
+                </p>
             </div>
         
             
@@ -196,8 +196,8 @@
         },
         computed : {
             mainContributor : function() {
-                if(!this.contributor || !this.contributor.length) return {} 
-                return this.contributor[0]
+                if(!this.contributors || !this.contributors.length) return {} 
+                return this.contributors[0]
             }
         },
         methods : {

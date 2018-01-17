@@ -25,24 +25,33 @@ module.exports = {
   /*
   ** Headers of the page
   */
-  head: {
-    titleTemplate: (titleChunk) => {
+  head() {
+    console.log("conf context", this.$store.app.context.userAgent)
+    return {
+      titleTemplate: (titleChunk) => {
       console.log("titleChunk", titleChunk)
       // If undefined or blank then we don't need the hyphen
       return titleChunk ? `${titleChunk} - Svenskt översättarlexikon` : 'Svenskt översättarlexikon'
-    },
-    meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { name: 'google-site-verification', content: 'N0kL5tDA6UPMmyqv6bJBPNMsvOv27pcF7_ABjT94v5c' }
-    ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: 'http://www.oversattarlexikon.se/images/icons/favicon.png' },
-      // { href: '/bootstrap.css', rel: "stylesheet" },
-      { rel: 'stylesheet', href: 'https://cloud.typography.com/7426274/6964792/css/fonts.css' },
-      // { rel: 'stylesheet', href: '/font/fa-custom.otf' }
-      // <link rel="stylesheet" type="text/css" href="https://cloud.typography.com/7426274/770508/css/fonts.css" />
-    ]
+      },
+      // try middleware instead
+      // bodyAttrs: {
+      //   "class": /Chrome/.test(this.$store.app.context.userAgent || window.navigator.userAgent) ? "is-safari" : ""
+      // },
+
+
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'google-site-verification', content: 'N0kL5tDA6UPMmyqv6bJBPNMsvOv27pcF7_ABjT94v5c' }
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: 'http://www.oversattarlexikon.se/images/icons/favicon.png' },
+        // { href: '/bootstrap.css', rel: "stylesheet" },
+        { rel: 'stylesheet', href: 'https://cloud.typography.com/7426274/6964792/css/fonts.css' },
+        // { rel: 'stylesheet', href: '/font/fa-custom.otf' }
+        // <link rel="stylesheet" type="text/css" href="https://cloud.typography.com/7426274/770508/css/fonts.css" />
+      ]
+    }
   },
 
   css : [
@@ -105,7 +114,8 @@ module.exports = {
         path: '/listor/avoversattare/:id/:type?/:lang?',
         component: resolve(__dirname, 'pages/listor/avoversattare/_id.vue')
       })
-    }
+    },
+    middleware: ["useragent"]
   },
 
   plugins : ["~plugins/filters.js"],

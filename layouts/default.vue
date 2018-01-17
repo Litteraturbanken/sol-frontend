@@ -23,7 +23,7 @@
                 <i class="icon icon-facebook-squared"></i>
               </a>
               
-              <form @submit.prevent="$router.push({path : '/sok', query : {'fras' : searchstr}})">
+              <form class="" @submit.prevent="$router.push({path : '/sok', query : {'fras' : searchstr}})">
                 <autocomplete ref="autocomplete" :backend="autocompleteBackend" v-model="searchstr"></autocomplete>
               </form>
             </div>
@@ -66,6 +66,13 @@
 
   export default {
     components : {autocomplete: Autocomplete},
+    head() {
+      return {
+        bodyAttrs: {
+          "is-safari": /Safari/.test(this.$store.app.context.userAgent || window.navigator.userAgent) 
+        },
+      }
+    },
     data () {
       return {
         showNav : false,
