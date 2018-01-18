@@ -26,7 +26,6 @@ module.exports = {
   ** Headers of the page
   */
   head() {
-    console.log("conf context", this.$store.app.context.userAgent)
     return {
       titleTemplate: (titleChunk) => {
       console.log("titleChunk", titleChunk)
