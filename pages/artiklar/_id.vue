@@ -13,7 +13,7 @@
                     <!-- <img src="https://spraakbanken.gu.se/karp/data/sol/artikelfiler/Roland_Adlerberth7.jpg"
                         onerror="this.style.display='none'"> -->
                     <!-- <figcaption>{{article.Files[0].Author}}</figcaption> -->
-                    <figcaption v-html="article.FileAuthor || article.FileDescription"></figcaption>
+                    <figcaption v-html="article.FileDescription"></figcaption>
                 </figure>
                 
                 <section class="textbody" v-html="article.ArticleText"></section>
