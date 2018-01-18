@@ -205,8 +205,9 @@ class PythonBackend {
         for(let work of works) {
             work.RealYear = Number(work.RealYear)
         }
-        let original = _.filter(languages, "Original")
-        let source = _.filter(languages, "Source")
+        let original = _.filter(languages, "original")
+        let source = _.filter(languages, "source")
+        let target = _.filter(languages, "target")
 
         bibliography_types = _.map(bibliography_types, (item) => {
             item.id = String(item.id)
@@ -216,16 +217,19 @@ class PythonBackend {
         let biblTypeGroups = groupBiblType(works)
         // console.log('biblTypeGroups', biblTypeGroups)
 
-        return {source, original, article, biblTypeGroups, biblTypeData, connectionGroups : groupConnections(works)}
+        return {source, original, target, article, biblTypeGroups, biblTypeData, connectionGroups : groupConnections(works)}
 
     }
 
-    async getLangs(groupName) {
-        let langMap = (await pythonGet("/languages/1", 
-            {show: "Articles.id,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
+    async getLangs(groupName, lang) {
+        let path = _.compact([groupName, lang]).join("/")
+
+        let data = (await pythonGet("/languages/" + path, 
+            {show: "TranslatorYearBirth,TranslatorYearDeath,URLName,ArticleName"}
         )).data
         // console.log("langMap", langMap)
-        return langMap[groupName]
+
+        return data[groupName]
     }
     async listPrizeArticles() {
         let data = (await pythonGet("/articles/2", 

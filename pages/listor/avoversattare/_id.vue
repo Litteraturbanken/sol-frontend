@@ -7,12 +7,17 @@
     <select v-model="lang" @change="onLangChange(lang)">
       <option value="">Alla språk</option>
       <optgroup label="Originalspråk" >
-        <option :value="[lang.LanguageName, 'original']" v-for="lang in original">
+        <option v-if="lang.LanguageName != 'Svenska'" :value="[lang.LanguageName, 'original']" v-for="lang in original">
             {{lang.LanguageName}}
         </option>
       </optgroup>
       <optgroup label="Källspråk">
-        <option :value="[lang.LanguageName, 'fran']" v-for="lang in source">
+        <option v-if="lang.LanguageName != 'Svenska'" :value="[lang.LanguageName, 'fran']" v-for="lang in source">
+            {{lang.LanguageName}}
+        </option>
+      </optgroup>
+      <optgroup label="Målspråk">
+        <option v-if="lang.LanguageName != 'Svenska'" :value="[lang.LanguageName, 'till']" v-for="lang in target">
             {{lang.LanguageName}}
         </option>
       </optgroup>
@@ -206,11 +211,16 @@
             },
             filterWorks : function(works) {
                 if(!this.$route.params.lang) return works
+                let type = this.$route.params.type
+                let lang = this.$route.params.lang
                 return works.filter((work) => {
-                    if(this.$route.params.type == "original") {
-                        return this.$route.params.lang == work.LanguageOriginalName
-                    } else if(this.$route.params.type == "fran") {
-                        return this.$route.params.lang == work.LanguageSourceName
+                    if(type == "original") {
+                        return lang == work.LanguageOriginalName
+                    } else if(type == "fran") {
+                        return (lang == work.LanguageSourceName) || (work.LanguageSourceName === null && lang == work.LanguageOriginalName)
+                    } else if(type == "till") {
+                        return lang == work.LanguageTargetName
+
                     }
                 })
             },

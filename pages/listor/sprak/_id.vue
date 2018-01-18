@@ -27,7 +27,7 @@
     <!-- <h2>{{header}}</h2> -->
 
     <ul class="results resultlist">
-        <li v-for="(items, lang) in getFilteredArticles(langSelect)" >
+        <li v-for="(items, lang) in groups" >
             <h2>{{lang}}</h2>
             <ul :class="{'few': items.length < 6}">
                 <li class="" v-for="item in items">
@@ -116,9 +116,7 @@ export default {
     async asyncData ({error, env, params, redirect, route}) {
       console.log("lang asyncData", params, route.query, route)
 
-      if(route.query) {
-        var langSelect = route.query.l
-      }
+      var langSelect = params.lang || ""
       if(params.id) {
         var type = params.id
       }
@@ -128,7 +126,7 @@ export default {
       }
       try {
         let groupId = {original : "original", "fran": "source", till: "target"}[type]
-        let groups = await backend.getLangs(groupId)
+        let groups = await backend.getLangs(groupId, langSelect)
         if(!groups[langSelect]) {
           console.log("reset langSelect", langSelect)
           langSelect = ""
@@ -155,19 +153,20 @@ export default {
       }
     },
     methods : {
-      getFilteredArticles(lang) {
-        if(!lang) {
-          return this.groups
-        } else {
-          return {[lang]: this.groups[lang]}
-        }
+      // getFilteredArticles(lang) {
+      //   if(!lang) {
+      //     return this.groups
+      //   } else {
+      //     return {[lang]: this.groups[lang]}
+      //   }
 
-      },
+      // },
       getUrl : function(item, lang) {
         return `/listor/avoversattare/${item.URLName}/${this.type}/${lang}`
       },
       onLangChange : function(lang) {
-        this.$router.push({query: {l: lang || null}})
+        // this.$router.push({query: {l: lang || null}})
+        this.$router.push({path: `/listor/sprak/${this.type}/${lang}`})
       },
       onLangTypeChange : function(type) {
         if(this.langSelect) {

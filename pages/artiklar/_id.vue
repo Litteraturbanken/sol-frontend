@@ -184,7 +184,6 @@
             }
             try{
                 let article = await backend.getArticle(params.id)
-                console.log("article", article)
                 return article
                 // console.log("article", article, "works.length", works.length)
             } catch(err) {

@@ -224,6 +224,11 @@ p {
 p + p {
   text-indent: 1.8em;
 }
+blockquote {
+  p + p {
+    text-indent: 0;
+  }
+}
 
 .textbody {
     p.has_img {

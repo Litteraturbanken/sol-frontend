@@ -28,7 +28,6 @@ module.exports = {
   head() {
     return {
       titleTemplate: (titleChunk) => {
-      console.log("titleChunk", titleChunk)
       // If undefined or blank then we don't need the hyphen
       return titleChunk ? `${titleChunk} - Svenskt översättarlexikon` : 'Svenskt översättarlexikon'
       },
@@ -112,6 +111,11 @@ module.exports = {
         name: 'avoversattare-filter',
         path: '/listor/avoversattare/:id/:type?/:lang?',
         component: resolve(__dirname, 'pages/listor/avoversattare/_id.vue')
+      })
+      routes.push({
+        name: 'sprak-filter',
+        path: '/listor/sprak/:id?/:lang?',
+        component: resolve(__dirname, 'pages/listor/sprak/_id.vue')
       })
     },
     middleware: ["useragent"]
