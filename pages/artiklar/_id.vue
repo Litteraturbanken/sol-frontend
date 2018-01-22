@@ -20,13 +20,23 @@
                 <p class="mt-4">
                     <nuxt-link :to="'/medarbetare/' + mainContributor.URLName" rel="author">{{mainContributor.FirstName}} {{mainContributor.LastName}}</nuxt-link>
                 </p>
+
+                <section v-if="prizes.length">
+                    <h3>Tilldelade översättarpriser</h3>
+                    <ul>
+                        <li v-for="item in prizes">
+                            {{item.Year}} <a :href="'/artiklar/' + item.URLName">{{item.Prize}}</a>
+                        </li>
+                    </ul>
+                </section>
+
             </div>
         
             
-            <div class="bibliography col-md-4" v-if="works.length">
+            <div class="bibliography col" v-if="works.length">
                 <header>
                     <h3>Bibliografi</h3>
-                    <div><nuxt-link class="detailed" :to="'/listor/avoversattare/' + $route.params.id">Gå till detaljerad bibliografi</nuxt-link></div>
+                    <div><nuxt-link class="detailed" :to="'/listor/' + biblLink +'/' + $route.params.id">Gå till detaljerad bibliografi</nuxt-link></div>
                 </header>
                 <ul>
                     <li v-for="item in connectionGroups">
@@ -67,6 +77,8 @@
                 </template>
             </div>
         </div>
+
+
         <div class="prizewinners row flex-column no-gutters" v-if="prizewinners">
             <h3>Prisvinnare</h3>
             <ul>
@@ -101,6 +113,7 @@
     }
     .article-text {
         max-width: 35em;
+        // margin-right: ;
         h2:first-child {
             margin-top: 0;
         }
@@ -116,7 +129,7 @@
         }
         margin-left: 1em;
         padding-left : 1.5em;
-        border-left: 1px solid white;
+        border-left: 1px solid grey;
         font-size : 0.8em;
 
         h3 {
@@ -135,7 +148,6 @@
         }
     }
     .prizewinners {
-        margin-top: 2em;
         ul {
             columns: 250px 2;
         }
@@ -144,7 +156,7 @@
         }
     }
 
-    @media only screen and (max-width: 987px) {
+    @media only screen and (max-width: 991px) {
         .bibliography {
             border: none;
             padding-left: 15px;
@@ -197,6 +209,9 @@
             mainContributor : function() {
                 if(!this.contributors || !this.contributors.length) return {} 
                 return this.contributors[0]
+            },
+            biblLink : function() {
+                return this.article.Type == 1 ? "avoversattare" : "bibliografi"
             }
         },
         methods : {

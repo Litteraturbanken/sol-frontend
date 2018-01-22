@@ -186,8 +186,9 @@ class PythonBackend {
     }
 
     async getWork(workid) {
-        let {work} = await pythonGet("/bibliography/" + workid)
-        return work[0]
+        let {work, articles} = await pythonGet("/bibliography/" + workid)
+        let article = articles.length ? articles[0] : null
+        return {work: work[0], article}
     }
     
     async getWorksByAuthorName(authorname) {
@@ -229,7 +230,8 @@ class PythonBackend {
         )).data
         // console.log("langMap", langMap)
 
-        return data[groupName]
+        data[groupName] = _.omit(data[groupName], "Flera språk")
+        return data
     }
     async listPrizeArticles() {
         let data = (await pythonGet("/articles/2", 

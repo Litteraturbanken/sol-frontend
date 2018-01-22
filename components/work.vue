@@ -26,6 +26,9 @@
                     <span class="sc" v-if="work.RemarkContent" >Innehåll</span> <div v-html="work.RemarkContent + work.Remark"></div>
                 </li>
             </ul></li>
+            <li v-if="article">
+                <span class="sc">Översättare</span> <a :href="'/artiklar/' + article.URLName"> {{article.ArticleName}}</a> <a :href="'/avoversattare/' + article.URLName"> (bibliografi)</a>
+            </li>
             <li>
                 <ul>
                     <li v-if="!work.NotInLibris"><a class="sc" :href="'http://libris.kb.se/bib/' + work.LibrisID">Titeln i Libris</a></li>
@@ -54,7 +57,7 @@
         // methods: {
         //     getLang
         // },
-        props : ["work"],
+        props : ["work", "article"],
         // data() {
         //     return {
 

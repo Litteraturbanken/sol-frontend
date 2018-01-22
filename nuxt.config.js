@@ -113,6 +113,11 @@ module.exports = {
         component: resolve(__dirname, 'pages/listor/avoversattare/_id.vue')
       })
       routes.push({
+        name: 'bibliografi-filter',
+        path: '/listor/bibliografi/:id/:type?/:lang?',
+        component: resolve(__dirname, 'pages/listor/avoversattare/_id.vue')
+      })
+      routes.push({
         name: 'sprak-filter',
         path: '/listor/sprak/:id?/:lang?',
         component: resolve(__dirname, 'pages/listor/sprak/_id.vue')

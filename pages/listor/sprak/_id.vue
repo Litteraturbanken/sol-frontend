@@ -20,7 +20,7 @@
       </select>
       <select v-model="langSelect" @change="onLangChange(langSelect)">
         <option value="">Alla språk</option>
-        <option :value="lang" v-for="lang in langs">{{lang}}</option>
+        <option :value="lang" v-for="lang in langs" v-if="lang != 'Flera språk'">{{lang}}</option>
       </select>
 
     </div>
@@ -126,14 +126,18 @@ export default {
       }
       try {
         let groupId = {original : "original", "fran": "source", till: "target"}[type]
-        let groups = await backend.getLangs(groupId, langSelect)
-        if(!groups[langSelect]) {
+        let data = await backend.getLangs(groupId, langSelect)
+        let groups = data[groupId]
+        let langs = data.languages
+        if(langSelect && !groups[langSelect]) {
           console.log("reset langSelect", langSelect)
-          langSelect = ""
+          // langSelect = ""
+          redirect("/listor/sprak/" + type)
+          return {groups: null}
         }
         return {
           groups : groups, 
-          langs: _.keys(_.omit(groups, "Flera språk")),
+          langs,
           type, 
           langSelect
         } 
@@ -169,10 +173,8 @@ export default {
         this.$router.push({path: `/listor/sprak/${this.type}/${lang}`})
       },
       onLangTypeChange : function(type) {
-        if(this.langSelect) {
-          var query = {l: this.langSelect}
-        }
-        this.$router.push({path: `/listor/sprak/${type}/`, query})
+        let path = _.compact([`/listor/sprak/${type}`, this.langSelect]).join("/")
+        this.$router.push({path})
       }
     }
 }

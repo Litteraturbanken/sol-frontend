@@ -211,15 +211,19 @@ a {
     color : white;
   }
 }
+
+.colorlinks, p {
+  a {
+      color : $primary_color;
+      &:hover {
+        color : darken($primary_color, 20%)
+      }
+    }
+}
+
 p {
   max-width : 30em;
   margin-bottom: 0;
-  a {
-    color : $primary_color;
-    &:hover {
-      color : darken($primary_color, 20%)
-    }
-  }
 }
 p + p {
   text-indent: 1.8em;
