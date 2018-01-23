@@ -104,7 +104,7 @@ module.exports = {
   },
   router: {
     linkActiveClass: 'router-link-active',
-    // base: "/fklittb/sol/"
+    base: process.env.BASE_URL || "/",
 
     extendRoutes (routes, resolve) {
       routes.push({

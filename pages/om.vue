@@ -88,6 +88,9 @@
     h2, .red {
         margin-top: 0;
     }
+    ul > li {
+        
+    }
     .info {
         border-left: 1px solid grey;
         padding-left : 2em;

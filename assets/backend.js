@@ -187,8 +187,8 @@ class PythonBackend {
 
     async getWork(workid) {
         let {work, articles} = await pythonGet("/bibliography/" + workid)
-        let article = articles.length ? articles[0] : null
-        return {work: work[0], article}
+        // let article = articles.length ? articles[0] : null
+        return {work: work[0], articles}
     }
     
     async getWorksByAuthorName(authorname) {

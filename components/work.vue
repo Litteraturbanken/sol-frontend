@@ -23,11 +23,19 @@
                 <li v-if="work.PublishingYearSource"><span class="sc">Utgivningsår för källspråksutgåva</span> {{work.PublishingYearSource}}</li>
                 <li v-if="work.PartOf_Title"><span class="sc">Ingår i</span> {{work.PartOf_Title}}<span v-if="work.PartOf_Localization">. – {{work.PartOf_Localization}}</span></li>
                 <li v-if="work.RemarkContent || work.Remark" >
-                    <span class="sc" v-if="work.RemarkContent" >Innehåll</span> <div v-html="work.RemarkContent + work.Remark"></div>
+                    <span class="sc" v-if="work.RemarkContent" >Innehåll</span> <div class="ml-4" v-html="work.RemarkContent + work.Remark"></div>
                 </li>
             </ul></li>
-            <li v-if="article">
-                <span class="sc">Översättare</span> <a :href="'/artiklar/' + article.URLName"> {{article.ArticleName}}</a> <a :href="'/avoversattare/' + article.URLName"> (bibliografi)</a>
+            <li v-if="articles">
+                <span class="sc">Översättare</span> 
+                <ul class="ml-4">
+                    <li v-for="article in articles">
+
+                        <span v-if="article.URLName"><a :href="'/artiklar/' + article.URLName"> {{article.ArticleName}}</a> <a :href="'/avoversattare/' + article.URLName"> (bibliografi)</a></span>
+                        <span v-if="!article.URLName"> {{article.ArticleName}}</span>
+                        
+                    </li>
+                </ul>
             </li>
             <li>
                 <ul>
@@ -57,7 +65,7 @@
         // methods: {
         //     getLang
         // },
-        props : ["work", "article"],
+        props : ["work", "articles"],
         // data() {
         //     return {
 
