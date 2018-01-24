@@ -140,6 +140,7 @@
                 lang : "",
                 source : null,
                 original : null,
+                target: null,
                 article : null,
                 biblTypeGroups : null,
                 biblTypeData : null
@@ -158,7 +159,7 @@
                 return {lang, sortVal}
             }
             try{
-                var backendData = await backend.getWorksByAuthor(params.id)
+                var backendData = await backend.getWorksByAuthor(params.id, sortVal)
 
             } catch(err) {
                 console.log("Hittade ingen översättare vid det namnet.", err)
@@ -224,12 +225,6 @@
                     }
                 })
             },
-            sortedGroups : function(sortval) {
-                // if(!this.connectionGroups) return []
-
-                return  this.connectionGroups
-                
-            }
         },
         computed : {
             langName : function() {

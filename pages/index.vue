@@ -27,7 +27,7 @@
       <div class="right-col col-md-6 ">
           <section class="section row no-gutters flex-column">
             <nuxt-link :to="'/artiklar/' + article.URLName">
-              <figure class=""><img :src="'https://spraakbanken.gu.se/karp/data/sol/artikelfiler/' + article.FileName" alt="">
+              <figure class=""><img :src="'https://ws.spraakbanken.gu.se/ws/sol/storage/uploads/' + article.FileName" alt="">
               </figure>
             </nuxt-link>
             

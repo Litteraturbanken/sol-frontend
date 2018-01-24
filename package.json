@@ -11,6 +11,7 @@
     "babel-polyfill": "^6.23.0",
     "bootstrap": "^4.0.0-beta.2",
     "loader-utils": "^1.1.0",
+    "morgan": "^1.9.0",
     "natural-sort": "^1.0.0",
     "nuxt": "^1.0.0",
     "nuxt-generate-cluster": "^1.0.0-gh-c95ed4b",

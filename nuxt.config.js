@@ -20,6 +20,7 @@ const sassResourcesLoader = {
 module.exports = {
   modules : [
     // '@nuxtjs/font-awesome'
+    // "~/modules/debug.js"
   ],
   // mode : "spa",
   /*
@@ -127,6 +128,9 @@ module.exports = {
   },
 
   plugins : ["~plugins/filters.js"],
+  serverMiddleware : [
+    // require("morgan")("tiny")
+  ],
 
 
   generate: {

@@ -43,12 +43,13 @@ async function pythonGet(endpoint, params, config) {
     return data
 }
 
-function groupConnections(works) {
+function groupConnections(works, sortVal) {
+    console.log("sortVal", sortVal)
     let connectionGroups = _.groupBy(works, "ConnectionType")
     return _(connectionGroups)
         .toPairs(connectionGroups)
         .map(([type, works]) => {
-            return {type: Number(type), works}
+            return {type: Number(type), works: sortVal ? _.sortBy(works, sortVal) : works}
         })
         .sortBy(({type}) => [2,3,1,4,5,6,7].indexOf(type))
         .value()
@@ -197,7 +198,7 @@ class PythonBackend {
         return data
     }
     
-    async getWorksByAuthor(urlname) {
+    async getWorksByAuthor(urlname, sortVal) {
         let {languages, works, article, bibliography_types} = (await pythonGet(urljoin("/bibliography", encodeURIComponent(urlname))))
         // console.log("works", works)
         if(!works.length) {
@@ -218,7 +219,7 @@ class PythonBackend {
         let biblTypeGroups = groupBiblType(works)
         // console.log('biblTypeGroups', biblTypeGroups)
 
-        return {source, original, target, article, biblTypeGroups, biblTypeData, connectionGroups : groupConnections(works)}
+        return {source, original, target, article, biblTypeGroups, biblTypeData, connectionGroups : groupConnections(works, sortVal)}
 
     }
 
