@@ -23,7 +23,11 @@
                 <li v-if="work.PublishingYearSource"><span class="sc">Utgivningsår för källspråksutgåva</span> {{work.PublishingYearSource}}</li>
                 <li v-if="work.PartOf_Title"><span class="sc">Ingår i</span> {{work.PartOf_Title}}<span v-if="work.PartOf_Localization">. – {{work.PartOf_Localization}}</span></li>
                 <li v-if="work.RemarkContent || work.Remark" >
-                    <span class="sc" v-if="work.RemarkContent" >Innehåll</span> <div class="ml-4" v-html="work.RemarkContent + work.Remark"></div>
+                    <span class="sc" v-if="work.RemarkContent" >Innehåll </span> 
+                    <div :class="{
+                        'ml-4': (work.RemarkContent + work.Remark).length > 150,
+                        'd-inline-block': (work.RemarkContent + work.Remark).length <= 150,
+                    }" v-html="work.RemarkContent + work.Remark"></div>
                 </li>
             </ul></li>
             <li v-if="articles">
