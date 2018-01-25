@@ -21,7 +21,7 @@
                     <nuxt-link :to="'/medarbetare/' + mainContributor.URLName" rel="author">{{mainContributor.FirstName}} {{mainContributor.LastName}}</nuxt-link>
                 </p>
 
-                <section v-if="prizes.length">
+                <section class="awarded" v-if="prizes.length">
                     <h3>Tilldelade översättarpriser</h3>
                     <ul>
                         <li v-for="item in prizes">
@@ -119,6 +119,9 @@
         }
         margin-bottom: 2em;
 
+    }
+    .awarded {
+        margin-top: 2em;
     }
     .bibliography {
         header {
