@@ -32,12 +32,6 @@ module.exports = {
       // If undefined or blank then we don't need the hyphen
       return titleChunk ? `${titleChunk} - Svenskt översättarlexikon` : 'Svenskt översättarlexikon'
       },
-      // try middleware instead
-      // bodyAttrs: {
-      //   "class": /Chrome/.test(this.$store.app.context.userAgent || window.navigator.userAgent) ? "is-safari" : ""
-      // },
-
-
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -124,7 +118,6 @@ module.exports = {
         component: resolve(__dirname, 'pages/listor/sprak/_id.vue')
       })
     },
-    middleware: ["useragent"]
   },
 
   plugins : ["~plugins/filters.js"],
