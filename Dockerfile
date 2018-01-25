@@ -19,9 +19,8 @@ WORKDIR /usr/src/app
 COPY package.json package-lock.json yarn.lock ./
 
 # RUN yarn global add testcafe
-RUN yarn install
-# If you are building your code for production
-# RUN npm install --only=production
+RUN yarn install --frozen-lockfile
+# RUN npm install
 
 # Bundle app source
 COPY . .
