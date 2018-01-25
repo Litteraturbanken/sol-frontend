@@ -12,13 +12,13 @@
         <i class="loading icon icon-spinner animate-spin" v-show="isLoading"></i>
       </transition>
       <ul v-click-outside="outside" role="menu" class="dropdown-menu" v-show="autocompleteData.length" >
-          <li class="dropdown-item" :class="{active: isFirstActive}"><a  :href="'/sok?fras=' + searchstr">Sök på "{{searchstr}}"</a></li>
+          <li class="dropdown-item" :class="{active: isFirstActive}"><nuxt-link :to="'/sok?fras=' + searchstr">Sök på "{{searchstr}}"</nuxt-link></li>
           <li class="dropdown-item"
               :class="{active: item.active}"
               role="menuitem"
               v-for="item in autocompleteData.slice(1, autocompleteData.length)" 
               ng-if="item.label">
-            <a :href="item.url" >{{item.label}}</a>
+            <nuxt-link :to="item.url" >{{item.label}}</nuxt-link>
           </li>
       </ul>        
   </div>

@@ -35,7 +35,7 @@
                 <ul class="ml-4">
                     <li v-for="article in articles">
 
-                        <span v-if="article.URLName"><a :href="'/artiklar/' + article.URLName"> {{article.ArticleName}}</a> <a :href="'/avoversattare/' + article.URLName"> (bibliografi)</a></span>
+                        <span v-if="article.URLName"><nuxt-link :to="'/artiklar/' + article.URLName"> {{article.ArticleName}}</nuxt-link> <nuxt-link :to="'/avoversattare/' + article.URLName"> (bibliografi)</nuxt-link></span>
                         <span v-if="!article.URLName"> {{article.ArticleName}}</span>
                         
                     </li>
@@ -44,7 +44,7 @@
             <li>
                 <ul>
                     <li v-if="!work.NotInLibris"><a class="sc" :href="'http://libris.kb.se/bib/' + work.LibrisID">Titeln i Libris</a></li>
-                    <li v-if="work.Authors && $route.query.a != work.Authors"><a class="sc" :href='"/listor/avupphovsman/?a=" + work.Authors'>Andra verk av {{work.Authors}}</a></li>
+                    <li v-if="work.Authors && $route.query.a != work.Authors"><nuxt-link class="sc" :to='"/listor/avupphovsman/?a=" + work.Authors'>Andra verk av {{work.Authors}}</nuxt-link></li>
                 </ul>
             </li>
         </ul>
