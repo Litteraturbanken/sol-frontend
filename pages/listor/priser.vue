@@ -3,7 +3,7 @@
     <h2>Priser för översättare</h2>
     <ul class="resultlist">
         <li v-for="item in items">
-            <a :href="'/artiklar/' + item.URLName">{{item.ArticleName}}</a>
+            <nuxt-link :to="'/artiklar/' + item.URLName">{{item.ArticleName}}</nuxt-link>
         </li>
     </ul>
   </section>

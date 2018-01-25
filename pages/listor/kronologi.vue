@@ -35,7 +35,7 @@
   
   <ul class="results resultlist" :class="{loading: loading}">
       <li v-for="article in articles">
-          <a :href="'/artiklar/' + article.URLName">{{article.ArticleName}}<span v-if="article.TranslatorYearBirth || article.TranslatorYearDeath"> ({{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}})</span></a>
+          <nuxt-link :to="'/artiklar/' + article.URLName">{{article.ArticleName}}<span v-if="article.TranslatorYearBirth || article.TranslatorYearDeath"> ({{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}})</span></nuxt-link>
       </li>
   </ul>
   </section>

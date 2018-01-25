@@ -8,7 +8,7 @@
             <h4>Artiklar</h4>
             <ul class="resultlist">
                 <li v-for="article in articles">
-                    <a :href="'/artiklar/' + article.URLName">{{article.ArticleName}}</a>
+                    <nuxt-link :to="'/artiklar/' + article.URLName">{{article.ArticleName}}</nuxt-link>
                 </li>
             </ul>
         </section>

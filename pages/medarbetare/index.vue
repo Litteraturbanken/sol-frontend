@@ -4,7 +4,7 @@
         <ul class="resultlist">
             <li v-for="contributor in contributors">
                 <!-- <a :href="'/medarbetare/' + encodeURIComponent(contributor.FirstName) + ' ' + encodeURIComponent(contributor.LastName)">{{contributor.FirstName}} {{contributor.LastName}}</a> -->
-                <a :href="'/medarbetare/' + contributor.URLName">{{contributor.FirstName}} {{contributor.LastName}}</a>
+                <nuxt-link :to="'/medarbetare/' + contributor.URLName">{{contributor.FirstName}} {{contributor.LastName}}</nuxt-link>
             </li>
         </ul>
     </section>

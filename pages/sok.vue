@@ -19,7 +19,7 @@
                 </figure>
 
                 <div>
-                    <a :href="'/artiklar/' + article.URLName">{{article.ArticleName}}</a>
+                    <nuxt-link :to="'/artiklar/' + article.URLName">{{article.ArticleName}}</nuxt-link>
                     <span v-if="article.TranslatorYearBirth"> ({{article.TranslatorYearBirth}}-{{article.TranslatorYearDeath}})</span>
                     <div class="articletype">{{articleTypeLabel(article.Type)}}</div>
                 </div>
@@ -32,7 +32,7 @@
         <ul class="works resultlist">
             <li v-for="work in works">
                 <div>
-                    <a class="work" :href="'/verk/' + work.id">{{work.TitleSwedish}} <span v-if="work.SubtitleSwedish">: {{work.SubtitleSwedish}}</span></a><span v-if="work.PublishingYearSwedish">, {{work.PublishingYearSwedish}}</span>
+                    <nuxt-link class="work" :to="'/verk/' + work.id">{{work.TitleSwedish}} <span v-if="work.SubtitleSwedish">: {{work.SubtitleSwedish}}</span></nuxt-link><span v-if="work.PublishingYearSwedish">, {{work.PublishingYearSwedish}}</span>
                 </div>
                 <div><span v-if="work.Authors">{{work.Authors}}, </span> <em>{{connectionLabel(work.ConnectionType)}}:</em> {{work.Translator}} </div>
             </li>
@@ -42,8 +42,8 @@
         <button class="btn btn-secondary btn-sm" @click="expand = !expand">Visa {{countLBAuthors}} författare och {{countLBWorks}} verk från Litteraturbankens samlingar</button>
         <ul class="works collapse resultlist" :class="{show : expand}">
             <li v-for="item in lb_autocomplete">
-                <span v-if="item.type == 'author'">Författare: <a  :href="item.url" >{{item.label}}</a></span>
-                <span v-if="item.type == 'work'"> Verk: <a  :href="item.url" >{{item.label}}</a></span>
+                <span v-if="item.type == 'author'">Författare: <nuxt-link  :to="item.url" >{{item.label}}</nuxt-link></span>
+                <span v-if="item.type == 'work'"> Verk: <nuxt-link :to="item.url" >{{item.label}}</nuxt-link></span>
             </li>
         </ul>
     </section>
@@ -159,9 +159,6 @@ export default {
             ][Number(type) - 1]
 
         },
-        
-
-        
 
         onSubmit : async function(searchstr) {
             console.log("submit", searchstr)

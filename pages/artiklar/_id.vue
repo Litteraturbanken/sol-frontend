@@ -25,7 +25,7 @@
                     <h3>Tilldelade översättarpriser</h3>
                     <ul>
                         <li v-for="item in prizes">
-                            {{item.Year}} <a :href="'/artiklar/' + item.URLName">{{item.Prize}}</a>
+                            {{item.Year}} <nuxt-link :to="'/artiklar/' + item.URLName">{{item.Prize}}</nuxt-link>
                         </li>
                     </ul>
                 </section>
