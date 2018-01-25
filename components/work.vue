@@ -35,7 +35,7 @@
                 <ul class="ml-4">
                     <li v-for="article in articles">
 
-                        <span v-if="article.URLName"><nuxt-link :to="'/artiklar/' + article.URLName"> {{article.ArticleName}}</nuxt-link> <nuxt-link :to="'/avoversattare/' + article.URLName"> (bibliografi)</nuxt-link></span>
+                        <span v-if="article.URLName"><nuxt-link :to="'/artiklar/' + article.URLName"> {{article.ArticleName}}</nuxt-link> <nuxt-link :to="'/listor/avoversattare/' + article.URLName"> (bibliografi)</nuxt-link></span>
                         <span v-if="!article.URLName"> {{article.ArticleName}}</span>
                         
                     </li>
