@@ -16,6 +16,6 @@ RUN yarn install
 # Bundle app source
 COPY . .
 
-ENV BASE_URL="/%C3%B6vers%C3%A4ttarlexikon/"
-ENTRYPOINT npm run dev
+RUN BASE_URL="/%C3%B6vers%C3%A4ttarlexikon/" npm run build
+ENTRYPOINT BASE_URL="/%C3%B6vers%C3%A4ttarlexikon/" npm run start
   

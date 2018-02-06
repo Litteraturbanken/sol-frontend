@@ -8,7 +8,7 @@ services:
 
     environment:
       - DOCKER_HOST=sol
-      - BASE_URL="/oversattarlexikon/"
+      - BASE_URL="/%C3%B6vers%C3%A4ttarlexikon/"
     ports:
       - 3000:3000
 
@@ -19,6 +19,7 @@ services:
     entrypoint: /opt/testcafe/docker/testcafe-docker.sh 'chromium:headless --no-sandbox' /tests/tests.js
     environment:
       - TEST_SERVER=sol
+      - BASE_URL="/%C3%B6vers%C3%A4ttarlexikon/"
     depends_on:
       - sol
 

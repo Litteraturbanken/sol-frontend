@@ -3,7 +3,7 @@ import { Selector, ClientFunction } from 'testcafe' // first import testcafe sel
 
 const getLocation  = ClientFunction(() => document.location.href.toString())
 
-const host = `http://${process.env.TEST_SERVER || 'localhost'}:3000`
+const host = `http://${process.env.TEST_SERVER || 'localhost'}:3000${process.env.BASE_URL || '/'}`
 
 fixture `Getting Started`// declare the fixture
     .page `${host}/`  // specify the start page
