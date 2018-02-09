@@ -2,7 +2,7 @@
     
     <section class="row">
         <div class="text col-md-8">
-            <h2>Om svenskt översättarlexikon</h2>
+            <h2>Om Svenskt översättarlexikon</h2>
             <section v-html="PageContent"></section>
         </div>
         <div class="info col-md-4">
@@ -16,19 +16,28 @@
                 <li>Ludvig Berggren<span class="fwn"> ludvig.berggren[a]sh.se</span></li>
                 <li>Nils Håkanson<span class="fwn"> nils.hakanson[a]sh.se</span></li>
             </ul>
+            <h3>Bibliografer</h3>
+            <ul>
+                <li>Cecilia Kugelberg</li>
+                <li>Märta Bergstrand</li>
+            </ul>
 
             <h3>Webbutvecklare</h3>
             <ul>
                 <li>Johan Roxendal</li>
                 <li>Martin Hammarstedt</li>
-                <li>Mats Eriksson</li>
-                <li>Helena Walter Heres</li>
             </ul>
 
-            <h3>Bibliografer</h3>
+            <h3>Formgivning</h3>
             <ul>
-                <li>Cecilia Kugelberg</li>
-                <li>Märta Bergstrand</li>
+                <li>Dick Claésson</li>
+                <li>Johan Roxendal</li>
+            </ul>
+
+            <h3>Tidigare medarbetare</h3>
+            <ul>
+                <li>Mats Eriksson</li>
+                <li>Helena Walter Heres</li>
             </ul>
 
             <h3>Utges av</h3>

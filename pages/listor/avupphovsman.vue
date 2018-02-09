@@ -1,7 +1,7 @@
 <template>
     <section class="row flex-column no-gutters colorlinks">
     <h2 class="">Verk av {{$route.query.a}}</h2>
-        <ul class="col-md-5">
+        <ul class="col-md-7">
             <li v-for="work in works">
                 <work :work="work" :articles="work.articles"></work>
             </li>

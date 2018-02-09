@@ -1,3 +1,5 @@
+import nSorter from "natural-sort"
+
 export function debounce(func, wait, immediate) {
     var timeout
     return function() {
@@ -18,4 +20,24 @@ export function debounce(func, wait, immediate) {
             if (callNow) resolve(func.apply(context, args))
         })
     }
+}
+
+export function naturalSort(array, sortKey) {
+    // sorts array in place
+    let sorter = nSorter()
+    let transposer = (char) => {
+        return {"Ä": "Å", "Å" : "Ä", "ä" : "å", å: "ä"}[char] || char
+    }
+      
+    array.sort((a, b) => {
+        a = a[sortKey]
+        b = b[sortKey]
+        if(typeof a == "string") {
+            a = _.map(a, transposer).join("")
+        }
+        if(typeof b == "string") {
+            b = _.map(b, transposer).join("")
+        }
+        return sorter(a, b)
+    })
 }

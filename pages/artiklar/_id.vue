@@ -3,6 +3,8 @@
         <div class="row">
             <div class="article-text col-md-8">
                 <h2>{{article.ArticleName}}<span v-if="article.TranslatorYearBirth">, {{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}}</span></h2>
+
+                <p class="redirected" v-if="isRedirected">(Omdirigerad från {{redirectedName}})</p>
         
         
                 <figure >
@@ -21,7 +23,7 @@
                     <nuxt-link :to="'/medarbetare/' + mainContributor.URLName" rel="author">{{mainContributor.FirstName}} {{mainContributor.LastName}}</nuxt-link>
                 </p>
 
-                <section class="awarded" v-if="prizes.length">
+                <section class="awarded colorlinks" v-if="prizes.length">
                     <h3>Tilldelade översättarpriser</h3>
                     <ul>
                         <li v-for="item in prizes">
@@ -36,7 +38,15 @@
             <div class="bibliography col" v-if="works.length">
                 <header>
                     <h3>Bibliografi</h3>
-                    <div><nuxt-link class="detailed" :to="'/listor/' + biblLink +'/' + $route.params.id">Gå till detaljerad bibliografi</nuxt-link></div>
+
+                    <div class="detailed"><nuxt-link  :to="'/listor/' + biblLink +'/' + actualId">Gå till detaljerad bibliografi</nuxt-link></div>
+                    <div class="sort colorlinks">
+                        <span class="sc">Sortera på</span> 
+                        <a @click="onSortChange('RealYear')">År</a>
+                        <a @click="onSortChange('Authors')">Författare</a>
+                        <a @click="onSortChange('TitleSwedish')">Titel</a>
+                    </div>
+
                 </header>
                 <ul>
                     <li v-for="item in connectionGroups">
@@ -102,13 +112,17 @@
         border: 1px solid white;
     }
     figcaption {
-        text-transform: uppercase;
-        font-size: 0.5em;
+        font-size: 0.7em;
         vertical-align: bottom;
-        margin-top: 0.8em;
+        margin-top: 0.5em;
         max-width: 200px;
+        color: lighten(#333, 15%)
     }
-
+    .redirected {
+        font-size: 0.7em;
+        margin-top: -17px;
+        margin-bottom: 1em;
+    }
     .container {
     }
     .article-text {
@@ -144,6 +158,7 @@
             font-size: 1.2rem;
             margin-top: 1em;
             font-weight: normal;
+            text-transform: unset;
         }
 
         .work {
@@ -156,6 +171,17 @@
         }
         li span {
             color : grey;
+        }
+    }
+
+    .detailed {
+        margin-bottom: 1em;
+    }
+    .sort {
+        a {
+            color : $primary_color;
+            cursor: pointer;
+            margin-left: 1em;
         }
     }
 
@@ -172,6 +198,17 @@
 
 <script>
     import backend from "assets/backend"
+    import {naturalSort} from "assets/utils"
+
+    let redirects = {
+        "Ann-Sofi_Rein" : "Ann-Sofi_Rein_och_Sten_Rein",
+        "Sten_Rein" : "Ann-Sofi_Rein_och_Sten_Rein",
+        "Lisbeth_Renner" : "Lisbeth_och_Louis_Renner",
+        "Louis_Renner" : "Lisbeth_och_Louis_Renner",
+        "Ivo_Iliste" : "Ivo_Iliste_och_Birgitta_Göranson_Iliste",
+    }
+
+
     export default {
         name : "Article",
         head () {
@@ -188,18 +225,29 @@
                 prizewinners : null,
                 biblTypeGroups : null,
                 biblTypeData : null,
-                connectionGroups : null,
+                connectionGroups : [],
                 works : [],
-                links : null
+                links : null,
+                prizes : null, 
+                isRedirected : false,
+                redirectedName : "",
+                sortBy: "RealYear"
             }
         },
         async asyncData ({ params, error, payload, from }) {
             if(payload) {
                 return payload
             }
+
             try{
-                let article = await backend.getArticle(params.id)
-                return article
+                // let article = await backend.getArticle(redirects[params.id] || params.id)
+                let data = await backend.getArticle(params.id)
+                let isRedirected = !!data.article.RedirectToArticle
+                if(isRedirected) {
+                    var redirectedName = data.article.ArticleName
+                    data = await backend.getArticle(data.article.RedirectToArticle)
+                }
+                return {...data, isRedirected, redirectedName}
                 // console.log("article", article, "works.length", works.length)
             } catch(err) {
                 console.log("Article fetch error.")
@@ -209,17 +257,33 @@
 
         },
         computed : {
+            actualId() {
+                return redirects[this.$route.params.id] || this.$route.params.id
+            },
             mainContributor : function() {
                 if(!this.contributors || !this.contributors.length) return {} 
                 return this.contributors[0]
             },
             biblLink : function() {
                 return this.article.Type == 1 ? "avoversattare" : "bibliografi"
-            }
+            },
         },
         methods : {
+            onSortChange(sortVal) {
+                function sortGroups(group) {
+                    for(let {works} of group) {
+                        naturalSort(works, sortVal)
+                    }
+                }
+                sortGroups(this.connectionGroups)
+                sortGroups(this.biblTypeGroups)
+
+            },
             getBiblTypeName(type) {
                 return this.biblTypeData[String(type)][0].BibliographyTypeName
+            },
+            orderBy(works) {
+                return _.orderBy(works, this.sortBy)
             }
         }
     }

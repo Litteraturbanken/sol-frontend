@@ -30,21 +30,21 @@
                     }" v-html="work.RemarkContent + work.Remark"></div>
                 </li>
             </ul></li>
-            <li v-if="articles">
-                <span class="sc">Översättare</span> 
-                <ul class="ml-4">
-                    <li v-for="article in articles">
-
-                        <span v-if="article.URLName"><nuxt-link :to="'/artiklar/' + article.URLName"> {{article.ArticleName}}</nuxt-link> <nuxt-link :to="'/listor/avoversattare/' + article.URLName"> (bibliografi)</nuxt-link></span>
-                        <span v-if="!article.URLName"> {{article.ArticleName}}</span>
-                        
-                    </li>
-                </ul>
-            </li>
             <li>
-                <ul>
-                    <li v-if="!work.NotInLibris"><a class="sc" :href="'http://libris.kb.se/bib/' + work.LibrisID">Titeln i Libris</a></li>
+                <ul class="lower">
                     <li v-if="work.Authors && $route.query.a != work.Authors"><nuxt-link class="sc" :to='"/listor/avupphovsman/?a=" + work.Authors'>Andra verk av {{work.Authors}}</nuxt-link></li>
+                    <li v-if="!work.NotInLibris"><a class="sc" :href="'http://libris.kb.se/bib/' + work.LibrisID">Titeln i Libris</a></li>
+                    <li v-if="articles">
+                        <ul>
+                            <li v-for="article in articles">
+                                <span class="sc">{{connectionLabel(article.ConnectionType)}}</span> 
+
+                                <span v-if="article.URLName"><nuxt-link :to="'/artiklar/' + article.URLName"> {{article.ArticleName}}</nuxt-link> <nuxt-link :to="'/listor/avoversattare/' + article.URLName"> (bibliografi)</nuxt-link></span>
+                                <span v-if="!article.URLName"> {{article.ArticleName}}</span>
+                                
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
         </ul>
@@ -60,6 +60,20 @@
     }
     h3 {
         font-size: 1.2rem;
+    }
+    .lower {
+        // margin-left: 1em;
+        padding-left: 0.7em;
+        position: relative;
+        &:before {
+            border-left: 1px solid #618296;
+            content: "";
+            position: absolute;
+            height : 75%;
+            left: 0;
+            top: 13%;
+        }
+        
     }
 </style>
 
@@ -78,6 +92,18 @@
         computed : {
             getCreatorRole : function() {
                 return this.work.CreatorRole
+            }
+        },
+        methods: {
+            connectionLabel(type) {
+                return [
+                    "översättare",
+                    "handlar om",
+                    "författare",
+                    "referens till",
+                    "handlar om verket"
+                ][Number(type) - 1]
+
             }
         }
     }

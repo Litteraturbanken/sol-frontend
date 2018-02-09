@@ -4,7 +4,7 @@
           <section class="section row no-gutters flex-column">
             
               <h2>
-                <nuxt-link to="/om">Om Svenskt översättarlexikon</nuxt-link>
+                <nuxt-link to="/artiklar/Om_Svenskt_översättarlexikon">Om Svenskt översättarlexikon</nuxt-link>
               </h2>
             
             <div class=" about" v-html="about"></div>

@@ -2,13 +2,13 @@
   <div class="outer row justify-content-lg-center">
   <div class="col-xl-10 no-gutters" >
     <header class="row">
-      <div class="col-md-2 logo_container">
+      <div class="col-md-2 logo_container" @click="headerClick()">
         <nuxt-link to="/">
           <img class="logo" src="~/assets/sol_logo_dots.png" alt="Logotyp">
         </nuxt-link>
       </div>
       <div class="col-md-8">
-        <h1 class=""><nuxt-link to="/">Svenskt översättarlexikon</nuxt-link></h1>
+        <h1 class="" @click="headerClick()"><nuxt-link to="/" >Svenskt översättarlexikon</nuxt-link></h1>
         
         <nav class="navbar navbar-expand-md">
             <div class="navbar-nav">
@@ -85,8 +85,13 @@
       window.removeEventListener('keyup', this.onKeyup)
     },
     methods : {
+      headerClick() {
+        if(this.$route.path == "/") {
+          window.location.reload()
+        }
+      },
       // TODO: to use the article search as a typeahead, partial string search must be implemented
-      onKeyup : function(e) {
+      onKeyup(e) {
          if(["input", "textarea"].includes(e.target.nodeName.toLowerCase())) {
           return
         }

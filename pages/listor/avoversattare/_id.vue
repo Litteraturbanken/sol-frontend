@@ -50,7 +50,7 @@
         </li>
     </ul> -->
 
-    <ul class="results">
+    <ul class="results colorlinks">
         <li v-for="item in connectionGroups" v-if="filterWorks(item.works).length">
             <h2 v-if="item.type == 2">Om {{ article }}</h2>
             <h2 v-else-if="item.type == 3">Skrifter av {{ article }}</h2>
@@ -121,7 +121,8 @@
     import work from "~/components/work.vue"
     import _ from "lodash"
 
-    import naturalSort from "natural-sort"
+    import {naturalSort} from "assets/utils"
+
 
     export default {
         name : "AvOversattare",
@@ -174,24 +175,12 @@
         },
 
         methods : {
-            sortGroups(connectionGroups) {
-                let sorter = naturalSort()
-                let transposer = (char) => {
-                    return {"Ä": "Å", "Å" : "Ä", "ä" : "å", å: "ä"}[char] || char
+            sortGroups(group) {
+                if(!group) {
+                    return
                 }
-                for(let {works} of connectionGroups) {
-                  
-                    works.sort((a, b) => {
-                        a = a[this.sortVal]
-                        b = b[this.sortVal]
-                        if(typeof a == "string") {
-                            a = _.map(a, transposer).join("")
-                        }
-                        if(typeof b == "string") {
-                            b = _.map(b, transposer).join("")
-                        }
-                        return sorter(a, b)
-                    })
+                for(let {works} of group) {
+                    naturalSort(works, this.sortVal)
                 }
             },
             onLangChange : function([lang, type]) {
@@ -207,6 +196,7 @@
                 console.log("this.$router", this.$router)
                 this.$router.push({query : {sort: sortVal}})
                 this.sortVal = sortVal
+
                 this.sortGroups(this.connectionGroups)
                 this.sortGroups(this.biblTypeGroups)
             },

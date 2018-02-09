@@ -149,7 +149,6 @@ export default {
             ][Number(type) - 1]
         },
         connectionLabel(type) {
-            // TODO: not working
             return [
                 "översättare",
                 "handlar om",
