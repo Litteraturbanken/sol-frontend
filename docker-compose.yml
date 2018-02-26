@@ -8,18 +8,18 @@ services:
 
     environment:
       - DOCKER_HOST=sol
-      - BASE_URL="/%C3%B6vers%C3%A4ttarlexikon/"
+      - BASE_URL=/%C3%B6vers%C3%A4ttarlexikon/
     ports:
       - 3000:3000
 
   testcafe:
-    image: testcafe/testcafe@sha256:1cf8eae0d73b2070ff3f8069c2baeab4d9f0c985aab81c00ea8f38d293dadf0f
+    image: testcafe/testcafe
     volumes:
       - ./e2e:/tests
     entrypoint: /opt/testcafe/docker/testcafe-docker.sh 'chromium:headless --no-sandbox' /tests/tests.js
     environment:
       - TEST_SERVER=sol
-      - BASE_URL="/%C3%B6vers%C3%A4ttarlexikon/"
+      - BASE_URL=/%C3%B6vers%C3%A4ttarlexikon/
     depends_on:
       - sol
 
