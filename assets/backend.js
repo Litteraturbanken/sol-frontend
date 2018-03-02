@@ -232,6 +232,7 @@ class PythonBackend {
         // console.log("langMap", langMap)
 
         data[groupName] = _.omit(data[groupName], "Flera språk")
+        console.log("data", data)
         return data
     }
     async listPrizeArticles() {

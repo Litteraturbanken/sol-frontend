@@ -1,7 +1,7 @@
 <template>
     <div class="work">
         <ul>
-            <li><strong>{{work.Authors}}</strong></li>
+            <li><strong v-unsupported-chars="work.Authors"></strong></li>
             <li>
                 <div>
                     <span>{{work.TitleSwedish}} </span>
@@ -13,7 +13,7 @@
                 </div>
             </li>
             <li><ul>
-                <li v-if="work.TitleOriginal"><span class="sc">Originaltitel</span> {{work.TitleOriginal}}</li>
+                <li v-if="work.TitleOriginal"><span class="sc">Originaltitel</span> <span v-unsupported-chars="work.TitleOriginal"></span></li>
                 <li v-if="work.LanguageOriginalName"><span class="sc">Orginalspråk</span> {{work.LanguageOriginalName}}</li>
                 <li v-if="work.TitleSource">Titel på <span class="sc">källspråksutgåva</span> {{work.TitleSource}}</li>
                 <li v-if="work.LanguageSourceName"><span class="sc">Källtitelns språk</span> {{work.LanguageSourceName}}</li>
@@ -32,7 +32,7 @@
             </ul></li>
             <li>
                 <ul class="lower">
-                    <li v-if="work.Authors && $route.query.a != work.Authors"><nuxt-link class="sc" :to='"/listor/avupphovsman/?a=" + work.Authors'>Andra verk av {{work.Authors}}</nuxt-link></li>
+                    <li v-if="work.Authors && $route.query.a != work.Authors"><nuxt-link class="sc" :to='"/listor/avupphovsman/?a=" + work.Authors'>Andra verk av <span v-unsupported-chars="work.Authors"></span></nuxt-link></li>
                     <li v-if="!work.NotInLibris"><a class="sc" :href="'http://libris.kb.se/bib/' + work.LibrisID">Titeln i Libris</a></li>
                     <li v-if="articles">
                         <ul>

@@ -8,18 +8,17 @@
     font-style: normal;
     font-weight: 700;
 }
-@font-face {
-    font-family: "Verlag A", "Verlag B";
-    font-style: normal;
-    font-weight: 800;
-}
+// @font-face {
+//     font-family: "Verlag A", "Verlag B";
+//     font-style: normal;
+//     font-weight: 800;
+// }
 
 @font-face {
     font-family: "Verlag A", "Verlag B";
     font-style: italic;
     font-weight: 400;
 }
-
 
 @mixin dotted($color) {
     & {
@@ -95,7 +94,7 @@ body {
   //
 }
 h1 {
-  font-weight: 800;
+  font-weight: 400;
   margin-bottom: 1.3em;
 }
 h2 {
@@ -128,6 +127,11 @@ select {
 
 figcaption {
   font-size: 0.8rem;
+}
+
+.unsupported-chars {
+  font-family: "Microsoft Sans Serif", sans-serif;
+  font-size: 0.9em;
 }
 
 .navbar {
@@ -316,7 +320,7 @@ header {
   //   color : white;
   // }
   input {
-    font-size: 0.8em;
+    font-size: 0.6em;
     margin-top: 3px;
 
     background-color: rgba(255,255,255,0.4);
@@ -328,7 +332,7 @@ header {
     text-align: center;
     padding-left : 0;
     padding-bottom : 2px;
-    padding-top : 0;
+    padding-top : 3px;
     vertical-align: bottom;
     line-height : 1.2;
     height: 19px;

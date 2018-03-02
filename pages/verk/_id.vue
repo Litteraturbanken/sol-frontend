@@ -1,6 +1,6 @@
 <template>
     <div class="colorlinks">
-        <h2>{{work.TitleSwedish}}<span v-if="work.SubtitleSwedish">: {{work.SubtitleSwedish}}</span></h2>
+        <h2><span v-unsupported-chars="work.TitleSwedish"></span><span v-if="work.SubtitleSwedish">: {{work.SubtitleSwedish}}</span></h2>
         <work :work="work" :articles="articles"></work>
         <!-- <pre style="font-size:smaller">{{work | json}}</pre> -->
     </div>

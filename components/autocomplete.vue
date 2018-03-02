@@ -38,8 +38,7 @@
 
   input {
     text-align: center;
-    font-variant: small-caps;
-    text-transform: lowercase;
+    text-transform: uppercase;
     width : 100px;
   }
   .dropdown-menu {
