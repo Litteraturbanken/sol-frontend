@@ -42,8 +42,8 @@
         <button class="btn btn-secondary btn-sm" @click="expand = !expand">Visa {{countLBAuthors}} författare och {{countLBWorks}} verk från Litteraturbankens samlingar</button>
         <ul class="works collapse resultlist" :class="{show : expand}">
             <li v-for="item in lb_autocomplete">
-                <span v-if="item.type == 'author'">Författare: <nuxt-link  :to="item.url" >{{item.label}}</nuxt-link></span>
-                <span v-if="item.type == 'work'"> Verk: <nuxt-link :to="item.url" >{{item.label}}</nuxt-link></span>
+                <span v-if="item.type == 'author'">Författare: <a :href="item.url" >{{item.label}}</a></span>
+                <span v-if="item.type == 'work'"> Verk: <a :href="item.url" >{{item.label}}</a></span>
             </li>
         </ul>
     </section>

@@ -81,7 +81,8 @@
                     <h3>Externa länkar</h3>
                     <ul>
                         <li v-for="link in links">
-                            <a :href="link.ArticleLinkURL">{{link.ArticleLinkTitle}}</a>
+                            <a v-if="link.ArticleLinkURL.match('^(http|https)')" :href="link.ArticleLinkURL">{{link.ArticleLinkTitle}}</a>
+                            <nuxt-link v-else :to="link.ArticleLinkURL">{{link.ArticleLinkTitle}}</nuxt-link>
                         </li>
                     </ul>
                 </template>
