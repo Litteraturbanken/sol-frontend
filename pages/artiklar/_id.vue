@@ -111,6 +111,7 @@
     }
     img {
         border: 1px solid white;
+        image-orientation : 0deg;
     }
     figcaption {
         font-size: 0.7em;
