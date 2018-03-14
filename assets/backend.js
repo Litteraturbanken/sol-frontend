@@ -110,7 +110,7 @@ class PythonBackend {
 
     async getArticle(articleId) {
         let resp = (await pythonGet(urljoin("article", encodeURIComponent(articleId)), {
-            show : "id,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,ArticleText,ArticleTypes.ArticleTypeName,ArticleFiles.FileName,ArticleFiles.FileDescription"
+            show : "id,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,ArticleText,ArticleTypes.ArticleTypeName,ArticleFiles.FileDescription"
         }))
         let {works, bibliography_types, ...rest} = resp
         works = _.sortBy(works, "RealYear")
@@ -168,7 +168,7 @@ class PythonBackend {
     async getRandom(type) {
         try {
             return (await pythonGet("/articles/random/" + type,
-                {show: "TranslatorYearBirth,TranslatorYearDeath,ArticleName,URLName,Ingress,FileName,ArticleFiles.FileName"}
+                {show: "TranslatorYearBirth,TranslatorYearDeath,ArticleName,URLName,Ingress"}
             )).data[0]
         } catch(e) {
             console.log("error in random", e)
