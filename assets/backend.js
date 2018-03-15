@@ -108,9 +108,13 @@ class PythonBackend {
 
     }
 
-    async getArticle(articleId) {
+    async getArticle(articleId, showIngress) {
+        let suffix = ""
+        if(showIngress) {
+            suffix = ",Ingress"
+        }
         let resp = (await pythonGet(urljoin("article", encodeURIComponent(articleId)), {
-            show : "id,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,ArticleText,ArticleTypes.ArticleTypeName,ArticleFiles.FileDescription"
+            show : "id,ArticleName,TranslatorFirstname,TranslatorLastname,TranslatorYearBirth,TranslatorYearDeath,Author,ArticleText,ArticleTypes.ArticleTypeName,ArticleFiles.FileDescription" + suffix
         }))
         let {works, bibliography_types, ...rest} = resp
         works = _.sortBy(works, "RealYear")

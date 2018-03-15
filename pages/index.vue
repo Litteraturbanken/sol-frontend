@@ -89,10 +89,16 @@ export default {
     }
   },
 
-  async asyncData(context) {
+  async asyncData({route}) {
     let {PageContent} = await backend.getStatic('Om_Lexikonet_Ingress')
     // TODO parallelize
-    let article = await backend.getRandom(1)
+
+    if(route.query.test) {
+      var {article} = await backend.getArticle(route.query.test, true)
+    } else {
+      var article = await backend.getRandom(1)
+    }
+
     let themearticle = await backend.getRandom(4)
     let themearticle2 = await backend.getRandom(4)
     let latest = await backend.getLatest()
