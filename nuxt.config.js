@@ -17,6 +17,11 @@ const sassResourcesLoader = {
   }
 }
 
+// from https://github.com/sindresorhus/ora/issues/58
+process.stderr.clearLine = () => {};
+process.stderr.cursorTo = () => {};
+process.stderr.moveCursor = () => {};
+
 module.exports = {
   modules : [
     // '@nuxtjs/font-awesome'
