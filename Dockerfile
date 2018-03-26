@@ -16,6 +16,7 @@ RUN yarn install
 # Bundle app source
 COPY . .
 
+ENV CONTEXT="docker"
 ENV BASE_URL="/%C3%B6vers%C3%A4ttarlexikon/"
 
 RUN npm run build
