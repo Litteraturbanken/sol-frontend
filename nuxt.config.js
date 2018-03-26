@@ -18,7 +18,7 @@ const sassResourcesLoader = {
 }
 
 // from https://github.com/sindresorhus/ora/issues/58
-if(!process.stderr.stream.clearLine) {
+if(!process.stderr.clearLine) {
   process.stderr.clearLine = () => {};
   process.stderr.cursorTo = () => {};
   process.stderr.moveCursor = () => {};
