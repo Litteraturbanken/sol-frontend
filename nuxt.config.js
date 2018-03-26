@@ -18,7 +18,7 @@ const sassResourcesLoader = {
 }
 
 // from https://github.com/sindresorhus/ora/issues/58
-if(process.env.CONTEXT == "docker") {
+if(!process.stderr.stream.clearLine) {
   process.stderr.clearLine = () => {};
   process.stderr.cursorTo = () => {};
   process.stderr.moveCursor = () => {};
