@@ -12,8 +12,8 @@ Vue.directive("unsupported-chars", (el, {value}) => {
     const greek = "ΑαΒβΓγΔδΕεΖζΗηΘθϑΙιΚκΛλΜμΝνΞξΟοΠπΡρΣσςΤτΥυΦφΧχΨψΩω"
     const chars = [...arabic, ...greek]
     if(_.intersection(value.split(""), chars).length) {
-        el.innerHTML += " " + `<span class="unsupported-chars">${value}</span>`
+        el.innerHTML = " " + `<span class="unsupported-chars">${value}</span>`
     } else {
-        el.innerText += " " + value
+        el.innerText = " " + value
     }
 })
