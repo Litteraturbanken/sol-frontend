@@ -122,6 +122,14 @@
     import _ from "lodash"
 
     import {naturalSort} from "assets/utils"
+    function sortGroups(group, sortkey) {
+        if(!group) {
+            return
+        }
+        for(let {works} of group) {
+            naturalSort(works, sortkey)
+        }
+    }
 
 
     export default {
@@ -166,23 +174,14 @@
                 console.log("Hittade ingen översättare vid det namnet.", err)
                 error({ message: "Hittade ingen översättare vid det namnet.", statusCode: 404 })
             }
+
+            sortGroups(backendData.connectionGroups, sortVal)
+            sortGroups(backendData.biblTypeGroups, sortVal)
+
             return { ...backendData, lang, sortVal }
         },
 
-        mounted() {
-            this.sortGroups(this.connectionGroups)
-            this.sortGroups(this.biblTypeGroups)
-        },
-
         methods : {
-            sortGroups(group) {
-                if(!group) {
-                    return
-                }
-                for(let {works} of group) {
-                    naturalSort(works, this.sortVal)
-                }
-            },
             onLangChange : function([lang, type]) {
                 if(lang) {
                     this.$router.push(`/listor/avoversattare/${this.$route.params.id}/${type}/${lang}`)
@@ -197,8 +196,8 @@
                 this.$router.push({query : {sort: sortVal}})
                 this.sortVal = sortVal
 
-                this.sortGroups(this.connectionGroups)
-                this.sortGroups(this.biblTypeGroups)
+                sortGroups(this.connectionGroups, this.sortVal)
+                sortGroups(this.biblTypeGroups, this.sortVal)
             },
             filterWorks : function(works) {
                 if(!this.$route.params.lang) return works

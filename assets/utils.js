@@ -1,4 +1,5 @@
 import nSorter from "natural-sort"
+import * as _ from "lodash"
 
 export function debounce(func, wait, immediate) {
     var timeout
