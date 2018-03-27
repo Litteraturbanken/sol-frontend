@@ -13,8 +13,10 @@
                 </div>
             </li>
             <li><ul>
+                <li v-if="work.RemarkManuscript">{{work.RemarkManuscript}}</li>
                 <li v-if="work.TitleOriginal"><span class="sc">Originaltitel</span> <span v-unsupported-chars="work.TitleOriginal"></span></li>
                 <li v-if="work.LanguageOriginalName"><span class="sc">Orginalspråk</span> {{work.LanguageOriginalName}}</li>
+                <li v-if="work.VariantTitle"><span class="sc">Varianttitel</span> {{work.VariantTitle}}</li>
                 <li v-if="work.TitleSource">Titel på <span class="sc">källspråksutgåva</span> {{work.TitleSource}}</li>
                 <li v-if="work.LanguageSourceName"><span class="sc">Källtitelns språk</span> {{work.LanguageSourceName}}</li>
                 
@@ -22,6 +24,7 @@
                 <li v-if="work.Publishings"><span class="sc">Nya upplagor</span> {{work.Publishings}}</li>
                 <li v-if="work.PublishingYearSource"><span class="sc">Utgivningsår för källspråksutgåva</span> {{work.PublishingYearSource}}</li>
                 <li v-if="work.PartOf_Title"><span class="sc">Ingår i</span> {{work.PartOf_Title}}<span v-if="work.PartOf_Localization">. – {{work.PartOf_Localization}}</span></li>
+
                 <li v-if="work.RemarkContent || work.Remark" >
                     <span class="sc" v-if="work.RemarkContent" >Innehåll </span> 
                     <div :class="{
