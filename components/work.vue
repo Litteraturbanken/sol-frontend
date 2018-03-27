@@ -17,7 +17,7 @@
                 <li v-if="work.TitleOriginal"><span class="sc">Originaltitel</span> <span v-unsupported-chars="work.TitleOriginal"></span></li>
                 <li v-if="work.LanguageOriginalName"><span class="sc">Orginalspråk</span> {{work.LanguageOriginalName}}</li>
                 <li v-if="work.VariantTitle"><span class="sc">Varianttitel</span> {{work.VariantTitle}}</li>
-                <li v-if="work.TitleSource">Titel på <span class="sc">källspråksutgåva</span> {{work.TitleSource}}</li>
+                <li v-if="work.TitleSource"><span class="sc">Titel på källspråksutgåva</span> {{work.TitleSource}}</li>
                 <li v-if="work.LanguageSourceName"><span class="sc">Källtitelns språk</span> {{work.LanguageSourceName}}</li>
                 
                 <li v-if="work.PublishingYearOriginal"><span class="sc">Utgivnings- eller tillkomstår för original</span> {{work.PublishingYearOriginal}}</li>
