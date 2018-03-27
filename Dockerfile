@@ -19,6 +19,8 @@ COPY . .
 ENV CONTEXT="docker"
 ENV BASE_URL="/%C3%B6vers%C3%A4ttarlexikon/"
 
+EXPOSE 3000
+
 RUN npm run build
 ENTRYPOINT npm run start
   
