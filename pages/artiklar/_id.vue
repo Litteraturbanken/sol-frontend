@@ -21,7 +21,7 @@
                 <section class="textbody" v-html="article.ArticleText"></section>
                 <p class="mt-4">
 
-                    <nuxt-link class="d-block" v-for="contrib in contributors" :to="'/medarbetare/' + contrib.URLName" rel="author">{{contrib.FirstName}} {{contrib.LastName}}</nuxt-link>
+                    <nuxt-link class="d-block" v-for="contrib in contributors" :key="contrib.URLName" :to="'/medarbetare/' + contrib.URLName" rel="author">{{contrib.FirstName}} {{contrib.LastName}}</nuxt-link>
                 </p>
 
                 <section class="awarded colorlinks" v-if="prizes.length">
