@@ -13,8 +13,7 @@
 
             <h3>Forskningsredaktörer</h3>
             <ul>
-                <li>Ludvig Berggren<span class="fwn"> ludvig.berggren[a]sh.se</span></li>
-                <li>Nils Håkanson<span class="fwn"> nils.hakanson[a]sh.se</span></li>
+                <li>Nils Håkanson<span class="fwn"> nils.hakanson[a]oversattarlexikon.se</span></li>
             </ul>
             <h3>Bibliografer</h3>
             <ul>
@@ -37,7 +36,7 @@
             <h3>Tidigare medarbetare</h3>
             <ul>
                 <li>Mats Eriksson</li>
-                <li>Helena Walter Heres</li>
+                <li>Magnus Sandgren</li>
             </ul>
 
             <h3>Utges av</h3>
