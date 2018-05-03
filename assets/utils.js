@@ -27,7 +27,10 @@ export function naturalSort(array, sortKey) {
     // sorts array in place
     let sorter = nSorter()
     let transposer = (char) => {
-        return {"Ä": "Å", "Å" : "Ä", "ä" : "å", å: "ä"}[char] || char
+        return {
+            "Ä": "Å", "Å" : "Ä", "ä" : "å", å: "ä", 
+            "Č": "C", "Š": "S", "č": "c"
+        }[char] || char
     }
       
     array.sort((a, b) => {
