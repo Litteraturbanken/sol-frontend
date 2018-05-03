@@ -8,6 +8,7 @@ Vue.filter('json', function (value) {
 
 
 Vue.directive("unsupported-chars", (el, {value}) => {
+    console.log("unsupported-chars value", value)
     const arabic = "ḌḍḤḥṢṣṬṭẒẓḪẒẓ̣"
     const greek = "ΑαΒβΓγΔδΕεΖζΗηΘθϑΙιΚκΛλΜμΝνΞξΟοΠπΡρΣσςΤτΥυΦφΧχΨψΩω"
     const chars = [...arabic, ...greek]
