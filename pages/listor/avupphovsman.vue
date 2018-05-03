@@ -1,6 +1,6 @@
 <template>
     <section class="row flex-column no-gutters colorlinks">
-    <h2 v-unsupported-chars="$route.query.a">Verk av</h2>
+    <h2>Verk av <span v-unsupported-chars="$route.query.a"></span></h2>
         <ul class="col-md-7">
             <li v-for="work in works">
                 <work :work="work" :articles="work.articles"></work>
@@ -28,6 +28,7 @@
         },
         async asyncData ({ params, error, route }) {
             try{
+                console.log("route.query.a", route.query.a)
                 var works = await backend.getWorksByAuthorName(route.query.a)
             } catch(err) {
                 console.error("Article fetch error.")
