@@ -11,7 +11,7 @@
                 <li>Lars Kleberg<span class="fwn"> lars.kleberg[a]sh.se</span></li>
             </ul>
 
-            <h3>Forskningsredaktörer</h3>
+            <h3>Forskningsredaktör</h3>
             <ul>
                 <li>Nils Håkanson<span class="fwn"> nils.hakanson[a]oversattarlexikon.se</span></li>
             </ul>
