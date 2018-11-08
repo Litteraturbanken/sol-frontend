@@ -190,15 +190,28 @@ class PythonBackend {
         }
     }
 
+    fixWork(work) {
+        if(work.RemarkContent == "<p><br></p>") {
+            work.RemarkContent = ""
+        }
+        console.log("work.RemarkContent", work.RemarkContent)
+        work.Remark = work.Remark.replace("<br /><br /><p>&nbsp;</p><br /><br /><p>&nbsp;</p>", "")
+        work.RemarkContent = work.RemarkContent || ""
+    }
+
     async getWork(workid) {
         let {work, articles} = await pythonGet("/bibliography/" + workid)
         // let article = articles.length ? articles[0] : null
+        this.fixWork(work[0])
         return {work: work[0], articles}
     }
     
     async getWorksByAuthorName(authorname) {
         let {data} = await pythonGet("/author/" + encodeURIComponent(authorname))
         // console.log("works", data)
+        for(let work of data) {
+            this.fixWork(work)
+        }
         return data
     }
     

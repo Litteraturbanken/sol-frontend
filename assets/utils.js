@@ -27,20 +27,35 @@ export function naturalSort(array, sortKey) {
     // sorts array in place
     let sorter = nSorter()
     let transposer = (char) => {
-        return {
-            "Ä": "Å", "Å" : "Ä", "ä" : "å", å: "ä", 
-            "Č": "C", "Š": "S", "č": "c"
-        }[char] || char
+        let trans = _.fromPairs(
+            _.zip(
+                "ÁÂÃÄÅÇČÈÉÊËÌÍÎÏÑÒÓÔÕÖØÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöøùúûüýÿŠščā".split(""),
+                "AAAÅÄCCEEEEIIIINOOOOOOUUUUYaaaaåäceeeeiiiinoooooouuuuyySsca".split("")
+            )
+        )
+        trans = _.extend(
+            trans,
+            _.fromPairs(
+                _.zip(
+                    ["Æ", "æ", "Ð", "ð", "Þ", "þ", "ß", "Œ", "œ"],
+                    ["AE", "ae", "DH", "dh", "TH", "th", "ss", "OE", "oe"]
+                )
+            )
+        )
+
+        return trans[char] || char
     }
-      
+    function stripChars(str) {
+        return str.replace(/["'-–.…]/g, "").replace(/^\w*/, "")
+    }
     array.sort((a, b) => {
         a = a[sortKey]
         b = b[sortKey]
         if(typeof a == "string") {
-            a = _.map(a, transposer).join("")
+            a = _.map(stripChars(a), transposer).join("")
         }
         if(typeof b == "string") {
-            b = _.map(b, transposer).join("")
+            b = _.map(stripChars(b), transposer).join("")
         }
         return sorter(a, b)
     })
