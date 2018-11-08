@@ -194,8 +194,10 @@ class PythonBackend {
         if(work.RemarkContent == "<p><br></p>") {
             work.RemarkContent = ""
         }
-        console.log("work.RemarkContent", work.RemarkContent)
-        work.Remark = work.Remark.replace("<br /><br /><p>&nbsp;</p><br /><br /><p>&nbsp;</p>", "")
+        if(work.Remark) {
+            work.Remark = work.Remark.replace("<br /><br /><p>&nbsp;</p><br /><br /><p>&nbsp;</p>", "")
+            work.Remark = work.Remark.replace("<br /><br /><p>&nbsp;</p>", "")
+        }
         work.RemarkContent = work.RemarkContent || ""
     }
 
@@ -223,6 +225,7 @@ class PythonBackend {
         }
         for(let work of works) {
             work.RealYear = Number(work.RealYear)
+            this.fixWork(work)
         }
         let original = _.filter(languages, "original")
         let source = _.filter(languages, "source")
