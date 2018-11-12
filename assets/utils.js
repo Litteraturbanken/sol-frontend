@@ -46,7 +46,7 @@ export function naturalSort(array, sortKey) {
         return trans[char] || char
     }
     function stripChars(str) {
-        return str.replace(/["'-–.…]/g, "").replace(/^\w*/, "")
+        return str.replace(/["'\-\–\.…]/g, "").replace(/^ */, "")
     }
     array.sort((a, b) => {
         a = a[sortKey]

@@ -101,6 +101,8 @@ h2 {
   margin-top: 0.6em;
   font-size: 1.6rem;
   font-weight : normal;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
 }
 h3 {
   margin-top: 0.4rem;

@@ -192,7 +192,7 @@
 
             },
             onSortChange : function(sortVal) {
-                console.log("this.$router", this.$router)
+                console.log("onSortChange", sortVal)
                 this.$router.push({query : {sort: sortVal}})
                 this.sortVal = sortVal
 
