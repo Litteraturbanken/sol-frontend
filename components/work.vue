@@ -30,7 +30,10 @@
                     <div :class="{
                         'ml-4': (work.RemarkContent + work.Remark).length > 150,
                         'd-inline-block': (work.RemarkContent + work.Remark).length <= 150,
-                    }" v-html="work.RemarkContent + work.Remark"></div>
+                    }">
+                        <div v-html="work.RemarkContent"></div>
+                        <div v-html="work.Remark"></div>
+                    </div>
                 </li>
             </ul></li>
             <li>
