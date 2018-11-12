@@ -29,8 +29,9 @@
 </style>
 
 <script>
-// import _ from "lodash"
+import _ from "lodash"
 import backend from "assets/backend"
+import {naturalSort} from "assets/utils"
 
 export default {
   name : "ArticleList",
@@ -49,6 +50,7 @@ export default {
   async asyncData ({error, env}) {
     try {
       let groups = await backend.listArticles()
+      _.mapValues(groups, (articles) => naturalSort(articles, "TranslatorLastname", "ArticleName"))
       return {groups : groups} 
     } catch(err) {
       console.error(err)

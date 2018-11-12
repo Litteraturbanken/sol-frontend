@@ -23,14 +23,14 @@ export function debounce(func, wait, immediate) {
     }
 }
 
-export function naturalSort(array, sortKey) {
+export function naturalSort(array, ...sortKeys) {
     // sorts array in place
     let sorter = nSorter()
     let transposer = (char) => {
         let trans = _.fromPairs(
             _.zip(
-                "ÁÂÃÄÅÇČÈÉÊËĖÌÍÎÏÑÒÓÔÕÖØÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöøùúûüýÿŠščā".split(""),
-                "AAAÅÄCCEEEEEIIIINOOOOOOUUUUYaaaaåäceeeeiiiinoooooouuuuyySsca".split("")
+                "ÁÂÃÄÅÇČÈÉÊËĖÌÍÎÏÑÒÓÔÕØÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõøùúûüýÿŠščā".split(""),
+                "AAAÅÄCCEEEEEIIIINOOOOÖUUUUYaaaaåäceeeeiiiinooooöuuuuyySsca".split("")
             )
         )
         trans = _.extend(
@@ -48,9 +48,16 @@ export function naturalSort(array, sortKey) {
     function stripChars(str) {
         return str.replace(/["'\-\–\.…]/g, "").replace(/^ */, "")
     }
+    function getSortKey(obj) {
+        let output = null
+        for(let key of sortKeys) {
+            output = output || obj[key]
+        }
+        return output
+    }
     array.sort((a, b) => {
-        a = a[sortKey]
-        b = b[sortKey]
+        a = getSortKey(a)
+        b = getSortKey(b)
         if(typeof a == "string") {
             a = _.map(stripChars(a), transposer).join("")
         }
