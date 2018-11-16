@@ -29,8 +29,8 @@ export function naturalSort(array, ...sortKeys) {
     let transposer = (char) => {
         let trans = _.fromPairs(
             _.zip(
-                "ÁÂÃÄÅÇČÈÉÊËĖÌÍÎÏÑÒÓÔÕØÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõøùúûüýÿŠščā".split(""),
-                "AAAÅÄCCEEEEEIIIINOOOOÖUUUUYaaaaåäceeeeiiiinooooöuuuuyySsca".split("")
+                "ÁÂÃÄÅÇČĆÈÉÊËĖÌÍÎÏÑÒÓÔÕØÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõøùúûüýÿŠščāĐđ".split(""),
+                "AAAÅÄCCCEEEEEIIIINOOOOÖUUUUYaaaaåäceeeeiiiinooooöuuuuyySscaDd".split("")
             )
         )
         trans = _.extend(
