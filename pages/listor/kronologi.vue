@@ -100,7 +100,7 @@
             articles : null
           }
          },
-        created : function() {
+        mounted : function() {
           console.log("this.$route.hash", this.$route.hash)
 
           if(this.$route.hash) {
