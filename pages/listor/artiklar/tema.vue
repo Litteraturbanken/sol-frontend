@@ -15,7 +15,7 @@ import backend from "assets/backend"
 export default {
     name : "Themes",
     head : {
-      title : "Temaartilar – Svenskt översättarlexikon"
+      title : "Temaartiklar – Svenskt översättarlexikon"
     },
     data() {
       return {

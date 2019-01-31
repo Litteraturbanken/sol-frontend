@@ -2,20 +2,20 @@ const axios = require('axios')
 const _ = require('lodash')
 const resolve = require('path').resolve
 
-const isVueRule = (rule) => {
-  return rule.test.toString() === '/\\.vue$/'
-}
-const isSASSRule = (rule) => {
-  return ['/\\.sass$/', '/\\.scss$/'].indexOf(rule.test.toString()) !== -1
-}
-const sassResourcesLoader = {
-  loader: 'sass-resources-loader',
-  options: {
-    resources: [
-      resolve(__dirname, 'assets/_imports.scss')
-    ]
-  }
-}
+// const isVueRule = (rule) => {
+//   return rule.test.toString() === '/\\.vue$/'
+// }
+// const isSASSRule = (rule) => {
+//   return ['/\\.sass$/', '/\\.scss$/'].indexOf(rule.test.toString()) !== -1
+// }
+// const sassResourcesLoader = {
+//   loader: 'sass-resources-loader',
+//   options: {
+//     resources: [
+//       resolve(__dirname, 'assets/_imports.scss')
+//     ]
+//   }
+// }
 
 // from https://github.com/sindresorhus/ora/issues/58
 if(!process.stderr.clearLine) {
@@ -28,7 +28,16 @@ module.exports = {
   modules : [
     // '@nuxtjs/font-awesome'
     // "~/modules/debug.js"
+    '@nuxtjs/style-resources',
+    // ['@nuxtjs/google-gtag', { id: 'UA-132486790-2', config: {
+    //   debug : true
+    // }
+  // }],
   ],
+  styleResources: {
+     // your settings here
+     scss: ['./assets/_imports.scss'], // alternative: scss
+    },
   // mode : "spa",
   /*
   ** Headers of the page
@@ -88,14 +97,15 @@ module.exports = {
 
       }
 
-      config.module.rules.forEach((rule) => {
-        if (isVueRule(rule)) {
-          rule.options.loaders.scss.push(sassResourcesLoader)
-        }
-        if (isSASSRule(rule)) {
-          rule.use.push(sassResourcesLoader)
-        }
-      })
+      // config.module.rules.forEach((rule) => {
+      //   console.log("rule", rule)
+      //   if (isVueRule(rule)) {
+      //     rule.options.loaders.scss.push(sassResourcesLoader)
+      //   }
+      //   if (isSASSRule(rule)) {
+      //     rule.use.push(sassResourcesLoader)
+      //   }
+      // })
       
       const path = require('path')
       config.resolve.symlinks = false
@@ -128,7 +138,7 @@ module.exports = {
     },
   },
 
-  plugins : ["~plugins/filters.js"],
+  plugins : ["~plugins/filters.js", {src : "~plugins/ga.js", mode: "client"}],
   serverMiddleware : [
     require("morgan")("tiny")
   ],

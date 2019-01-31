@@ -1,5 +1,17 @@
 <template>
   <div class="outer row justify-content-lg-center">
+    <no-ssr>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-132486790-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      console.log("gtag init")
+      gtag('config', 'UA-132486790-2');
+    </script>
+    </no-ssr>
   <div class="col-xl-10 no-gutters" >
     <header class="row">
       <div class="col-md-2 logo_container" @click="headerClick()">
