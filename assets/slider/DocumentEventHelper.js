@@ -4,13 +4,17 @@
 export default {
   created () {
     forEachListener(this, (key, listener) => {
-      document.addEventListener(key, listener)
+      if(typeof window != "undefined") {
+        document.addEventListener(key, listener)
+      }
     })
   },
 
   beforeDestroy () {
     forEachListener(this, (key, listener) => {
-      document.removeEventListener(key, listener)
+      if(typeof window != "undefined") {
+        document.removeEventListener(key, listener)
+      }
     })
   }
 }

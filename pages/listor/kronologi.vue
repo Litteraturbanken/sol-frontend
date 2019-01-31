@@ -10,7 +10,7 @@
   </div>
 
 
-  <div class="row no-gutters"><no-ssr>
+  <div class="row no-gutters">
       <range-slider
          class="slider col-12"
          :min="min"
@@ -19,7 +19,6 @@
          v-model="sliderValue"
          @change="sliderChange">
        </range-slider>
-    </no-ssr>
      </div>
      <div class="ticks row no-gutters justify-content-between" :style="offsetStyle(0, 0)">
        <span v-for="i in range" class="tick" >
