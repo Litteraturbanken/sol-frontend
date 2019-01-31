@@ -66,7 +66,7 @@
             this.loading = true
             Object.assign(this, await backend.chronology(start, end))
             this.loading = false
-            window.location.hash = `${start}-${end}`
+            this.$router.replace({hash: `${start}-${end}`}) 
           },
           offsetStyle : function(leftOffset, rightOffset) {
             leftOffset = leftOffset || 0
@@ -102,6 +102,7 @@
           }
          },
         created : function() {
+          console.log("this.$route.hash", this.$route.hash)
 
           if(this.$route.hash) {
             this.sliderValue = this.$route.hash.replace("#", "").split("-").map(Number)
