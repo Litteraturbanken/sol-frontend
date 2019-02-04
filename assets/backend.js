@@ -44,7 +44,6 @@ async function pythonGet(endpoint, params, config) {
 }
 
 function groupConnections(works, sortVal) {
-    console.log("sortVal", sortVal)
     let connectionGroups = _.groupBy(works, "ConnectionType")
     return _(connectionGroups)
         .toPairs(connectionGroups)
@@ -252,7 +251,6 @@ class PythonBackend {
         // console.log("langMap", langMap)
 
         data[groupName] = _.omit(data[groupName], "Flera språk")
-        console.log("data", data)
         return data
     }
     async listPrizeArticles() {
