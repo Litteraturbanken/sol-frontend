@@ -100,8 +100,6 @@ module.exports = {
   */
   build: {
       extractCSS: true,
-
-      publicPath: "/oversattarlexikon/",
     /*
     ** Run ESLINT on save
     */
@@ -137,7 +135,7 @@ module.exports = {
   },
   router: {
     linkActiveClass: 'router-link-active',
-    // base: process.env.BASE_URL || "/",
+    base: process.env.BASE_URL || "/",
     // base: "/översättarlexikon/" || "/",
 
     extendRoutes (routes, resolve) {
