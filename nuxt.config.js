@@ -39,6 +39,8 @@ module.exports = {
      scss: ['./assets/_imports.scss'], // alternative: scss
     },
   // mode : "spa",
+  debug : true,
+  isDev : true,
   /*
   ** Headers of the page
   */
@@ -99,6 +101,7 @@ module.exports = {
   build: {
       extractCSS: true,
 
+      publicPath: "/oversattarlexikon/",
     /*
     ** Run ESLINT on save
     */
@@ -134,7 +137,8 @@ module.exports = {
   },
   router: {
     linkActiveClass: 'router-link-active',
-    base: process.env.BASE_URL || "/",
+    // base: process.env.BASE_URL || "/",
+    // base: "/översättarlexikon/" || "/",
 
     extendRoutes (routes, resolve) {
       routes.push({
