@@ -92,6 +92,12 @@
     },
     mounted : function() {
       window.addEventListener('keyup', this.onKeyup)
+
+      // TODO: remove hack when base url issue has been fixed
+      window.addEventListener("popstate", function(event) {
+        console.log("back btn", event, window.location.href)
+        window.location.reload()
+      })
     },
     beforeDestroy : function() {
       window.removeEventListener('keyup', this.onKeyup)
