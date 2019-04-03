@@ -124,12 +124,6 @@ export default {
             this.onSubmit(this.searchstr)
         }
     },
-    watch: {
-        "$route.query.fras": function(val) {
-            console.log("val", val)
-            this.onSubmit(val)
-        }
-    },
     components : {autocomplete: Autocomplete},
     computed : {
         countLBWorks : function() {
@@ -170,30 +164,8 @@ export default {
             this.works = works
             this.suggestion = suggestion
             this.lb_autocomplete = lbAutocomplete
-
-
-
-            // if(!articles.length && !works.length) {
-            //     this.lb_autocomplete = await backend.autocomplete(searchstr)
-            // }
-
-
-            // try{
-            // }
-            // catch(err) {
-            //     console.log("Article fetch error.")
-            //     error({ message: "Artikeln kunde inte hittas.", statusCode: 404 })
-            // }
-            // console.log("assign")
-            // this.articles = articles
-
         }
     },
-
-    
-    
-     
-
 }
 
 </script>
