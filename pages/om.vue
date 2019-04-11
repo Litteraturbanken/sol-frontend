@@ -8,12 +8,12 @@
         <div class="info col-md-4">
             <h3 class="red">Redaktör</h3>
             <ul>
-                <li>Lars Kleberg<span class="fwn"> lars.kleberg[a]sh.se</span></li>
+                <li>Lars Kleberg <a href="mailto:lars.kleberg@sh.se" class="fwn">lars.kleberg@sh.se</a></li>
             </ul>
 
             <h3>Forskningsredaktör</h3>
             <ul>
-                <li>Nils Håkanson<span class="fwn"> nils.hakanson[a]oversattarlexikon.se</span></li>
+                <li>Nils Håkanson <a href="mailto:nils@oversattarlexikon.se" class="fwn">nils@oversattarlexikon.se</a></li>
             </ul>
             <h3>Bibliografer</h3>
             <ul>
