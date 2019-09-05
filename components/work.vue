@@ -15,7 +15,7 @@
             <li><ul>
                 <li v-if="work.RemarkManuscript">{{work.RemarkManuscript}}</li>
                 <li v-if="work.TitleOriginal"><span class="sc">Originaltitel</span> <span v-unsupported-chars="work.TitleOriginal"></span></li>
-                <li v-if="work.LanguageOriginalName"><span class="sc">Orginalspråk</span> {{work.LanguageOriginalName}}</li>
+                <li v-if="work.LanguageOriginalName"><span class="sc">Originalspråk</span> {{work.LanguageOriginalName}}</li>
                 <li v-if="work.VariantTitle"><span class="sc">Varianttitel</span> {{work.VariantTitle}}</li>
                 <li v-if="work.TitleSource"><span class="sc">Titel på källspråksutgåva</span> {{work.TitleSource}}</li>
                 <li v-if="work.LanguageSourceName"><span class="sc">Källtitelns språk</span> {{work.LanguageSourceName}}</li>

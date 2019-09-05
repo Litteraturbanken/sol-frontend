@@ -9,9 +9,10 @@
     "@nuxtjs/style-resources": "^0.1.1",
     "axios": "^0.16.2",
     "bootstrap": "^4.0.0-beta.2",
+    "fsevents": "1.2.9",
     "morgan": "^1.9.0",
     "natural-sort": "^1.0.0",
-    "nuxt": "^2.4.2"
+    "nuxt": "^2.9.2"
   },
   "scripts": {
     "dev": "nuxt --hostname ${SOL_HOST:-'0.0.0.0'}",
