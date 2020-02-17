@@ -1,4 +1,4 @@
-FROM node:8.11.1
+FROM node:8.12.0
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -9,7 +9,8 @@ WORKDIR /usr/src/app
 COPY package.json yarn.lock ./
 
 # RUN yarn global add testcafe
-RUN yarn install
+RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
+RUN yarn install --ignore-optional
 # If you are building your code for production
 # RUN npm install --only=production
 

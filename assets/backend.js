@@ -93,13 +93,13 @@ class PythonBackend {
                 if(item.doc_type == "author") {
                     return {
                         label: item.name_for_index, 
-                        url : "https://litteraturbanken.se/forfattare/" + item.author_id,
+                        url : "https://litteraturbanken.se/författare/" + item.authorid,
                         type: "author"
                     }
                 } else {
                     return {
                         label: item.shorttitle, 
-                        url : `https://litteraturbanken.se/forfattare/${item.authors[0].author_id}/titlar/${item.title_id}/sida/${item.startpagename}/${item.doc_type}`,
+                        url : `https://litteraturbanken.se/författare/${item.authors[0].authorid}/titlar/${item.titleid}/sida/${item.startpagename}/${item.doc_type}`,
                         type : "work"
                     }
                 }
