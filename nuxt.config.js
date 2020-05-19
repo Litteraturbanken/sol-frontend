@@ -28,6 +28,7 @@ module.exports = {
   modules : [
     // '@nuxtjs/font-awesome'
     // "~/modules/debug.js"
+    'nuxt-user-agent',
     '@nuxtjs/style-resources',
     // ['@nuxtjs/google-gtag', { id: 'UA-132486790-2', config: {
     //   debug : true

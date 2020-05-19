@@ -237,15 +237,17 @@
                 sortBy: "RealYear"
             }
         },
-        async asyncData ({ params, error, payload, from }) {
+        async asyncData ({ params, error, payload, from, $ua }) {
             if(payload) {
                 return payload
             }
-
             try{
                 // let article = await backend.getArticle(redirects[params.id] || params.id)
                 let data = await backend.getArticle(params.id)
                 let isRedirected = !!data.article.RedirectToArticle
+                if($ua.isFromCrawler() && data.article['A1.Status'] != 1) {
+                    error({ message: "Artikeln kunde inte hittas.", statusCode: 404 })
+                }
                 if(isRedirected) {
                     var redirectedName = data.article.ArticleName
                     data = await backend.getArticle(data.article.RedirectToArticle)

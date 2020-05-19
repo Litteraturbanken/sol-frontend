@@ -11,7 +11,8 @@
     "bootstrap": "^4.0.0-beta.2",
     "morgan": "^1.9.0",
     "natural-sort": "^1.0.0",
-    "nuxt": "^2.9.2"
+    "nuxt": "^2.9.2",
+    "nuxt-user-agent": "^1.2.2"
   },
   "scripts": {
     "dev": "nuxt --hostname ${SOL_HOST:-'0.0.0.0'}",
