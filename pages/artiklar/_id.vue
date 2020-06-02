@@ -252,6 +252,11 @@
                     var redirectedName = data.article.ArticleName
                     data = await backend.getArticle(data.article.RedirectToArticle)
                 }
+
+                if(data.prizes) {
+                    data.prizes = _.orderBy(data.prizes, "Year")
+                }
+
                 return {...data, isRedirected, redirectedName}
                 // console.log("article", article, "works.length", works.length)
             } catch(err) {
