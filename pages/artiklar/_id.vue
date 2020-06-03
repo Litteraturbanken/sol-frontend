@@ -202,6 +202,7 @@
 <script>
     import backend from "assets/backend"
     import {naturalSort} from "assets/utils"
+    import _ from "lodash"
 
     let redirects = {
         "Ann-Sofi_Rein" : "Ann-Sofi_Rein_och_Sten_Rein",
