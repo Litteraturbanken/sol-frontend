@@ -246,7 +246,7 @@
                 // let article = await backend.getArticle(redirects[params.id] || params.id)
                 let data = await backend.getArticle(params.id)
                 let isRedirected = !!data.article.RedirectToArticle
-                if($ua.isFromCrawler() && data.article['A1.Status'] != 1) {
+                if($ua.isFromCrawler() && data.article['A1.Status'] != 3) {
                     error({ message: "Artikeln kunde inte hittas.", statusCode: 404 })
                 }
                 if(isRedirected) {
