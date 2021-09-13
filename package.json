@@ -5,13 +5,13 @@
   "author": "johan.roxendal@gu.se <johan.roxendal@gu.se>",
   "private": true,
   "dependencies": {
-    "@nuxtjs/font-awesome": "^1.0.2",
-    "@nuxtjs/style-resources": "^0.1.1",
-    "axios": "^0.16.2",
-    "bootstrap": "^4.0.0-beta.2",
-    "morgan": "^1.9.0",
+    "@nuxtjs/font-awesome": "^1.0.4",
+    "@nuxtjs/style-resources": "^1.2.1",
+    "axios": "^0.21.4",
+    "bootstrap": "^4",
+    "morgan": "^1.10.0",
     "natural-sort": "^1.0.0",
-    "nuxt": "^2.9.2",
+    "nuxt": "^2.15.8",
     "nuxt-user-agent": "^1.2.2"
   },
   "scripts": {
@@ -28,16 +28,16 @@
     "cluster-generate": "nuxt-generate -w 4"
   },
   "devDependencies": {
-    "babel-eslint": "^7.1.1",
-    "eslint": "^3.15.0",
-    "eslint-config-standard": "^6.2.1",
-    "eslint-loader": "^2.0.0",
-    "eslint-plugin-html": "^2.0.0",
-    "eslint-plugin-promise": "^3.4.1",
-    "eslint-plugin-standard": "^2.0.1",
-    "eslint-plugin-vue": "^4.2.0",
-    "node-sass": "^4.5.2",
-    "sass-loader": "^8.0.2",
-    "vue-loader": "^15.6.2"
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-html": "^6.1.2",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-standard": "^5.0.0",
+    "eslint-plugin-vue": "^7.17.0",
+    "sass": "^1.39.2",
+    "sass-loader": "10.1.1",
+    "vue-loader": "^15.9.8"
   }
 }

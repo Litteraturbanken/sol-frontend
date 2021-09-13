@@ -50,11 +50,9 @@
   </section>
 </template>
 
-<style lang="scss" scoped>
-    .works {
-        li {
-            margin-bottom: 1em;
-        }
+<style  scoped>
+    .works li {
+        margin-bottom: 1em;
     }
     .work {
         font-weight : bold;
@@ -65,13 +63,13 @@
     .articles {
         columns: 200px 2;
         max-width : 60em;
-        li {
-            margin-bottom: 1em;
-            break-inside: avoid;
-        }
-        .articletype {
-            font-size: 0.8rem;
-        }
+    }
+    .articles li {
+        margin-bottom: 1em;
+        break-inside: avoid;
+    }
+    .articles .articletype {
+        font-size: 0.8rem;
     }
     .articles_section {
         margin-bottom: 2em;
@@ -82,9 +80,9 @@
 
     .search {
         position: relative;
-        .dropdown-menu {
-            display : block;
-        }
+    }
+    .search .dropdown-menu {
+        display : block;
     }
 
     button {
