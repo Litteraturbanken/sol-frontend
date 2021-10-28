@@ -14,7 +14,7 @@
         <ul class="articles resultlist">
             <li v-for="article in articles" class="d-flex">
                 <figure v-if="article.FileName">
-                    <img class="mr-3 align-top" :src="'https://ws.spraakbanken.gu.se/ws/sol/storage/uploads/' + article.FileName"
+                    <img class="mr-3 align-top" :src="'/sol-admin/storage/uploads/' + article.FileName"
                         onerror="this.style.display='none'">
                 </figure>
 
