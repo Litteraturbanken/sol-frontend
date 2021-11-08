@@ -39,7 +39,7 @@ module.exports = {
     // your settings here
     scss: ["./assets/_imports.scss"] // alternative: scss
   },
-  // mode : "spa",
+  // mode: "spa",
   debug: true,
   isDev: true,
   /*
