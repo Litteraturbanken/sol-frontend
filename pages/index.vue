@@ -27,7 +27,7 @@
       <div class="right-col col-md-6 ">
           <section class="section row no-gutters flex-column">
             <nuxt-link :to="'/artiklar/' + article.URLName">
-              <figure class=""><img :src="'https://sol-admin.lb.se/assets/' + article.FileName.replace('.jpg', '')" alt="">
+              <figure class=""><img :src="'https://sol-admin.lb.se/assets/' + article.FileName" alt="">
               </figure>
             </nuxt-link>
             
