@@ -122,7 +122,7 @@
     </div>
 
     <div class="prizewinners row flex-column no-gutters" v-if="prizewinners">
-      <h3>Prisvinnare</h3>
+      <h3>Pristagare</h3>
       <ul>
         <li v-for="article in prizewinners">
           <nuxt-link
