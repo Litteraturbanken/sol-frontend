@@ -28,10 +28,10 @@ export function naturalSort(array, ...sortKeys) {
   let transposer = char => {
     let trans = _.fromPairs(
       _.zip(
-        "ÁÂÃÄÅÇČĆÈÉÊËĖÌÍÎÏÑÒÓÔÕØŌÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõøōùúûüýÿŠščāĐđěřŁŚ".split(
+        "ÁÂÃÄÅÇČĆÈÉÊËĖÌÍÎÏÑÒÓÔÕØŌÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõøōùúûüýÿŠščāĐđěřŁŚḤī".split(
           ""
         ),
-        "AAAÅÄCCCEEEEEIIIINOOOOÖOUUUUYaaaaåäceeeeiiiinooooöouuuuyySscaDderLS".split(
+        "AAAÅÄCCCEEEEEIIIINOOOOÖOUUUUYaaaaåäceeeeiiiinooooöouuuuyySscaDderLSHi".split(
           ""
         )
       )
