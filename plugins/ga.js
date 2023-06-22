@@ -2,8 +2,13 @@
 
 export default ({ app }) => {
   app.router.afterEach((to, from) => {
-    if(typeof window != 'undefined' && window.gtag) {
-      window.gtag('config', 'UA-132486790-2', { page_path: "/översättarlexikon" + to.fullPath });
+    if (typeof window != "undefined" && window.gtag) {
+      window.gtag("config", "UA-132486790-2", {
+        page_path: "/översättarlexikon" + to.fullPath
+      });
+
+      _paq.push(["setCustomUrl", "/översättarlexikon" + to.fullPath]);
+      window._paq.push(["trackPageView"]);
     }
-  })
-}
+  });
+};
