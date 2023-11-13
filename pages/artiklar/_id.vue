@@ -187,7 +187,7 @@ figcaption {
   font-size: 0.8em;
 
   h3 {
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin-top: 1.2rem;
   }
 
