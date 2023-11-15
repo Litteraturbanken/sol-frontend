@@ -19,13 +19,13 @@
 
       <!-- Matomo -->
       <script>
-        if (document.location.hostname == "litteraturbanken.se") {
+        if (document.location.hostname !== "litteraturbanken.se") {
           var _paq = (window._paq = window._paq || []);
           /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-          // _paq.push(['trackPageView']);
+          _paq.push(["trackPageView"]);
           _paq.push(["enableLinkTracking"]);
           (function() {
-            var u = "//lb.se/matomo/";
+            var u = "https://lb.se/matomo/";
             _paq.push(["setTrackerUrl", u + "matomo.php"]);
             _paq.push(["setSiteId", "1"]);
             var d = document,
