@@ -1,6 +1,13 @@
-# sol_nuxt
+# Frontend för Svenskt översättarlexikon
 
-> Nuxt.js project
+Frontend är skriven i Nuxt 2.x. 
+
+Två backends sköter datan: ett Directusprojekt på lb-appserv-a (sol-admin) och ett API-lager för fulltextsökning i MySQL på appserv (/home/johan/sol/api/sol.py).
+
+Projektet littb-gather flyttar datan från MySQL på lb-mysql till Opensearch, för att göra den sökbar i lb.se/bibliotek
+
+
+
 
 ## Build Setup
 
@@ -15,8 +22,4 @@ $ npm run dev
 $ npm run build
 $ npm start
 
-# generate static project
-$ npm run generate
-```
 
-For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
