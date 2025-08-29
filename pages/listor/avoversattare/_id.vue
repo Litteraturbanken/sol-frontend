@@ -159,7 +159,7 @@ export default {
             biblTypeData: null
         }
     },
-    async asyncData({ params, error, route, from }) {
+    async asyncData({ params, error, route, from, $ua }) {
         let lang = ""
         if (params.lang) {
             lang = [params.lang, params.type]
@@ -178,6 +178,11 @@ export default {
         } catch (err) {
             console.log("Hittade ingen översättare vid det namnet.", err)
             error({ message: "Hittade ingen översättare vid det namnet.", statusCode: 404 })
+        }
+
+        // if ($ua.isFromCrawler() && !backendData.article) {
+        if ($ua.isFromCrawler() && !backendData.article) {
+            error({ message: "Artikeln kunde inte hittas.", statusCode: 404 })
         }
 
         sortGroups(backendData.connectionGroups, sortVal)

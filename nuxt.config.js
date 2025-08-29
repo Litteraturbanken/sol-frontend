@@ -195,8 +195,7 @@ module.exports = {
       const path = require("path");
       config.resolve.symlinks = false;
       // config.resolveLoader = { fallback: path.join(__dirname, "node_modules") }
-    },
-    vendor: ["axios"]
+  }
   },
   router: {
     linkActiveClass: "router-link-active",
