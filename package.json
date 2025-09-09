@@ -1,48 +1,48 @@
 {
-  "name": "oversattarlexikon",
-  "version": "1.0.0",
-  "description": "Nästa version av Svenskt översättarlexikon",
-  "author": "johan.roxendal@gu.se <johan.roxendal@gu.se>",
-  "private": true,
-  "dependencies": {
-    "@nuxtjs/font-awesome": "^1.0.4",
-    "@nuxtjs/style-resources": "^1.2.1",
-    "axios": "^0.21.4",
-    "bootstrap": "^4",
-    "morgan": "^1.10.0",
-    "natural-sort": "^1.0.0",
-    "nuxt": "^2.15.8",
-    "nuxt-user-agent": "^1.2.2"
-  },
-  "scripts": {
-    "dev": "nuxt --hostname ${SOL_HOST:-'0.0.0.0'}",
-    "dev2": "node --preserve-symlinks node_modules/nuxt/bin/nuxt-dev",
-    "build": "nuxt build",
-    "start": "nuxt start --hostname ${SOL_HOST:-'0.0.0.0'}",
-    "generate": "nuxt generate",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "precommit": "npm run lint",
-    "debug": "node --inspect node_modules/nuxt/bin/nuxt-dev",
-    "spa": "nuxt --spa",
-    "test": "docker-compose up --force-recreate --exit-code-from testcafe",
-    "cluster-generate": "nuxt-generate -w 4"
-  },
-  "devDependencies": {
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.32.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-loader": "^4.0.2",
-    "eslint-plugin-html": "^6.1.2",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.0",
-    "eslint-plugin-standard": "^5.0.0",
-    "eslint-plugin-vue": "^7.17.0",
-    "sass": "^1.39.2",
-    "sass-loader": "10.1.1",
-    "vue-loader": "^15.9.8"
-  },
-  "engines": {
-    "node": ">=14 <18"
-  }
+    "name": "oversattarlexikon",
+    "version": "1.0.0",
+    "description": "Nästa version av Svenskt översättarlexikon",
+    "author": "johan.roxendal@gu.se <johan.roxendal@gu.se>",
+    "private": true,
+    "dependencies": {
+        "@nuxtjs/font-awesome": "^1.0.4",
+        "@nuxtjs/style-resources": "^1.2.1",
+        "axios": "^0.21.4",
+        "bootstrap": "^4",
+        "morgan": "^1.10.0",
+        "natural-sort": "^1.0.0",
+        "nuxt": "^2.15.8",
+        "nuxt-user-agent": "^1.2.2"
+    },
+    "scripts": {
+        "dev": "nuxt --hostname ${SOL_HOST:-'0.0.0.0'}",
+        "dev2": "node --preserve-symlinks node_modules/nuxt/bin/nuxt-dev",
+        "build": "nuxt build",
+        "start": "nuxt start --hostname ${SOL_HOST:-'0.0.0.0'}",
+        "generate": "nuxt generate",
+        "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+        "precommit": "npm run lint",
+        "debug": "node --inspect node_modules/nuxt/bin/nuxt-dev",
+        "spa": "nuxt --spa",
+        "test": "docker-compose up --force-recreate --exit-code-from testcafe",
+        "cluster-generate": "nuxt-generate -w 4"
+    },
+    "devDependencies": {
+        "babel-eslint": "^10.1.0",
+        "eslint": "^7.32.0",
+        "eslint-config-standard": "^16.0.3",
+        "eslint-loader": "^4.0.2",
+        "eslint-plugin-html": "^6.1.2",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-promise": "^5.1.0",
+        "eslint-plugin-standard": "^5.0.0",
+        "eslint-plugin-vue": "^7.17.0",
+        "sass": "^1.39.2",
+        "sass-loader": "10.1.1",
+        "vue-loader": "^15.9.8"
+    },
+    "engines": {
+        "node": ">=14 <18"
+    }
 }
