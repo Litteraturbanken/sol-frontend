@@ -1,11 +1,14 @@
 language: node_js
 node_js:
   - '24'
-cache: yarn
+cache:
+  directories:
+    - ~/.pnpm-store
 install:
-  - yarn install --frozen-lockfile
+  - corepack enable
+  - pnpm install --frozen-lockfile
   - npx playwright install --with-deps chromium
 script:
-  - yarn lint
-  - yarn build
-  - yarn test
+  - pnpm lint
+  - pnpm build
+  - pnpm test

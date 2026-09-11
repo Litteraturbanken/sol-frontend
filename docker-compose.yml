@@ -17,7 +17,7 @@ services:
     volumes:
       - .:/tests
       - playwright-dependencies:/tests/node_modules
-    command: sh -c 'yarn install --frozen-lockfile && yarn test'
+    command: sh -c 'corepack enable && pnpm install --frozen-lockfile && pnpm test'
     environment:
       PLAYWRIGHT_BASE_URL: http://sol:3000/%C3%B6vers%C3%A4ttarlexikon/
     depends_on:

@@ -138,7 +138,7 @@ test('a newer search cancels the previous request', async ({ page }) => {
     let releaseFirst
     const firstResponse = new Promise(resolve => { releaseFirst = resolve })
     await page.route('**/api/autocomplete/**', route => route.fulfill({ json: { data: [] } }))
-    await page.route('**/sol/api/search/**', async route => {
+    await page.route('**/api/sol/search/**', async route => {
         const term = decodeURIComponent(new URL(route.request().url()).pathname.split('/').at(-1))
         if (term === 'first') await firstResponse
         await route.fulfill({ json: {
@@ -149,13 +149,13 @@ test('a newer search cancels the previous request', async ({ page }) => {
     await page.goto('sok', { waitUntil: 'domcontentloaded' })
     await page.waitForFunction(() => document.documentElement.dataset.nuxtReady === 'true')
     const input = page.locator('.mainview input')
-    const firstRequest = page.waitForRequest('**/sol/api/search/first')
+    const firstRequest = page.waitForRequest('**/api/sol/search/first')
     await input.fill('first')
     await input.press('Enter')
     await firstRequest
     await expect(page).toHaveURL(/[?&]fras=first$/)
     const cancelled = page.waitForEvent('requestfailed', request => request.url().endsWith('/search/first'))
-    const secondRequest = page.waitForRequest('**/sol/api/search/second')
+    const secondRequest = page.waitForRequest('**/api/sol/search/second')
     try {
         await input.fill('second')
         await input.press('Enter')

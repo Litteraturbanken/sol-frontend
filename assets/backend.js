@@ -11,12 +11,28 @@ async function getJSON(url, config = {}) {
   if (!response.ok) throw new Error(`API returned ${response.status}: ${url}`);
   return response.json();
 }
-async function pythonGet(endpoint, params = {}, config = {}) {
-  const url = new URL(useRuntimeConfig().public.apiBase + endpoint);
+
+/**
+ * Lexikonets data kommer från appens egna serverrutter i server/api/sol,
+ * som läser Directus och OpenSearch. Svaren har samma form som det gamla
+ * Python-API:t gav, så sidorna nedan är oförändrade.
+ *
+ * apiBase är normalt en relativ sökväg. Då används $fetch, som under
+ * serverrenderingen anropar rutten direkt utan att gå ut på nätverket.
+ * Pekar apiBase på en annan värd görs ett vanligt HTTP-anrop.
+ */
+async function apiGet(endpoint, params = {}, config = {}) {
+  const base = useRuntimeConfig().public.apiBase;
+  const query = {};
   for (const [key, value] of Object.entries(params)) {
-    if (value != null) url.searchParams.set(key, value);
+    if (value != null) query[key] = value;
   }
-  return getJSON(url, config);
+  if (/^https?:\/\//.test(base)) {
+    const url = new URL(base + endpoint);
+    for (const [key, value] of Object.entries(query)) url.searchParams.set(key, value);
+    return getJSON(url, config);
+  }
+  return $fetch(endpoint, { baseURL: base, query, signal: config.signal });
 }
 
 function groupConnections(works, sortVal) {
@@ -92,7 +108,7 @@ class PythonBackend {
     if (showIngress) {
       suffix = ",Ingress";
     }
-    let resp = await pythonGet(
+    let resp = await apiGet(
       urljoin("article", encodeURIComponent(articleId)),
       {
         show:
@@ -120,7 +136,7 @@ class PythonBackend {
 
   async listArticles() {
     let articles = (
-      await pythonGet("/articles", {
+      await apiGet("/articles", {
         show:
           "id,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"
       })
@@ -158,15 +174,15 @@ class PythonBackend {
 
   async getContributors() {
     return (
-      await pythonGet("/contributors", { show: "URLName,FirstName,LastName" })
+      await apiGet("/contributors", { show: "URLName,FirstName,LastName" })
     ).data;
   }
   async getContributor(name) {
     console.log("getContributor", encodeURIComponent(name.replace(/\s/g, "_")));
     return (
-      await pythonGet(
+      await apiGet(
         "/contributor/" + encodeURIComponent(name.replace(/\s/g, "_")),
-        // return (await pythonGet("/contributor/" + encodeURIComponent(name),
+        // return (await apiGet("/contributor/" + encodeURIComponent(name),
         { show: "ArticleName,Articles.URLName:URLName" }
       )
     ).data;
@@ -175,7 +191,7 @@ class PythonBackend {
   async getRandom(type) {
     try {
       return (
-        await pythonGet("/articles/random/" + type, {
+        await apiGet("/articles/random/" + type, {
           show:
             "TranslatorYearBirth,TranslatorYearDeath,ArticleName,URLName,Ingress"
         })
@@ -189,7 +205,7 @@ class PythonBackend {
   async getLatest() {
     try {
       return (
-        await pythonGet("/articles/latest", {
+        await apiGet("/articles/latest", {
           show: "ArticleName,URLName,DatePublished"
         })
       ).data;
@@ -213,14 +229,14 @@ class PythonBackend {
   }
 
   async getWork(workid) {
-    let { work, articles } = await pythonGet("/bibliography/" + workid);
+    let { work, articles } = await apiGet("/bibliography/" + workid);
     // let article = articles.length ? articles[0] : null
     this.fixWork(work[0]);
     return { work: work[0], articles };
   }
 
   async getWorksByAuthorName(authorname) {
-    let { data } = await pythonGet("/author/" + encodeURIComponent(authorname));
+    let { data } = await apiGet("/author/" + encodeURIComponent(authorname));
     // console.log("works", data)
     for (let work of data) {
       this.fixWork(work);
@@ -229,7 +245,7 @@ class PythonBackend {
   }
 
   async getWorksByAuthor(urlname, sortVal) {
-    let { languages, works, article, bibliography_types } = await pythonGet(
+    let { languages, works, article, bibliography_types } = await apiGet(
       urljoin("/bibliography", encodeURIComponent(urlname))
     );
     // console.log("works", works)
@@ -267,7 +283,7 @@ class PythonBackend {
     let path = _.compact([groupName, lang]).join("/");
 
     let data = (
-      await pythonGet("/languages/" + path, {
+      await apiGet("/languages/" + path, {
         show: "TranslatorYearBirth,TranslatorYearDeath,URLName,ArticleName"
       })
     ).data;
@@ -278,7 +294,7 @@ class PythonBackend {
   }
   async listPrizeArticles() {
     let data = (
-      await pythonGet("/articles/2", {
+      await apiGet("/articles/2", {
         show:
           "Articles.id,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"
       })
@@ -288,7 +304,7 @@ class PythonBackend {
 
   async listThemeArticles() {
     let data = (
-      await pythonGet("/articles/4", {
+      await apiGet("/articles/4", {
         show:
           "Articles.id,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"
       })
@@ -297,11 +313,11 @@ class PythonBackend {
   }
 
   async search(str, signal) {
-    return pythonGet('/search/' + encodeURIComponent(str), {}, { signal });
+    return apiGet('/search/' + encodeURIComponent(str), {}, { signal });
   }
 
   async chronology(from, to) {
-    let resultObj = await pythonGet(`/chronology/${from}/${to}`, {
+    let resultObj = await apiGet(`/chronology/${from}/${to}`, {
       show:
         "Articles.id,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"
     });
@@ -309,7 +325,7 @@ class PythonBackend {
   }
 
   async getStatic(page) {
-    return (await pythonGet("/static/" + page)).page;
+    return (await apiGet("/static/" + page)).page;
   }
 }
 

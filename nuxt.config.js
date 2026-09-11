@@ -105,7 +105,20 @@ export default defineNuxtConfig({
         }
     },
     runtimeConfig: {
-        public: { apiBase: 'https://litteraturbanken.se/sol/api' }
+        // Directus (filisol) är lexikonets databas, OpenSearch driver
+        // fritextsökningen. Båda nås bara från serverlagret i server/api/sol.
+        directusUrl: 'https://filisol.lb.se',
+        directusToken: '',
+        opensearchUrl: 'http://lb-loadbalancer:9200',
+        opensearchIndex: 'littb-live_sol',
+        public: {
+            // Relativ sökväg: appens egna serverrutter. Sätt
+            // NUXT_PUBLIC_API_BASE till en full adress för att peka tillbaka
+            // på ett externt API.
+            apiBase: '/api/sol',
+            // Artikelbilderna serveras av Directus filarkiv.
+            assetsBase: 'https://filisol.lb.se/assets/'
+        }
     },
     css: [
         '~/assets/fontawesome-custom/css/fa-custom.css',

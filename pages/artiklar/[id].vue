@@ -17,7 +17,7 @@
 
         <figure>
           <img
-            :src="'https://sol-admin.lb.se/assets/' + article.FileName"
+            :src="$assetsBase + article.FileName"
             onerror="this.style.display='none'"
           />
           <!-- <img :src="'https://spraakbanken.gu.se/karp/data/sol/artikelfiler/' + article.FileName"

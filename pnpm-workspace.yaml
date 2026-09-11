@@ -1,0 +1,5 @@
+# Byggskript som får köras vid installation. esbuild och @parcel/watcher
+# hämtar plattformsbinärer som Vite respektive Nuxts filbevakning behöver.
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true

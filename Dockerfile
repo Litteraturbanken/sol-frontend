@@ -1,11 +1,12 @@
 FROM node:24-bookworm-slim AS build
 WORKDIR /app
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+RUN corepack enable
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile
 COPY . .
 ARG BASE_URL=/%C3%B6vers%C3%A4ttarlexikon/
 ENV NUXT_APP_BASE_URL=$BASE_URL
-RUN yarn build
+RUN pnpm build
 
 FROM node:24-bookworm-slim
 WORKDIR /app
