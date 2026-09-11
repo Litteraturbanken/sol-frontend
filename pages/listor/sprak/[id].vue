@@ -4,7 +4,7 @@
 
     <p class="explain">
       Denna sida visar kopplingar mellan språk, verk och översättare i översättarlexikonet.
-      <strong>Originalspråk</strong> listar språk och översättare utifrån originalverkens 
+      <strong>Originalspråk</strong> listar språk och översättare utifrån originalverkens
       språk. Eftersom verk kan vara andrahandsöversättningar visar dessa listor
       inte nödvändigtvis vilket språk översättaren har översatt från.
       <strong>Översatta från</strong> listar språk som översättningen har gjorts från. I denna vy
@@ -20,7 +20,7 @@
       </select>
       <select v-model="langSelect" @change="onLangChange(langSelect)">
         <option value="">Alla språk</option>
-        <option :value="lang" v-for="lang in langs" v-if="lang != 'Flera språk'">{{lang}}</option>
+        <option :value="lang" v-for="lang in (langs || []).filter(value => value !== 'Flera språk')">{{lang}}</option>
       </select>
 
     </div>
@@ -84,28 +84,31 @@
 
 <script>
 
-import backend from "assets/backend"
+import backend from "~/assets/backend"
 import _ from "lodash"
 
 
 
-export default {
+export default defineNuxtComponent({
+    fetchKey: () => 'pages/listor/sprak/[id].vue' + decodeURI(useRoute().path) + JSON.stringify(useRoute().query),
     name : "Languages",
-    head () {
+    setup() {
+        usePageHead(data => {
       let title = "Språklista"
-      if(this.langSelect) {
-        title = "Språk: " + this.langSelect
+      if(data.langSelect) {
+        title = "Språk: " + data.langSelect
       }
       return {
         title : `${title} – Svenskt översättarlexikon`
       }
+
+        })
+        return {}
     },
     data() {
-      console.log("lang data init")
       // let params = document.location.search()
 
       // let lang = params.get("l")
-      // console.log("data", arguments)
       return {
         groups : null,
         langs : null,
@@ -113,16 +116,18 @@ export default {
         type : "original",
       }
     },
-    async asyncData ({error, env, params, redirect, route}) {
-      console.log("lang asyncData", params, route.query, route)
+    async asyncData(nuxtApp) {
+      const {error, env, params, redirect, route} = pageContext(nuxtApp)
 
       var langSelect = params.lang || ""
       if(params.id) {
         var type = params.id
       }
       if(!type) {
-        redirect("/listor/sprak/original")
-        return {groups: null}
+        return redirect("/listor/sprak/original")
+      }
+      if (!["original", "fran", "till"].includes(type)) {
+        error({ statusCode: 404, message: "Språklistan kunde inte hittas." })
       }
       try {
         let groupId = {original : "original", "fran": "source", till: "target"}[type]
@@ -130,19 +135,16 @@ export default {
         let groups = data[groupId]
         let langs = data.languages
         if(langSelect && !groups[langSelect]) {
-          console.log("reset langSelect", langSelect)
           // langSelect = ""
-          redirect("/listor/sprak/" + type)
-          return {groups: null}
-        }
+          return redirect("/listor/sprak/" + type)
+          }
         return {
-          groups : groups, 
+          groups : groups,
           langs,
-          type, 
+          type,
           langSelect
-        } 
+        }
       } catch(err) {
-        console.log("err", err)
         error("Ett fel uppstod, vänligen försök igen senare.")
         return {groups : null}
       }
@@ -177,7 +179,7 @@ export default {
         this.$router.push({path})
       }
     }
-}
+})
 
 </script>
 

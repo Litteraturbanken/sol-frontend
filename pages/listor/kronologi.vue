@@ -5,7 +5,7 @@
   <div class="explain">
     <!-- <h3>Förklaring</h3> -->
      <p>Kronologin listar lexikonets översättare för en viss tidsperiod. Klicka och dra kontrollerna på tidsaxeln för att avgränsa tidsperioden.
-       
+
        Kronologin baseras på utgivningsår för översättarnas verk, begränsat av deras levnadsperiod. Den ger därmed en approximativ bild av deras verksamhetsperiod.</p>
   </div>
 
@@ -21,8 +21,8 @@
        </range-slider>
      </div>
      <div class="ticks row no-gutters justify-content-between" :style="offsetStyle(0, 0)">
-       <span v-for="i in range" class="tick" >
-         
+       <span v-for="i in range" :key="i" class="tick" >
+
        </span>
      </div>
      <div class="timeline row no-gutters justify-content-between" :style="offsetStyle(-20, -20)">
@@ -30,8 +30,8 @@
          {{i}}&nbsp;
        </span>
      </div>
-  
-  
+
+
   <ul class="results resultlist" :class="{loading: loading}">
       <li v-for="article in articles">
           <nuxt-link :to="'/artiklar/' + article.URLName">{{article.ArticleName}}<span v-if="article.TranslatorYearBirth || article.TranslatorYearDeath"> ({{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}})</span></nuxt-link>
@@ -42,21 +42,26 @@
 
 <script>
     import _ from "lodash"
-    import backend from "assets/backend"
+    import backend from "~/assets/backend"
 
-    import RangeSlider from '~/assets/slider/RangeSlider'
+    import RangeSlider from '~/assets/slider/RangeSlider.vue'
     // you probably need to import built-in style
     // import 'vue-range-slider/dist/vue-range-slider.css'
 
 
 
-    export default {
+    export default defineNuxtComponent({
+    fetchKey: () => 'pages/listor/kronologi.vue' + decodeURI(useRoute().path) + JSON.stringify(useRoute().query),
         name : "Kronologi",
-        head () {
+        setup() {
+        usePageHead(data => {
             return {
                 title : "Kronologi – Svenskt översättarlexikon"
             }
-        },
+
+        })
+        return {}
+    },
         components: {
            RangeSlider,
          },
@@ -65,7 +70,7 @@
             this.loading = true
             Object.assign(this, await backend.chronology(start, end))
             this.loading = false
-            this.$router.replace({hash: `${start}-${end}`}) 
+            this.$router.replace({hash: `#${start}-${end}`})
           },
           offsetStyle : function(leftOffset, rightOffset) {
             leftOffset = leftOffset || 0
@@ -77,25 +82,24 @@
           }
         },
          computed : {
+          percentLeftPad() { return (this.range[0] - this.min) / (this.max - this.min) * 100 },
+          percentRightPad() { return (this.max - this.range.at(-1)) / (this.max - this.min) * 100 },
           range : function() {
             let years = _.range(this.min, this.max + 1).filter((item) => item % 100 == 0)
 
             let total = this.max - this.min
             let first = years[0]
             let last = _.last(years)
-            this.percentLeftPad = ((first - this.min) / total * 100)
-            this.percentRightPad = ((this.max - last) / total * 100)
+
             return years
           }
-          
+
          },
          data () {
           return {
             loading : false,
             min : null,
             max : null,
-            percentLeftPad : null,
-            percentRightPad : null,
             sliderValue : [1900, 1950],
             articles : null
           }
@@ -105,7 +109,7 @@
 
           if(this.$route.hash) {
             this.sliderValue = this.$route.hash.replace("#", "").split("-").map(Number)
-          } 
+          }
 
           // TODO: un-hardcode this
           // this.startYear = 1437
@@ -113,12 +117,8 @@
 
           this.sliderChange(this.sliderValue)
         },
-        async asyncData ({ params, error, route }) {
-          // console.log("route.hash", route.hash.replace("#", ""), route)
-          
-          // return {startYear, endYear}
-        }
-    }
+
+    })
 
 </script>
 
@@ -131,7 +131,7 @@
   .timeline {
     margin-right : 0.4em;
     span {
-      // padding: 0 
+      // padding: 0
     }
   }
   .ticks {
@@ -147,7 +147,7 @@
   }
 
   .results {
-    
+
     columns : 300px 3;
     opacity : 1;
     transition: opacity 200ms;

@@ -232,8 +232,8 @@ figcaption {
 </style>
 
 <script>
-import backend from "assets/backend";
-import { naturalSort } from "assets/utils";
+import backend from "~/assets/backend";
+import { naturalSort } from "~/assets/utils";
 import _ from "lodash";
 
 let redirects = {
@@ -244,16 +244,21 @@ let redirects = {
   Ivo_Iliste: "Ivo_Iliste_och_Birgitta_Göranson_Iliste"
 };
 
-export default {
+export default defineNuxtComponent({
+    fetchKey: () => 'pages/artiklar/[id].vue' + decodeURI(useRoute().path) + JSON.stringify(useRoute().query),
   name: "Article",
-  head() {
-    if (!this.article) {
+  setup() {
+        usePageHead(data => {
+    if (!data.article) {
       return;
     }
     return {
-      title: this.article.ArticleName
+      title: data.article.ArticleName
     };
-  },
+
+        })
+        return {}
+    },
   data() {
     return {
       article: {},
@@ -269,7 +274,8 @@ export default {
       sortBy: "RealYear"
     };
   },
-  async asyncData({ params, error, payload, from, $ua }) {
+  async asyncData(nuxtApp) {
+      const { params, error, payload, from, $ua } = pageContext(nuxtApp)
     if (payload) {
       return payload;
     }
@@ -326,5 +332,5 @@ export default {
       return _.orderBy(works, this.sortBy);
     }
   }
-};
+});
 </script>

@@ -2,47 +2,38 @@
     "name": "oversattarlexikon",
     "version": "1.0.0",
     "description": "Nästa version av Svenskt översättarlexikon",
-    "author": "johan.roxendal@gu.se <johan.roxendal@gu.se>",
+    "author": "johan.roxendal@litteraturbanken.se <johan.roxendal@litteraturbanken.se>",
     "private": true,
     "dependencies": {
-        "@nuxtjs/font-awesome": "^1.0.4",
-        "@nuxtjs/style-resources": "^1.2.1",
-        "axios": "^0.21.4",
-        "bootstrap": "^4",
-        "morgan": "^1.10.0",
+        "bootstrap": "^4.6.2",
+        "lodash": "^4.17.21",
         "natural-sort": "^1.0.0",
-        "nuxt": "^2.15.8",
-        "nuxt-user-agent": "^1.2.2"
+        "nuxt": "4.5.2",
+        "vue": "^3.5.42",
+        "vue-router": "^4.6.4"
     },
     "scripts": {
-        "dev": "nuxt --hostname ${SOL_HOST:-'0.0.0.0'}",
-        "dev2": "node --preserve-symlinks node_modules/nuxt/bin/nuxt-dev",
+        "dev": "nuxt dev --host ${SOL_HOST:-0.0.0.0}",
         "build": "nuxt build",
-        "start": "nuxt start --hostname ${SOL_HOST:-'0.0.0.0'}",
+        "start": "node .output/server/index.mjs",
         "generate": "nuxt generate",
-        "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-        "precommit": "npm run lint",
-        "debug": "node --inspect node_modules/nuxt/bin/nuxt-dev",
-        "spa": "nuxt --spa",
-        "test": "docker-compose up --force-recreate --exit-code-from testcafe",
-        "cluster-generate": "nuxt-generate -w 4"
+        "postinstall": "nuxt prepare",
+        "lint": "eslint .",
+        "test": "playwright test",
+        "test:ui": "playwright test --ui",
+        "test:docker": "docker compose up --build --abort-on-container-exit --exit-code-from playwright"
     },
     "devDependencies": {
-        "babel-eslint": "^10.1.0",
-        "eslint": "^7.32.0",
-        "eslint-config-standard": "^16.0.3",
-        "eslint-loader": "^4.0.2",
-        "eslint-plugin-html": "^6.1.2",
-        "eslint-plugin-import": "^2.22.1",
-        "eslint-plugin-node": "^11.1.0",
-        "eslint-plugin-promise": "^5.1.0",
-        "eslint-plugin-standard": "^5.0.0",
-        "eslint-plugin-vue": "^7.17.0",
-        "sass": "^1.39.2",
-        "sass-loader": "10.1.1",
-        "vue-loader": "^15.9.8"
+        "@eslint/js": "^9.39.0",
+        "@playwright/test": "1.63.0",
+        "eslint": "^9.39.0",
+        "eslint-plugin-vue": "^10.5.1",
+        "globals": "^16.5.0",
+        "sass": "^1.99.0",
+        "vue-eslint-parser": "^10.3.0"
     },
     "engines": {
-        "node": ">=14 <18"
-    }
+        "node": ">=22.12.0"
+    },
+    "type": "module"
 }

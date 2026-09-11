@@ -10,9 +10,10 @@
 </template>
 
 <script>
-import backend from "assets/backend"
+import backend from "~/assets/backend"
 
-export default {
+export default defineNuxtComponent({
+    fetchKey: () => 'pages/listor/artiklar/tema.vue' + decodeURI(useRoute().path) + JSON.stringify(useRoute().query),
     name : "Themes",
     head : {
       title : "Temaartiklar – Svenskt översättarlexikon"
@@ -22,18 +23,19 @@ export default {
         items: null
       }
     },
-    async asyncData ({error, env}) {
+    async asyncData(nuxtApp) {
+      const {error, env} = pageContext(nuxtApp)
       try {
-        return {items : await backend.listThemeArticles()} 
+        return {items : await backend.listThemeArticles()}
       } catch(err) {
         console.log("err", err)
         error("Ett fel uppstod, vänligen försök igen senare.")
         return {items : null}
       }
     },
-}
+})
 
-    
+
 </script>
 
 <style scoped>

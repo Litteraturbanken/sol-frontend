@@ -1,27 +1,17 @@
-FROM node:8.12.0
-
-# Create app directory
-WORKDIR /usr/src/app
-
-# Install app dependencies
-# COPY package.json .
-# For npm@5 or later, copy package-lock.json as well
+FROM node:24-bookworm-slim AS build
+WORKDIR /app
 COPY package.json yarn.lock ./
-
-# RUN yarn global add testcafe
-RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
-RUN yarn install --ignore-optional
-# If you are building your code for production
-# RUN npm install --only=production
-
-# Bundle app source
+RUN yarn install --frozen-lockfile
 COPY . .
+ARG BASE_URL=/%C3%B6vers%C3%A4ttarlexikon/
+ENV NUXT_APP_BASE_URL=$BASE_URL
+RUN yarn build
 
-ENV CONTEXT="docker"
-ENV BASE_URL="/%C3%B6vers%C3%A4ttarlexikon/"
-
+FROM node:24-bookworm-slim
+WORKDIR /app
+COPY --from=build /app/.output ./.output
+ENV NODE_ENV=production HOST=0.0.0.0 PORT=3000
+ENV NUXT_APP_BASE_URL=/översättarlexikon/
+USER node
 EXPOSE 3000
-
-RUN npm run build
-ENTRYPOINT npm run start
-  
+CMD ["node", ".output/server/index.mjs"]

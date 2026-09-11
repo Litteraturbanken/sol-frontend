@@ -3,7 +3,7 @@
         <h2>Översättarlexikonets artikelförfattare</h2>
         <h3>{{contributor.FirstName}} {{contributor.LastName}}</h3>
         <p v-html="contributor.Description"></p>
-        
+
         <section class="articles">
             <h4>Artiklar</h4>
             <ul class="resultlist">
@@ -22,16 +22,21 @@
 </style>
 
 <script>
-    import backend from "assets/backend"
+    import backend from "~/assets/backend"
 
-    export default {
+    export default defineNuxtComponent({
+    fetchKey: () => 'pages/medarbetare/[id]/index.vue' + decodeURI(useRoute().path) + JSON.stringify(useRoute().query),
         name : "Medarbetare",
-        head () {
+        setup() {
+        usePageHead(data => {
             return {
-                // title : this.data.ContributerLastname
+                // title : data.data.ContributerLastname
                 title : "Medarbetare – Svenskt översättarlexikon"
             }
-        },
+
+        })
+        return {}
+    },
         data () {
             return {
                 contributor: null,
@@ -39,7 +44,8 @@
             }
         },
 
-        async asyncData ({ params, error, payload }) {
+        async asyncData(nuxtApp) {
+      const { params, error, payload } = pageContext(nuxtApp)
             if(payload) {
                 return payload
             }
@@ -49,9 +55,9 @@
                 console.log("constributor data", data)
                 return data
             } catch(e) {
-                console.log("Contributor fetch error:", e)
+                error({ statusCode: 404, message: "Medarbetaren kunde inte hittas." })
             }
 
         }
-    }
+    })
 </script>

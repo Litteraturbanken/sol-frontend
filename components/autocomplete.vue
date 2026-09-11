@@ -11,7 +11,7 @@
             v-model="searchstr"
             placeholder="Sök"
             @focus="fetchData(searchstr)"
-            @input="$emit('input', $event.target.value)"
+            @input="$emit('update:modelValue', $event.target.value)"
             ref="inputField"
         />
         <transition name="fade">
@@ -82,6 +82,7 @@ input {
 <script>
 import _ from "lodash"
 export default {
+    emits: ['update:modelValue'],
     data() {
         return {
             autocompleteData: [],
@@ -89,12 +90,13 @@ export default {
             isLoading: false
         }
     },
+    beforeUnmount() { this.searchController?.abort() },
     created: function() {
-        this.searchstr = this.value
+        this.searchstr = this.modelValue
     },
     props: {
         backend: { type: Function, default: _.identity },
-        value: { type: String }
+        modelValue: { type: String, default: '' }
     },
     methods: {
         outside: function() {
@@ -132,7 +134,6 @@ export default {
             }
             let i = _.findIndex(d, "active")
             console.log("i", i)
-            // eslint-disable-next-line
             // debugger
             if (i == -1) {
                 // d[0].active = true
@@ -173,27 +174,29 @@ export default {
             this.$refs.inputField.focus()
         },
         async fetchData(val) {
-            if (!val.trim(/\s/)) {
+            this.searchController?.abort()
+            const controller = new AbortController()
+            this.searchController = controller
+            if (!val.trim()) {
                 this.autocompleteData = []
+                this.isLoading = false
                 return
             }
             this.isLoading = true
-            let data = (await this.backend(val)).slice(0, 10)
-            this.isLoading = false
-            let i = _.findIndex(this.autocompleteData, "active")
-            let firstObj = {
-                stringsearch: true
-            }
-            data.splice(0, 0, firstObj)
-            this.autocompleteData = _.map(data, item => {
-                item.active = false
-                return item
-            })
-
-            if (this.autocompleteData[i]) {
-                this.autocompleteData[i].active = true
-            } else {
-                this.autocompleteData[0].active = true
+            try {
+                const data = (await this.backend(val, controller.signal) || []).slice(0, 10)
+                if (controller.signal.aborted) return
+                const activeIndex = Math.max(0, _.findIndex(this.autocompleteData, 'active'))
+                this.autocompleteData = [{ stringsearch: true }, ...data].map((item, index) => ({
+                    ...item, active: index === activeIndex
+                }))
+            } catch (error) {
+                if (!controller.signal.aborted) {
+                    console.error('Autocomplete failed', error)
+                    this.autocompleteData = []
+                }
+            } finally {
+                if (!controller.signal.aborted) this.isLoading = false
             }
         }
     },
@@ -203,7 +206,7 @@ export default {
         }
     },
     watch: {
-        value: function(newVal) {
+        modelValue: function(newVal) {
             this.searchstr = newVal
         },
         searchstr: async function(newVal) {
@@ -212,10 +215,10 @@ export default {
     },
     directives: {
         "click-outside": {
-            bind: function(el, binding, vNode) {
+            mounted: function(el, binding, vNode) {
                 // Provided expression must evaluate to a function.
                 if (typeof binding.value !== "function") {
-                    const compName = vNode.context.name
+                    const compName = binding.instance?.$options.name
                     let warn = `[Vue-click-outside:] provided expression '${binding.expression}' is not a function, but has to be`
                     if (compName) {
                         warn += `Found in component '${compName}'`
@@ -236,7 +239,7 @@ export default {
                 document.addEventListener("click", handler)
             },
 
-            unbind: function(el, binding) {
+            unmounted: function(el, binding) {
                 // Remove Event Listeners
                 document.removeEventListener("click", el.__vueClickOutside__)
                 el.__vueClickOutside__ = null

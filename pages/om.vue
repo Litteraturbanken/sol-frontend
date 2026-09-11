@@ -1,5 +1,5 @@
 <template>
-    
+
     <section class="row">
         <div class="text col-md-8">
             <h2>Om Svenskt översättarlexikon</h2>
@@ -51,9 +51,10 @@
 </template>
 
 <script>
-    import backend from "assets/backend"
+    import backend from "~/assets/backend"
 
-    export default {
+    export default defineNuxtComponent({
+    fetchKey: () => 'pages/om.vue' + decodeURI(useRoute().path) + JSON.stringify(useRoute().query),
         data() {
             return {
                 PageContent: ""
@@ -65,12 +66,12 @@
             return {PageContent}
 
         }
-    }
+    })
 
 </script>
 
 <style lang="scss" scoped>
-    
+
     .fwn {
         font-weight : normal;
     }

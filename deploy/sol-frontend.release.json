@@ -1,0 +1,39 @@
+{
+  "verified_at": "2026-09-10T09:52:39.015767+00:00",
+  "job": "sol-frontend",
+  "job_version": 5,
+  "job_modify_index": 3618945,
+  "jobspec_sha256": "0e587ef100c67d8708e27f68d59898fde6bacab16b7c4511dbd8a53ffcb533e1",
+  "deployment_id": "05f3e0f7-b31e-f14d-0477-6956573d3161",
+  "deployment_status": "successful",
+  "image": "10.0.0.50:5000/sol-frontend@sha256:4340920ebea9ce9e0a120297b4af151d91db785c5a8dec46ac23f6de149fdd38",
+  "source_manifest_sha256": "4251e55439a34f24a6c0d6d7d98e230ec0a32b27db5b2e56b1937a6a2926d702",
+  "source_state": "Uncommitted working-tree snapshot; exact build inputs recorded in sol-frontend.source-manifest.json",
+  "ingress_url": "https://sol-frontend.pub.lb.se/%C3%B6vers%C3%A4ttarlexikon/",
+  "affinities": [
+    {
+      "LTarget": "${node.unique.name}",
+      "Operand": "=",
+      "RTarget": "lb-nlp-c",
+      "Weight": -100
+    }
+  ],
+  "allocations": [
+    {
+      "id": "6d7c2b27-a13b-e9bb-1969-1ce576b695c0",
+      "node": "lb-elastic-f",
+      "healthy": true
+    },
+    {
+      "id": "7cb2c641-b6df-5759-66ec-085ee2a9d902",
+      "node": "lb-baremetal-epyc",
+      "healthy": true
+    }
+  ],
+  "verification": {
+    "local_browser_tests": "12 passed",
+    "public_https_browser_tests": "12 passed",
+    "safari": "HTTPS page visibly rendered after deployment",
+    "lint": "passed"
+  }
+}

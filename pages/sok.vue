@@ -4,7 +4,7 @@
 
     <!-- :backend="autocompleteBackend" -->
     <form @submit.prevent="onSubmit(searchstr)">
-        <input focus autofocus v-model="searchstr"></input>
+        <input name="fras" focus autofocus v-model="searchstr">
     </form>
     <section class="suggestion" v-if="!works.length && !articles.length && suggestion">
         Menade du <a :href="'?fras=' + suggestion" @click.prevent="onSubmit(suggestion)">{{suggestion}}</a>?
@@ -25,7 +25,7 @@
                 </div>
             </li>
         </ul>
-        
+
     </section>
     <section class="bibliography" v-if="works.length">
         <h2>Verk</h2>
@@ -94,14 +94,15 @@
 </style>
 
 <script>
-import backend from "assets/backend"
+import backend from "~/assets/backend"
 import _ from "lodash"
 
 import Autocomplete from "~/components/autocomplete.vue"
 
 
 
-export default {
+export default defineNuxtComponent({
+    fetchKey: () => 'pages/sok.vue' + decodeURI(useRoute().path) + JSON.stringify(useRoute().query),
     name: "Sok",
     data () {
         return {
@@ -114,15 +115,14 @@ export default {
         }
     },
 
-    async asyncData ({ params, error }) {
-        
-    },
+
+    beforeUnmount() { this.searchController?.abort() },
     mounted : function() {
         if(this.searchstr) {
             this.onSubmit(this.searchstr)
         }
     },
-    components : {autocomplete: Autocomplete},
+
     computed : {
         countLBWorks : function() {
             return _.filter(this.lb_autocomplete, (item) => item.type == "work").length
@@ -152,18 +152,25 @@ export default {
         },
 
         onSubmit : async function(searchstr) {
-            console.log("submit", searchstr)
+            this.searchController?.abort()
+            const controller = new AbortController()
+            this.searchController = controller
             this.searchstr = searchstr
-            this.$router.replace({query : {fras : searchstr}})
-            
-            let [{articles, works, suggestion, prizes}, lbAutocomplete] = await Promise.all([backend.search(searchstr), backend.autocomplete(searchstr)])
-
-            this.articles = articles.concat(prizes)
-            this.works = works
-            this.suggestion = suggestion
-            this.lb_autocomplete = lbAutocomplete
+            this.$router.replace({query: {fras: searchstr}})
+            try {
+                const [{articles, works, suggestion, prizes}, lbAutocomplete] = await Promise.all([
+                    backend.search(searchstr, controller.signal), backend.autocomplete(searchstr)
+                ])
+                if (controller.signal.aborted) return
+                this.articles = (articles || []).concat(prizes || [])
+                this.works = works || []
+                this.suggestion = suggestion
+                this.lb_autocomplete = lbAutocomplete
+            } catch (error) {
+                if (!controller.signal.aborted) throw error
+            }
         }
     },
-}
+})
 
 </script>

@@ -1,21 +1,11 @@
----
-# Use Ubuntu 'trusty' distribution
-
-env:
-  - DOCKER_COMPOSE_VERSION=1.25.5
-
-before_install:
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
-
-# before_script:
-#   - docker-compose up --build --exit-code-from littb
-
+language: node_js
+node_js:
+  - '24'
+cache: yarn
+install:
+  - yarn install --frozen-lockfile
+  - npx playwright install --with-deps chromium
 script:
-  - docker-compose up --build --exit-code-from testcafe
-
-after_script:
-  - docker-compose down
-...
+  - yarn lint
+  - yarn build
+  - yarn test

@@ -1,15 +1,22 @@
-import axios from "axios";
+
 import _ from "lodash";
 
-const PYTHON_API = "https://litteraturbanken.se/sol/api";
+
 
 function urljoin(...urls) {
   return "/" + urls.map(item => _.trim(item, "/")).join("/");
 }
-async function pythonGet(endpoint, params, config) {
-  // console.log("PYTHON_API + endpoint", PYTHON_API + endpoint + "?" + _.toPairs(params).map(a => a.join("=")).join("&"))
-  let { data } = await axios.get(PYTHON_API + endpoint, { ...config, params });
-  return data;
+async function getJSON(url, config = {}) {
+  const response = await fetch(url, config);
+  if (!response.ok) throw new Error(`API returned ${response.status}: ${url}`);
+  return response.json();
+}
+async function pythonGet(endpoint, params = {}, config = {}) {
+  const url = new URL(useRuntimeConfig().public.apiBase + endpoint);
+  for (const [key, value] of Object.entries(params)) {
+    if (value != null) url.searchParams.set(key, value);
+  }
+  return getJSON(url, config);
 }
 
 function groupConnections(works, sortVal) {
@@ -51,8 +58,8 @@ class PythonBackend {
   async autocomplete(str) {
     console.log("str", str);
     try {
-      var { data } = await axios.get(
-        "https://litteraturbanken.se/api/autocomplete/" + str
+      var data = await getJSON(
+        "https://litteraturbanken.se/api/autocomplete/" + encodeURIComponent(str)
       );
     } catch (e) {
       console.error("Error in Littb autocomplete api:");
@@ -289,32 +296,8 @@ class PythonBackend {
     return data;
   }
 
-  async search(str) {
-    if (this.cancel) this.cancel();
-
-    let CancelToken = axios.CancelToken;
-
-    try {
-      var data = await pythonGet(
-        "/search/" + str,
-        {},
-        // {show: "Articles.id,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"}
-        {
-          cancelToken: new CancelToken(c => {
-            // An executor function receives a cancel function as a parameter
-            this.cancel = c;
-          })
-        }
-      );
-    } catch (e) {
-      if (e.__CANCEL__) {
-        return { articles: [], suggestion: null, works: null };
-      } else {
-        throw e;
-      }
-    }
-
-    return data;
+  async search(str, signal) {
+    return pythonGet('/search/' + encodeURIComponent(str), {}, { signal });
   }
 
   async chronology(from, to) {

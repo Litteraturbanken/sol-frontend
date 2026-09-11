@@ -15,11 +15,16 @@
 export default {
   name: 'nuxt-error',
   props: ['error'],
-  head () {
+  setup() {
+        const instance = getCurrentInstance()
+        useHead(() => (function() {
     return {
       title: this.error.message || 'An error occured'
     }
-  }
+  
+        }).call(instance.proxy))
+        return {}
+    }
 }
 </script>
 

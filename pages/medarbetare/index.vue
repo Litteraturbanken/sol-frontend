@@ -17,24 +17,30 @@
 </style>
 
 <script>
-    import backend from "assets/backend"
+    import backend from "~/assets/backend"
 
-    export default {
+    export default defineNuxtComponent({
+    fetchKey: () => 'pages/medarbetare/index.vue' + decodeURI(useRoute().path) + JSON.stringify(useRoute().query),
         name : "MedarbetareIndex",
-        head () {
+        setup() {
+        usePageHead(data => {
             return {
-                // title : this.data.ContributerLastname
+                // title : data.data.ContributerLastname
                 title : "Medarbetare – Svenskt översättarlexikon"
             }
-        },
+
+        })
+        return {}
+    },
         data () {
             return {
                 contributors: [],
             }
         },
 
-        async asyncData ({ params, error, payload }) {
+        async asyncData(nuxtApp) {
+      const { params, error, payload } = pageContext(nuxtApp)
             return {contributors : (await backend.getContributors())}
         }
-    }
+    })
 </script>

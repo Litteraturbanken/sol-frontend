@@ -1,0 +1,118 @@
+# Canonical Nomad job for Svenskt översättarlexikon.
+# Deploy the digest-pinned image after validating and planning this file.
+variable "image" {
+  type    = string
+  default = "10.0.0.50:5000/sol-frontend@sha256:4340920ebea9ce9e0a120297b4af151d91db785c5a8dec46ac23f6de149fdd38"
+}
+
+job "sol-frontend" {
+  datacenters = ["local"]
+  type        = "service"
+
+  constraint {
+    attribute = "${attr.cpu.arch}"
+    value     = "amd64"
+  }
+
+  affinity {
+    attribute = "${node.unique.name}"
+    operator  = "="
+    value     = "lb-nlp-c"
+    weight    = -100
+  }
+
+  meta {
+    source_sha256 = "4251e55439a34f24a6c0d6d7d98e230ec0a32b27db5b2e56b1937a6a2926d702"
+  }
+
+  group "frontend" {
+    count          = 2
+    shutdown_delay = "10s"
+
+    constraint {
+      distinct_hosts = true
+    }
+
+    network {
+      mode = "host"
+      port "http" {
+        static = 3035
+      }
+    }
+
+    update {
+      max_parallel      = 1
+      health_check      = "checks"
+      min_healthy_time  = "20s"
+      healthy_deadline  = "3m"
+      progress_deadline = "5m"
+      auto_revert       = true
+    }
+
+    restart {
+      attempts = 3
+      interval = "30m"
+      delay    = "15s"
+      mode     = "fail"
+    }
+
+    reschedule {
+      delay          = "30s"
+      delay_function = "exponential"
+      max_delay      = "5m"
+      unlimited      = true
+    }
+
+    service {
+      name     = "sol-frontend"
+      provider = "consul"
+      address  = "${meta.bind_ip}"
+      port     = "http"
+      tags     = ["sol-frontend", "caddy-host=sol-frontend.pub.lb.se", "caddy-ingress=public", "caddy-https=on"]
+
+      check {
+        name     = "frontend-http"
+        type     = "http"
+        path     = "/%C3%B6vers%C3%A4ttarlexikon/favicon/favicon-32x32.png"
+        interval = "10s"
+        timeout  = "3s"
+      }
+
+      check_restart {
+        limit = 3
+        grace = "1m"
+      }
+    }
+
+    task "frontend" {
+      driver       = "docker"
+      kill_timeout = "30s"
+
+      config {
+        image        = var.image
+        force_pull   = true
+        network_mode = "host"
+        ports        = ["http"]
+      }
+
+      env {
+        NODE_ENV             = "production"
+        HOST                 = "${meta.bind_ip}"
+        PORT                 = "${NOMAD_PORT_http}"
+        NUXT_APP_BASE_URL    = "/översättarlexikon/"
+        NUXT_PUBLIC_API_BASE = "https://litteraturbanken.se/sol/api"
+      }
+
+      resources {
+        cpu        = 250
+        memory     = 256
+        memory_max = 512
+      }
+
+      logs {
+        max_files     = 3
+        max_file_size = 10
+      }
+    }
+  }
+}

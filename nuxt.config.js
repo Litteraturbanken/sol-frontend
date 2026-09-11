@@ -1,59 +1,18 @@
-const axios = require("axios")
-const _ = require("lodash")
-const resolve = require("path").resolve
+import { fileURLToPath } from 'node:url'
 
-// const isVueRule = (rule) => {
-//   return rule.test.toString() === '/\\.vue$/'
-// }
-// const isSASSRule = (rule) => {
-//   return ['/\\.sass$/', '/\\.scss$/'].indexOf(rule.test.toString()) !== -1
-// }
-// const sassResourcesLoader = {
-//   loader: 'sass-resources-loader',
-//   options: {
-//     resources: [
-//       resolve(__dirname, 'assets/_imports.scss')
-//     ]
-//   }
-// }
+const baseURL = decodeURI(process.env.NUXT_APP_BASE_URL || process.env.BASE_URL || '/')
 
-// from https://github.com/sindresorhus/ora/issues/58
-if (!process.stderr.clearLine) {
-    process.stderr.clearLine = () => {}
-    process.stderr.cursorTo = () => {}
-    process.stderr.moveCursor = () => {}
-}
-
-module.exports = {
-    modules: [
-        // '@nuxtjs/font-awesome'
-        // "~/modules/debug.js"
-        "nuxt-user-agent",
-        "@nuxtjs/style-resources"
-        // ['@nuxtjs/google-gtag', { id: 'UA-132486790-2', config: {
-        //   debug : true
-        // }
-        // }],
-    ],
-    styleResources: {
-        // your settings here
-        scss: ["./assets/_imports.scss"] // alternative: scss
-    },
-    // mode: "spa",
-    debug: true,
-    isDev: true,
-    /*
-     ** Headers of the page
-     */
-    head() {
-        return {
-            titleTemplate: titleChunk => {
-                // If undefined or blank then we don't need the hyphen
-                return titleChunk
-                    ? `${titleChunk} - Svenskt översättarlexikon`
-                    : "Svenskt översättarlexikon"
-            },
-            meta: [
+export default defineNuxtConfig({
+    compatibilityDate: '2026-09-10',
+    srcDir: '.',
+    dir: { public: 'static' },
+    devtools: { enabled: false },
+    // Runtime routing matches decoded paths; Nitro error redirects compare URL-encoded paths.
+    nitro: { baseURL: encodeURI(baseURL) },
+    app: {
+        baseURL,
+        head: {
+                        meta: [
                 { charset: "utf-8" },
                 { name: "viewport", content: "width=device-width, initial-scale=1" },
                 {
@@ -64,10 +23,6 @@ module.exports = {
             link: [
                 // { rel: 'icon', type: 'image/x-icon', href: 'http://www.oversattarlexikon.se/images/icons/favicon.png' },
                 // { href: '/bootstrap.css', rel: "stylesheet" },
-                {
-                    rel: "stylesheet",
-                    href: "https://cloud.typography.com/7426274/6964792/css/fonts.css"
-                },
                 // { rel: 'stylesheet', href: '/font/fa-custom.otf' }
                 // <link rel="stylesheet" type="text/css" href="https://cloud.typography.com/7426274/770508/css/fonts.css" />
                 {
@@ -149,134 +104,48 @@ module.exports = {
             ]
         }
     },
-
+    runtimeConfig: {
+        public: { apiBase: 'https://litteraturbanken.se/sol/api' }
+    },
     css: [
-        { src: "~assets/fontawesome-custom/css/fa-custom.css" },
-        { src: "~assets/fontawesome-custom/css/animation.css" },
-        { src: "~assets/bootstrap_custom.scss", lang: "scss" },
-        { src: "~assets/styles.scss", lang: "scss" }
-
-        // 'bootstrap-vue/dist/bootstrap-vue.css'
+        '~/assets/fontawesome-custom/css/fa-custom.css',
+        '~/assets/fontawesome-custom/css/animation.css',
+        '~/assets/bootstrap_custom.scss',
+        '~/assets/styles.scss'
     ],
-    /*
-     ** Customize the progress-bar color
-     */
-    loading: { color: "#618296" },
-    // loading: false,
-    /*
-     ** Build configuration
-     */
-    build: {
-        extractCSS: true,
-        /*
-         ** Run ESLINT on save
-         */
-        extend(config, ctx) {
-            if (ctx.isClient) {
-                config.module.rules.push({
-                    enforce: "pre",
-                    test: /\.(js|vue)$/,
-                    loader: "eslint-loader",
-                    exclude: /(node_modules)/,
-                    options: {}
-                })
-            }
-
-            // config.module.rules.forEach((rule) => {
-            //   console.log("rule", rule)
-            //   if (isVueRule(rule)) {
-            //     rule.options.loaders.scss.push(sassResourcesLoader)
-            //   }
-            //   if (isSASSRule(rule)) {
-            //     rule.use.push(sassResourcesLoader)
-            //   }
-            // })
-
-            const path = require("path")
-            config.resolve.symlinks = false
-            // config.resolveLoader = { fallback: path.join(__dirname, "node_modules") }
-        }
+    vite: {
+        // These CommonJS dependencies are also imported by lazy-loaded pages.
+        // Optimize them at startup so discovering a page cannot trigger a full reload.
+        optimizeDeps: { include: ['lodash', 'natural-sort'] },
+        css: { preprocessorOptions: { scss: {
+            additionalData: '@use "~/assets/_imports.scss" as *;',
+            silenceDeprecations: ['import', 'global-builtin', 'color-functions', 'legacy-js-api', 'slash-div', 'if-function']
+        } } }
     },
-    router: {
-        linkActiveClass: "router-link-active",
-        base: process.env.BASE_URL || "/",
-        // base: "/översättarlexikon/" || "/",
-
-        extendRoutes(routes, resolve) {
-            routes.push({
-                name: "avoversattare-filter",
-                path: "/listor/avoversattare/:id/:type?/:lang?",
-                component: resolve(__dirname, "pages/listor/avoversattare/_id.vue")
-            })
-            routes.push({
-                name: "bibliografi-filter",
-                path: "/listor/bibliografi/:id/:type?/:lang?",
-                component: resolve(__dirname, "pages/listor/avoversattare/_id.vue")
-            })
-            routes.push({
-                name: "sprak-filter",
-                path: "/listor/sprak/:id?/:lang?",
-                component: resolve(__dirname, "pages/listor/sprak/_id.vue")
-            })
-        }
-    },
-
-    plugins: ["~plugins/filters.js", { src: "~plugins/ga.js", mode: "client" }],
-    serverMiddleware: [require("morgan")("tiny")],
-
-    generate: {
-        minify: false,
-        // scrape: true,
-
-        interval: 100,
-        done({ duration, errors, workerInfo }) {
-            console.log("done", duration, errors, workerInfo)
-
-            if (errors.length) {
-            }
+    hooks: {
+        'pages:extend'(pages) {
+            pages.push({ name: 'avoversattare-filter', path: '/listor/avoversattare/:id/:type?/:lang?', file: fileURLToPath(new URL('./pages/listor/avoversattare/[id].vue', import.meta.url)) })
+            pages.push({ name: 'bibliografi-filter', path: '/listor/bibliografi/:id/:type?/:lang?', file: fileURLToPath(new URL('./pages/listor/avoversattare/[id].vue', import.meta.url)) })
+            pages.push({ name: 'sprak-filter', path: '/listor/sprak/:id?/:lang?', file: fileURLToPath(new URL('./pages/listor/sprak/[id].vue', import.meta.url)) })
         },
-        routes: async function() {
-            // return ["/medarbetare/Barbro_Ek"]
-            let routes = []
-            let resp
-            resp = await axios.get(
-                "https://litteraturbanken.se/sol/api/contributors?show=URLName,FirstName,LastName",
-                {}
-            )
-            for (let item of resp.data.data) {
-                routes.push({ route: "/medarbetare/" + item.URLName, payload: item })
+        async 'prerender:routes'(ctx) {
+            if (!process.argv.includes('generate')) return
+            const base = process.env.NUXT_PUBLIC_API_BASE || 'https://litteraturbanken.se/sol/api'
+            const get = async path => {
+                const response = await fetch(base + path)
+                if (!response.ok) throw new Error(`Prerender API returned ${response.status}: ${path}`)
+                return response.json()
             }
-
-            // let routes = [
-            //   "/listor/sprak/original",
-            //   "/listor/sprak/till",
-            //   "/listor/sprak/fran",
-            // ]
-            // let routes = []
-            resp = await axios.get("https://litteraturbanken.se/sol/api/articles", {
-                params: {
-                    show:
-                        "id,TranslatorYearBirth,TranslatorYearDeath,URLName,TranslatorFirstname,TranslatorLastname,ArticleName"
-                }
-            })
-            for (let item of resp.data.data) {
-                routes.push({
-                    route: "/artiklar/" + decodeURIComponent(item.URLName),
-                    payload: item
-                })
-                routes.push({
-                    route: "/listor/avoversattare/" + decodeURIComponent(item.URLName)
-                })
+            const [contributors, articles, bibliography] = await Promise.all([
+                get('/contributors?show=URLName,FirstName,LastName'),
+                get('/articles?show=URLName'), get('/bibliography/_all')
+            ])
+            for (const item of contributors.data) ctx.routes.add('/medarbetare/' + item.URLName)
+            for (const item of articles.data) {
+                ctx.routes.add('/artiklar/' + decodeURIComponent(item.URLName))
+                ctx.routes.add('/listor/avoversattare/' + decodeURIComponent(item.URLName))
             }
-
-            let works = await axios.get("https://litteraturbanken.se/sol/api/bibliography/_all", {})
-
-            for (let item of works.data.works) {
-                routes.push({ route: "/verk/" + item.id, payload: item })
-            }
-
-            // console.log("routes", routes)
-            return routes
+            for (const item of bibliography.works) ctx.routes.add('/verk/' + item.id)
         }
     }
-}
+})

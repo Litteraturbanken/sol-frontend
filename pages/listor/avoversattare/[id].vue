@@ -7,27 +7,27 @@
             <option value="">Alla språk</option>
             <optgroup label="Originalspråk">
                 <option
-                    v-if="lang.LanguageName != 'Svenska'"
+
                     :value="[lang.LanguageName, 'original']"
-                    v-for="lang in original"
+                    v-for="lang in (original || []).filter(value => value.LanguageName !== 'Svenska')"
                 >
                     {{ lang.LanguageName }}
                 </option>
             </optgroup>
             <optgroup label="Källspråk">
                 <option
-                    v-if="lang.LanguageName != 'Svenska'"
+
                     :value="[lang.LanguageName, 'fran']"
-                    v-for="lang in source"
+                    v-for="lang in (source || []).filter(value => value.LanguageName !== 'Svenska')"
                 >
                     {{ lang.LanguageName }}
                 </option>
             </optgroup>
             <optgroup label="Målspråk">
                 <option
-                    v-if="lang.LanguageName != 'Svenska'"
+
                     :value="[lang.LanguageName, 'till']"
-                    v-for="lang in target"
+                    v-for="lang in (target || []).filter(value => value.LanguageName !== 'Svenska')"
                 >
                     {{ lang.LanguageName }}
                 </option>
@@ -41,27 +41,27 @@
         </select>
 
         <!-- <a class="sc" :href="'/listor/avoversattare/' + $route.params.id" >Alla</a>
-    
+
     <h3>
         <div class="label">Originalspråk</div>
     </h3>
     <ul class="lang-filter list">
-        <li v-for="lang in original" class="list-item sc">
+        <li v-for="lang in (original || []).filter(value => value.LanguageName !== 'Svenska')" class="list-item sc">
             <nuxt-link :to="'/listor/avoversattare/' + $route.params.id + '/original/' + lang.LanguageName">{{lang.LanguageName}}</nuxt-link>
         </li>
     </ul>
-    
+
     <h3>
         <div class="label">Källspråk</div>
     </h3>
     <ul class="lang-filter list">
-        <li v-for="lang in source" class="list-item sc">
+        <li v-for="lang in (source || []).filter(value => value.LanguageName !== 'Svenska')" class="list-item sc">
             <nuxt-link :to="'/listor/avoversattare/' + $route.params.id + '/fran/' + lang.LanguageName">{{lang.LanguageName}}</nuxt-link>
         </li>
     </ul> -->
 
         <ul class="results colorlinks">
-            <li v-for="item in connectionGroups" v-if="filterWorks(item.works).length">
+            <li v-for="item in connectionGroups.filter(group => filterWorks(group.works).length)">
                 <h2 v-if="item.type == 2">Om {{ article }}</h2>
                 <h2 v-else-if="item.type == 3">Skrifter av {{ article }}</h2>
                 <h2 v-else-if="item.type == 4">Referenser</h2>
@@ -122,11 +122,11 @@ h2 {
 </style>
 
 <script>
-import backend from "assets/backend"
+import backend from "~/assets/backend"
 import work from "~/components/work.vue"
 import _ from "lodash"
 
-import { naturalSort } from "assets/utils"
+import { naturalSort } from "~/assets/utils"
 function sortGroups(group, sortkey) {
     if (!group) {
         return
@@ -136,12 +136,17 @@ function sortGroups(group, sortkey) {
     }
 }
 
-export default {
+export default defineNuxtComponent({
+    fetchKey: () => 'pages/listor/avoversattare/[id].vue' + decodeURI(useRoute().path) + JSON.stringify(useRoute().query),
     name: "AvOversattare",
-    head() {
+    setup() {
+        usePageHead(data => {
         return {
-            title: "Verk för " + this.article
+            title: "Verk för " + data.article
         }
+
+        })
+        return {}
     },
     components: {
         work: work
@@ -159,7 +164,8 @@ export default {
             biblTypeData: null
         }
     },
-    async asyncData({ params, error, route, from, $ua }) {
+    async asyncData(nuxtApp) {
+      const { params, error, route, from, $ua } = pageContext(nuxtApp)
         let lang = ""
         if (params.lang) {
             lang = [params.lang, params.type]
@@ -233,5 +239,5 @@ export default {
             return this.$route.query.lt
         }
     }
-}
+})
 </script>

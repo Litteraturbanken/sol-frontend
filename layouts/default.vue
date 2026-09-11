@@ -1,47 +1,6 @@
 <template>
     <div class="outer row justify-content-lg-center">
-        <no-ssr>
-            <!-- Global site tag (gtag.js) - Google Analytics -->
-            <script async src="https://www.googletagmanager.com/gtag/js?id=UA-132486790-2"></script>
-            <script>
-                window.dataLayer = window.dataLayer || []
-                function gtag() {
-                    dataLayer.push(arguments)
-                }
-                gtag("js", new Date())
 
-                console.log("gtag init")
-                gtag("config", "UA-132486790-2")
-            </script>
-
-            <!-- Matomo -->
-            <script>
-                if (document.location.hostname == "litteraturbanken.se") {
-                    var _paq = (window._paq = window._paq || [])
-                    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-                    _paq.push(["trackPageView"])
-                    _paq.push(["enableLinkTracking"])
-                    ;(function() {
-                        var u = "https://lb.se/matomo/"
-                        _paq.push(["setTrackerUrl", u + "matomo.php"])
-                        _paq.push(["setSiteId", "1"])
-                        var d = document,
-                            g = d.createElement("script"),
-                            s = d.getElementsByTagName("script")[0]
-                        g.async = true
-                        g.src = u + "matomo.js"
-                        s.parentNode.insertBefore(g, s)
-                    })()
-                } else {
-                    window._paq = {
-                        push: (...args) => {
-                            console.log("Matomo", args)
-                        }
-                    }
-                }
-            </script>
-            <!-- End Matomo Code -->
-        </no-ssr>
 
         <div class="col-xl-10 no-gutters">
             <header class="row">
@@ -98,7 +57,7 @@
                     </nav>
                 </div>
             </header>
-            <nuxt class="mainview" />
+            <div class="mainview"><slot /></div>
         </div>
         <footer class="sc footer col-10 no-gutters justify-content-lg-center">
             <nav class="navbar navbar-expand-md">
@@ -115,28 +74,25 @@
 </template>
 
 <script>
-import Vue from "vue"
+
 
 import Autocomplete from "~/components/autocomplete.vue"
-import { debounce } from "assets/utils"
-import backend from "assets/backend"
+import { debounce } from "~/assets/utils"
+import backend from "~/assets/backend"
 import _ from "lodash"
 
-// Register a global custom directive called v-focus
-Vue.directive("focus", {
-    // When the bound element is inserted into the DOM...
-    inserted: function(el) {
-        // Focus the element
-        el.focus()
-    }
-})
 
 export default {
     components: { autocomplete: Autocomplete },
-    head() {
+    setup() {
+        const instance = getCurrentInstance()
+        useHead(() => (function() {
         return {
             bodyAttrs: {}
         }
+
+        }).call(instance.proxy))
+        return {}
     },
     data() {
         return {
@@ -153,7 +109,7 @@ export default {
         //   window.location.reload()
         // })
     },
-    beforeDestroy: function() {
+    beforeUnmount: function() {
         window.removeEventListener("keyup", this.onKeyup)
     },
     methods: {
@@ -171,10 +127,10 @@ export default {
                 this.$refs.autocomplete.focus()
             }
         },
-        autocompleteBackend: debounce(async function(str) {
+        autocompleteBackend: debounce(async function(str, signal) {
             if (!str) return []
 
-            let { articles } = await backend.search(str)
+            let { articles } = await backend.search(str, signal)
 
             if (articles) {
                 return [

@@ -16,17 +16,23 @@
 </style>
 
 <script>
-    import backend from "assets/backend"
+    import backend from "~/assets/backend"
     import Work from "~/components/work.vue"
-    export default {
+    export default defineNuxtComponent({
+    fetchKey: () => 'pages/listor/avupphovsman.vue' + decodeURI(useRoute().path) + JSON.stringify(useRoute().query),
         name : "AvUpphovsman",
         components: {work : Work},
-        head () {
+        setup() {
+        usePageHead(data => {
             return {
                 title : "Av upphovsman"
             }
-        },
-        async asyncData ({ params, error, route }) {
+
+        })
+        return {}
+    },
+        async asyncData(nuxtApp) {
+      const { params, error, route } = pageContext(nuxtApp)
             try{
                 console.log("route.query.a", route.query.a)
                 var works = await backend.getWorksByAuthorName(route.query.a)
@@ -40,5 +46,5 @@
         computed : {
 
         }
-    }
+    })
 </script>

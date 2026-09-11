@@ -1,2 +1,8 @@
 node_modules
 npm-debug.log
+.git
+.nuxt
+.output
+playwright-report
+test-results
+output

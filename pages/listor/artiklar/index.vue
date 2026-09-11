@@ -1,10 +1,10 @@
 <template>
   <section class="">
     <input  v-focus class="col-4" placeholder="Sök" v-model="filterstr">
-    <ul class="resultlist col-12"><li v-for="(items, letter) in groups" v-if="letterHasVisibleArticle(letter)">
+    <ul class="resultlist col-12"><li v-for="(items, letter) in visibleGroups">
         <h2>{{letter}}</h2>
-        <ul class="inner"><li v-for="item in items" v-if="!filterstr || isFilterInArticle(item)">
-            <nuxt-link :to="'/artiklar/' + item.URLName">{{item.ArticleName}} 
+        <ul class="inner"><li v-for="item in items.filter(item => !filterstr || isFilterInArticle(item))">
+            <nuxt-link :to="'/artiklar/' + item.URLName">{{item.ArticleName}}
             <!-- <a :href="'/artiklar/' + item.URLName">{{item.ArticleName}} </a> -->
             <span v-if="item.TranslatorYearBirth">{{item.TranslatorYearBirth}}–{{item.TranslatorYearDeath}}</span>
             </nuxt-link>
@@ -30,10 +30,11 @@
 
 <script>
 import _ from "lodash"
-import backend from "assets/backend"
-import {naturalSort} from "assets/utils"
+import backend from "~/assets/backend"
+import {naturalSort} from "~/assets/utils"
 
-export default {
+export default defineNuxtComponent({
+    fetchKey: () => 'pages/listor/artiklar/index.vue' + decodeURI(useRoute().path) + JSON.stringify(useRoute().query),
   name : "ArticleList",
   head : {
       title : "Artikellista – Svenskt översättarlexikon",
@@ -47,11 +48,12 @@ export default {
       groups: null
     }
   },
-  async asyncData ({error, env}) {
+  async asyncData(nuxtApp) {
+      const {error, env} = pageContext(nuxtApp)
     try {
       let groups = await backend.listArticles()
       _.mapValues(groups, (articles) => naturalSort(articles, "TranslatorLastname", "ArticleName"))
-      return {groups : groups} 
+      return {groups : groups}
     } catch(err) {
       console.error(err)
       error("Ett fel uppstod, vänligen försök igen senare.")
@@ -59,6 +61,7 @@ export default {
     }
   },
   computed : {
+    visibleGroups() { return Object.fromEntries(Object.entries(this.groups || {}).filter(([letter]) => this.letterHasVisibleArticle(letter))) },
 
   },
   methods : {
@@ -79,6 +82,6 @@ export default {
       }).length
     }
   }
-}
+})
 
 </script>

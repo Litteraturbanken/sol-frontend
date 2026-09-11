@@ -9,3 +9,8 @@ npm-debug.log
 
 # Nuxt generate
 dist
+
+.output
+playwright-report
+test-results
+output/playwright

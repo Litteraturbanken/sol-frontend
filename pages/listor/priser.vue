@@ -11,10 +11,11 @@
 
 <script>
 
-import backend from "assets/backend"
+import backend from "~/assets/backend"
 
 
-export default {
+export default defineNuxtComponent({
+    fetchKey: () => 'pages/listor/priser.vue' + decodeURI(useRoute().path) + JSON.stringify(useRoute().query),
     name : "Prizes",
     head : {
       title : "Priser för översättare – Svenskt översättarlexikon"
@@ -24,18 +25,19 @@ export default {
         items: null
       }
     },
-    async asyncData ({error, env}) {
+    async asyncData(nuxtApp) {
+      const {error, env} = pageContext(nuxtApp)
       try {
-        return {items : await backend.listPrizeArticles()} 
+        return {items : await backend.listPrizeArticles()}
       } catch(err) {
         console.log("err", err)
         error("Ett fel uppstod, vänligen försök igen senare.")
         return {items : null}
       }
     },
-}
+})
 
-    
+
 </script>
 
 <style>

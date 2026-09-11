@@ -17,21 +17,27 @@
 </style>
 
 <script>
-    
-    import backend from "assets/backend"
+
+    import backend from "~/assets/backend"
     import work from "~/components/work.vue"
 
-    export default {
+    export default defineNuxtComponent({
+    fetchKey: () => 'pages/verk/[id].vue' + decodeURI(useRoute().path) + JSON.stringify(useRoute().query),
         name : "Work",
-        head () {
+        setup() {
+        usePageHead(data => {
             return {
-                // title : this.article.id
+                title: data.work?.TitleSwedish
             }
-        },
+
+        })
+        return {}
+    },
         components : {
             work : work
         },
-        async asyncData ({ params, error, payload }) {
+        async asyncData(nuxtApp) {
+      const { params, error, payload } = pageContext(nuxtApp)
             if(payload) {
                 return { work : payload }
             }
@@ -40,8 +46,8 @@
                 // console.log("work", article, work)
                 return {work, articles}
             } catch (e) {
-                console.error(e)
+                error({ statusCode: 404, message: "Verket kunde inte hittas." })
             }
         },
-    }
+    })
 </script>

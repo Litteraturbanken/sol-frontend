@@ -2,22 +2,22 @@
   <div class="row">
       <div class="left-col col-md-6 ">
           <section class="section row no-gutters flex-column">
-            
+
               <h2>
                 <nuxt-link to="/artiklar/Om_Svenskt_översättarlexikon">Om Svenskt översättarlexikon</nuxt-link>
               </h2>
-            
+
             <div class=" about" v-html="about"></div>
             <div class="read_more">
                 <nuxt-link class="sc" to="/om">Läs mer <i class="arrow icon icon-play"></i></nuxt-link>
             </div>
           </section>
           <section class="section row no-gutters flex-column" v-if="themearticle2">
-            
+
             <h2>
               <nuxt-link :to="'/artiklar/' + themearticle2.URLName">{{themearticle2.ArticleName}}</nuxt-link>
             </h2>
-            
+
             <div class=" about" v-html="themearticle2.Ingress"></div>
             <div class="read_more">
                 <nuxt-link class="sc" :to="'/artiklar/' + themearticle2.URLName">Läs mer <i class="arrow icon icon-play"></i></nuxt-link>
@@ -30,7 +30,7 @@
               <figure class=""><img :src="'https://sol-admin.lb.se/assets/' + article.FileName" alt="">
               </figure>
             </nuxt-link>
-            
+
               <h2><nuxt-link :to="'/artiklar/' + article.URLName">{{article.ArticleName}}, {{article.TranslatorYearBirth}}–{{article.TranslatorYearDeath}}</nuxt-link></h2>
             <div class=" about" v-html="article.Ingress"></div>
             <div class="read_more">
@@ -40,7 +40,6 @@
           <section class="section row no-gutters flex-column" v-if="themearticle">
               <h2><nuxt-link :to="'/artiklar/' + themearticle.URLName">{{themearticle.ArticleName}}</nuxt-link>
               </h2>
-            </nuxt-link>
             <div class=" about" v-html="themearticle.Ingress"></div>
             <div class="read_more">
                 <nuxt-link class="sc" :to="'/artiklar/' + themearticle.URLName">Läs mer <i class="arrow icon icon-play"></i></nuxt-link>
@@ -52,21 +51,22 @@
 
 <script>
 
-import backend from "assets/backend"
+import backend from "~/assets/backend"
 
-export default {
+export default defineNuxtComponent({
+    fetchKey: () => 'pages/index.vue' + decodeURI(useRoute().path) + JSON.stringify(useRoute().query),
   head: {
     bodyAttrs: {
         class: 'page-start'
     },
     meta: [
       {
-        hid: 'description', 
-        name: 'description', 
+        hid: 'description',
+        name: 'description',
         content: `
-        I Svenskt översättarlexikon blir översättarna – de som har skapat halva den svenska nationallitteraturen – synliga med biografi, porträtt och verkförteckning. 
+        I Svenskt översättarlexikon blir översättarna – de som har skapat halva den svenska nationallitteraturen – synliga med biografi, porträtt och verkförteckning.
         Lexikonet utvidgas kontinuerligt med nya artiklar och är fortfarande under utveckling. I första omgången presenteras avlidna svenska och finlandssvenska översättare.
-        `.trim() 
+        `.trim()
       },
     ]
   },
@@ -89,7 +89,8 @@ export default {
     }
   },
 
-  async asyncData({route}) {
+  async asyncData(nuxtApp) {
+      const {route} = pageContext(nuxtApp)
     let {PageContent} = await backend.getStatic('Om_Lexikonet_Ingress')
     // TODO parallelize
 
@@ -106,7 +107,7 @@ export default {
     // console.log("PageContent", PageContent)
     return {about : PageContent, article, themearticle, themearticle2, latest}
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -124,7 +125,7 @@ export default {
         &:first-child {
             border-bottom: 1px solid #333;
             padding-top : 0;
-            
+
         }
     }
 
@@ -178,7 +179,7 @@ export default {
       .right-col {
         padding-left: 15px;
       }
-      
+
     }
 
 </style>

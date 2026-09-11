@@ -26,7 +26,7 @@ import { round } from './utils'
 export default {
   props: {
     name: String,
-    value: Array,
+    modelValue: Array,
     disabled: {
       type: Boolean,
       default: false
@@ -64,8 +64,8 @@ export default {
     //   }
     // }
 
-    this.actualValueFrom = this.value[0]
-    this.actualValueTo = this.value[1]
+    this.actualValueFrom = this.modelValue[0]
+    this.actualValueTo = this.modelValue[1]
   },
 
   computed: {
@@ -90,7 +90,7 @@ export default {
   },
 
   watch: {
-    value (newValue) {
+    modelValue (newValue) {
       // const value = Number(newValue)
       if (newValue != null && newValue.length === 2) {
         // this.actualValue = this.round(newValue)
@@ -130,7 +130,7 @@ export default {
     },
 
     emitEvent(isDragEnd) {
-      this.$emit('input', [this.actualValueFrom, this.actualValueTo])
+      this.$emit('update:modelValue', [this.actualValueFrom, this.actualValueTo])
       if (isDragEnd) {
         this.$emit('change', [this.actualValueFrom, this.actualValueTo])
       }
