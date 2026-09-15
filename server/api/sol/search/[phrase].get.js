@@ -1,41 +1,27 @@
 /**
  * Fritextsökning. Artiklarna kommer från OpenSearch, verken och priserna
- * från Directus.
+ * matchas i minnet mot cachade index ur Directus.
  *
- * Detta är den enda endpointen som inte kan ge samma svar som Python-API:t.
- * Där rankades träffar med en handskriven poängformel byggd på MySQL REGEXP,
+ * Artikeldelen är den enda som inte ger samma svar som Python-API:t. Där
+ * rankades träffar med en handskriven poängformel byggd på MySQL REGEXP,
  * och stavningsförslagen kom från hunspell. OpenSearch rankar på sitt eget
  * sätt och föreslår ord ur lexikonets egen text. Träffmängden blir alltså
  * snarlik men ordningen en annan, och svarets form är densamma.
+ *
+ * Verk och priser matchas som i Python-API:t: varje term i frasen måste
+ * stå i början av ett ord, se searchTerms(). Autokompletteringen frågar för
+ * varje tangenttryckning, så inget av det går till Directus per sökning.
  */
-
-const WORK_TEXT_FIELDS = [
-    'TitleSwedish',
-    'TitleOriginal',
-    'VariantTitle',
-    'Authors',
-    'Remark',
-    'CreatorRole',
-    'PartOf_Title'
-]
-
-const WORK_FIELDS = [
-    'id',
-    'TitleSwedish',
-    'SubtitleSwedish',
-    'PublishingYearSwedish',
-    'Authors',
-    'Remark'
-]
 
 export default defineEventHandler(async event => {
     const phrase = decodedParam(event, 'phrase')
     const libris = String(getQuery(event).libris ?? '').toLowerCase() === 'true'
+    const terms = searchTerms(phrase)
 
     const [articles, works, prizes] = await Promise.all([
         articleHits(phrase, libris),
-        libris ? [] : workHits(phrase),
-        prizeHits(phrase)
+        libris || !terms.length ? [] : workHits(terms),
+        terms.length ? prizeHits(terms) : []
     ])
 
     const suggestion = !articles.length && !works.length ? await spellingSuggestion(phrase) : ''
@@ -72,55 +58,39 @@ async function articleHits(phrase, libris) {
 }
 
 /**
- * Verk vars egna fält matchar frasen, eller som är kopplade till en artikel
- * vars namn matchar. Titelträffar rankas högst, som i den gamla formeln.
- *
- * En kort fras kan träffa tiotusentals verk, och autokompletteringen frågar
- * för varje tangenttryckning. Därför hämtas verken med sina fält i ett enda
- * anrop, och kopplingarna och artikelnamnen tas ur de cachade indexen i
- * stället för att slås upp per verk.
+ * Verk vars egna fält matchar termerna, eller som är kopplade till en
+ * publicerad artikel vars namn matchar. Titelträffar rankas högst och
+ * resultatet sorteras på titel, som i den gamla SQL-frågan. Bara verk med
+ * koppling till en publicerad artikel räknas (INNER JOIN).
  */
-async function workHits(phrase) {
-    const [byText, byArticle, connections, articleNames] = await Promise.all([
-        items('Works', {
-            fields: WORK_FIELDS,
-            filter: {
-                _and: [
-                    { Unpublished: { _eq: 0 } },
-                    { _or: WORK_TEXT_FIELDS.map(field => ({ [field]: { _contains: phrase } })) }
-                ]
-            }
-        }),
-        articleMatchedWorkIds(phrase),
+async function workHits(terms) {
+    const [index, connections, articleNames] = await Promise.all([
+        worksSearchIndex(),
         allConnections(),
         publishedArticleNames()
     ])
 
-    const works = new Map(byText.map(row => [row.id, row]))
-    const missing = byArticle.filter(id => !works.has(id))
-    if (missing.length) {
-        for (const [id, work] of await worksByIds(missing, { fields: WORK_FIELDS })) works.set(id, work)
-    }
-    if (!works.size) return []
+    const matchedArticles = new Set()
+    for (const [id, name] of articleNames) if (matchesAll(terms, name)) matchedArticles.add(id)
 
-    // INNER JOIN mot publicerade artiklar: bara kopplingar till sådana räknas.
+    // Kopplingar per verk, bara till publicerade artiklar.
     const linksByWork = new Map()
     for (const row of connections) {
-        if (!works.has(row.WorkID) || !articleNames.has(row.ArticleID)) continue
+        if (!articleNames.has(row.ArticleID)) continue
         const list = linksByWork.get(row.WorkID) ?? []
         list.push(row)
         linksByWork.set(row.WorkID, list)
     }
 
-    const needle = phrase.toLowerCase()
     const rows = []
-    for (const [id, work] of works) {
-        const links = linksByWork.get(id)
-        // Verk utan koppling till en publicerad artikel kommer inte med.
+    for (const work of index) {
+        const links = linksByWork.get(work.id)
         if (!links) continue
+        const byText = matchesAll(terms, work.haystack)
+        if (!byText && !links.some(row => matchedArticles.has(row.ArticleID))) continue
         const names = sortBySwedish([...new Set(links.map(row => articleNames.get(row.ArticleID)))], name => name)
         rows.push({
-            id,
+            id: work.id,
             TitleSwedish: work.TitleSwedish,
             SubtitleSwedish: work.SubtitleSwedish,
             PublishingYearSwedish: work.PublishingYearSwedish,
@@ -128,37 +98,23 @@ async function workHits(phrase) {
             Remark: work.Remark,
             ConnectionType: links[0].ConnectionType,
             Translator: names.join(', '),
-            Score: String(work.TitleSwedish || '').toLowerCase().includes(needle) ? 1 : 0
+            Score: matchesAll(terms, work.TitleSwedish) ? 1 : 0
         })
     }
 
     return sortBySwedish(
-        rows.sort((a, b) => b.Score - a.Score),
+        rows,
         row => (row.Score === 1 ? '0' : '1'),
         row => row.TitleSwedish
     ).slice(0, 50)
-}
-
-/** Verk kopplade till publicerade artiklar vars namn matchar frasen. */
-async function articleMatchedWorkIds(phrase) {
-    const articles = await items('Articles', {
-        fields: ['id'],
-        filter: { _and: [{ ArticleName: { _contains: phrase } }, publishedFilter] }
-    })
-    if (!articles.length) return []
-    const ids = new Set(articles.map(row => row.id))
-    return (await allConnections()).filter(row => ids.has(row.ArticleID)).map(row => row.WorkID)
 }
 
 /**
  * Pristagare vars namn matchar frasen. Träffen leder till prisets artikel,
  * inte till pristagarens, eftersom joinen går på PrizeID.
  */
-async function prizeHits(phrase) {
-    const winners = await items('PrizeWinners', {
-        fields: ['PrizeID', 'PrizeWinner'],
-        filter: { PrizeWinner: { _contains: phrase } }
-    })
+async function prizeHits(terms) {
+    const winners = (await prizeWinners()).filter(row => matchesAll(terms, row.PrizeWinner))
     if (!winners.length) return []
     const ids = winners.map(row => row.PrizeID).filter(id => id != null)
     const articles = ids.length

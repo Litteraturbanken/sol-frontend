@@ -170,6 +170,54 @@ export function publishedArticleNames() {
     })
 }
 
+/** Fälten som verksökningen matchar mot, i Python-API:ts CONCAT_WS-ordning. */
+export const WORK_SEARCH_FIELDS = ['TitleSwedish', 'TitleOriginal', 'VariantTitle', 'Authors', 'Remark', 'CreatorRole', 'PartOf_Title']
+
+/**
+ * Sökindex över alla publicerade verk: de fält söket matchar mot och de fält
+ * svaret visar, plus en sammanslagen söksträng. Directus saknar reguljära
+ * uttryck i filter, och Python-API:t matchade med ordgränser (REGEXP "\\b…"),
+ * så matchningen görs i minnet. Tabellen är 18 MB som JSON och hämtas därför
+ * bara var tionde minut, i bakgrunden när den gått ut.
+ */
+export function worksSearchIndex() {
+    return cached(
+        'worksSearchIndex',
+        async () => {
+            const rows = await items('Works', {
+                fields: ['id', 'SubtitleSwedish', 'PublishingYearSwedish', ...WORK_SEARCH_FIELDS],
+                filter: { Unpublished: { _eq: 0 } }
+            })
+            for (const row of rows) row.haystack = WORK_SEARCH_FIELDS.map(field => row[field] ?? '').join('|')
+            return rows
+        },
+        10 * 60_000
+    )
+}
+
+/** Alla pristagarrader, för söket. Under tusen rader. */
+export function prizeWinners() {
+    return cached('prizeWinners', () => items('PrizeWinners', { fields: ['PrizeID', 'PrizeWinner'] }))
+}
+
+/**
+ * Söktermer som Python-API:t: frasen delas på blanksteg och varje term måste
+ * matcha i början av ett ord (MySQL REGEXP "\\bterm"), oberoende av skiftläge.
+ * Ordgränsen avgörs med Unicode-bokstäver så att åäö räknas som bokstäver.
+ */
+export function searchTerms(phrase) {
+    return String(phrase)
+        .split(/\s+/)
+        .filter(Boolean)
+        .map(term => new RegExp('(?<![\\p{L}\\p{N}_])' + term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'iu'))
+}
+
+/** Sant om alla termer matchar texten. */
+export function matchesAll(terms, text) {
+    const haystack = String(text ?? '')
+    return terms.every(term => term.test(haystack))
+}
+
 /** Kopplingar för en viss artikel. Små mängder, hämtas direkt. */
 export async function connectionsForArticle(articleId) {
     const parts = await Promise.all(

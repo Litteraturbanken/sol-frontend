@@ -216,16 +216,38 @@ export function blank(value) {
  * Enkel cache för uppslagstabeller som ändras sällan. Lexikonet redigeras
  * några gånger i veckan, så en minut är rikligt och sparar Directus-anrop
  * på varje sidvisning.
+ *
+ * Ett utgånget värde lämnas ut direkt medan ett nytt hämtas i bakgrunden,
+ * så att stora index (verksökningen) inte ger en långsam sida när de
+ * förnyas. Samtidiga anrop delar på samma hämtning.
  */
 const CACHE_TTL_MS = 60_000
 const cache = new Map()
 
 export async function cached(key, loader, ttl = CACHE_TTL_MS) {
     const hit = cache.get(key)
-    if (hit && Date.now() - hit.at < ttl) return hit.value
-    const value = await loader()
-    cache.set(key, { at: Date.now(), value })
-    return value
+    const fresh = hit && 'value' in hit && Date.now() - hit.at < ttl
+    if (fresh) return hit.value
+    if (!hit?.pending) {
+        const pending = loader().then(
+            value => {
+                cache.set(key, { at: Date.now(), value })
+                return value
+            },
+            error => {
+                if (hit && 'value' in hit) cache.set(key, { at: hit.at, value: hit.value })
+                else cache.delete(key)
+                throw error
+            }
+        )
+        cache.set(key, { ...(hit ?? {}), pending })
+        if (hit && 'value' in hit) {
+            pending.catch(() => {})
+            return hit.value
+        }
+        return pending
+    }
+    return 'value' in hit ? hit.value : hit.pending
 }
 
 export function clearCache() {
