@@ -125,10 +125,12 @@ job "sol-frontend-stage" {
         PORT              = "${NOMAD_PORT_http}"
         NUXT_APP_BASE_URL = "/översättarlexikon/"
 
-        # Lexikonets data läses ur Directus, fritextsöket ur OpenSearch.
-        # Båda nås bara av serverlagret; NUXT_PUBLIC_API_BASE lämnas osatt
-        # så att sidorna använder appens egna rutter under /api/sol.
-        NUXT_DIRECTUS_URL       = "https://filisol.pub.lb.se"
+        # Lexikonets data läses ur Directus (Nomad-jobbet filisol), fritextsöket
+        # ur OpenSearch. Båda nås bara av serverlagret, och Directus nås på den
+        # interna Consul-adressen så att anropen inte går via den publika
+        # ingressen och dess passiva hälsokontroll. NUXT_PUBLIC_API_BASE lämnas
+        # osatt så att sidorna använder appens egna rutter under /api/sol.
+        NUXT_DIRECTUS_URL       = "http://filisol.service.consul:8055"
         NUXT_DIRECTUS_TOKEN     = "${secret.runtime.directus_token}"
         NUXT_OPENSEARCH_URL     = "http://lb-loadbalancer:9200"
         NUXT_OPENSEARCH_INDEX   = "littb-live_sol"
