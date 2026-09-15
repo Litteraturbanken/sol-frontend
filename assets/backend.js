@@ -19,10 +19,14 @@ async function getJSON(url, config = {}) {
  *
  * apiBase är normalt en relativ sökväg. Då används $fetch, som under
  * serverrenderingen anropar rutten direkt utan att gå ut på nätverket.
- * Pekar apiBase på en annan värd görs ett vanligt HTTP-anrop.
+ * Sökvägen måste då ha appens installationsprefix (NUXT_APP_BASE_URL,
+ * i drift /översättarlexikon/) framför sig, annars svarar Nitro med en
+ * omdirigering i stället för JSON. Pekar apiBase på en annan värd görs
+ * ett vanligt HTTP-anrop.
  */
 async function apiGet(endpoint, params = {}, config = {}) {
-  const base = useRuntimeConfig().public.apiBase;
+  const runtime = useRuntimeConfig();
+  const base = runtime.public.apiBase;
   const query = {};
   for (const [key, value] of Object.entries(params)) {
     if (value != null) query[key] = value;
@@ -32,7 +36,8 @@ async function apiGet(endpoint, params = {}, config = {}) {
     for (const [key, value] of Object.entries(query)) url.searchParams.set(key, value);
     return getJSON(url, config);
   }
-  return $fetch(endpoint, { baseURL: base, query, signal: config.signal });
+  const appBase = String(runtime.app?.baseURL || "/").replace(/\/+$/, "");
+  return $fetch(endpoint, { baseURL: appBase + base, query, signal: config.signal });
 }
 
 function groupConnections(works, sortVal) {
