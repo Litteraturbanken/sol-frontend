@@ -12,7 +12,7 @@
  *
  * Idempotent. Skriver ut en ny token sist; den ska in i NUXT_DIRECTUS_TOKEN.
  *
- *   DIRECTUS_URL=https://filisol.lb.se DIRECTUS_TOKEN=<admin> \
+ *   DIRECTUS_URL=https://filisol.pub.lb.se DIRECTUS_TOKEN=<admin> \
  *     node scripts/directus-access.mjs [--dry-run] [--keep-token]
  */
 

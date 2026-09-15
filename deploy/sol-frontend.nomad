@@ -14,6 +14,15 @@ job "sol-frontend" {
     value     = "amd64"
   }
 
+  # Fritextsöket går via den interna OpenSearch-ingången lb-loadbalancer:9200,
+  # som bara löses upp på noderna i legacy-nätet (10.2.0.0/24). Molnklienterna
+  # (10.0.0.0/24) saknar det namnet.
+  constraint {
+    attribute = "${node.class}"
+    operator  = "regexp"
+    value     = "^(colocated|xl|nlp)$"
+  }
+
   affinity {
     attribute = "${node.unique.name}"
     operator  = "="
@@ -113,13 +122,14 @@ job "sol-frontend" {
         PORT                 = "${NOMAD_PORT_http}"
         NUXT_APP_BASE_URL = "/översättarlexikon/"
 
-        # Lexikonets data läses ur Directus, fritextsöket ur OpenSearch.
-        # Båda nås bara av serverlagret; NUXT_PUBLIC_API_BASE lämnas osatt
-        # så att sidorna använder appens egna rutter under /api/sol.
-        NUXT_DIRECTUS_URL     = "https://filisol.lb.se"
-        NUXT_DIRECTUS_TOKEN   = "${secret.runtime.directus_token}"
-        NUXT_OPENSEARCH_URL   = "http://lb-loadbalancer:9200"
-        NUXT_OPENSEARCH_INDEX = "littb-live_sol"
+        # Lexikonets data läses ur Directus (Nomad-jobbet filisol), fritextsöket
+        # ur OpenSearch. Båda nås bara av serverlagret; NUXT_PUBLIC_API_BASE
+        # lämnas osatt så att sidorna använder appens egna rutter under /api/sol.
+        NUXT_DIRECTUS_URL       = "https://filisol.pub.lb.se"
+        NUXT_DIRECTUS_TOKEN     = "${secret.runtime.directus_token}"
+        NUXT_OPENSEARCH_URL     = "http://lb-loadbalancer:9200"
+        NUXT_OPENSEARCH_INDEX   = "littb-live_sol"
+        NUXT_PUBLIC_ASSETS_BASE = "https://filisol.pub.lb.se/assets/"
       }
 
       resources {

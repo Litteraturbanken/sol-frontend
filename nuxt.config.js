@@ -107,7 +107,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
         // Directus (filisol) är lexikonets databas, OpenSearch driver
         // fritextsökningen. Båda nås bara från serverlagret i server/api/sol.
-        directusUrl: 'https://filisol.lb.se',
+        directusUrl: 'https://filisol.pub.lb.se',
         directusToken: '',
         opensearchUrl: 'http://lb-loadbalancer:9200',
         opensearchIndex: 'littb-live_sol',
@@ -117,7 +117,7 @@ export default defineNuxtConfig({
             // på ett externt API.
             apiBase: '/api/sol',
             // Artikelbilderna serveras av Directus filarkiv.
-            assetsBase: 'https://filisol.lb.se/assets/'
+            assetsBase: 'https://filisol.pub.lb.se/assets/'
         }
     },
     css: [
