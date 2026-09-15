@@ -74,11 +74,16 @@ async function articleHits(phrase, libris) {
 /**
  * Verk vars egna fält matchar frasen, eller som är kopplade till en artikel
  * vars namn matchar. Titelträffar rankas högst, som i den gamla formeln.
+ *
+ * En kort fras kan träffa tiotusentals verk, och autokompletteringen frågar
+ * för varje tangenttryckning. Därför hämtas verken med sina fält i ett enda
+ * anrop, och kopplingarna och artikelnamnen tas ur de cachade indexen i
+ * stället för att slås upp per verk.
  */
 async function workHits(phrase) {
-    const [byText, byArticle] = await Promise.all([
+    const [byText, byArticle, connections, articleNames] = await Promise.all([
         items('Works', {
-            fields: ['id'],
+            fields: WORK_FIELDS,
             filter: {
                 _and: [
                     { Unpublished: { _eq: 0 } },
@@ -86,34 +91,34 @@ async function workHits(phrase) {
                 ]
             }
         }),
-        articleMatchedWorkIds(phrase)
+        articleMatchedWorkIds(phrase),
+        allConnections(),
+        publishedArticleNames()
     ])
 
-    const ids = [...new Set([...byText.map(row => row.id), ...byArticle])]
-    if (!ids.length) return []
+    const works = new Map(byText.map(row => [row.id, row]))
+    const missing = byArticle.filter(id => !works.has(id))
+    if (missing.length) {
+        for (const [id, work] of await worksByIds(missing, { fields: WORK_FIELDS })) works.set(id, work)
+    }
+    if (!works.size) return []
 
-    const works = await worksByIds(ids, { fields: WORK_FIELDS })
-    const connections = await connectionsForWorks([...works.keys()])
-    const articleIds = connections.map(row => row.ArticleID).filter(id => id != null)
-    const articles = articleIds.length
-        ? await items('Articles', {
-              fields: ['id', 'ArticleName'],
-              filter: { _and: [{ id: { _in: articleIds } }, publishedFilter] }
-          })
-        : []
-    const articleById = new Map(articles.map(row => [row.id, row]))
+    // INNER JOIN mot publicerade artiklar: bara kopplingar till sådana räknas.
+    const linksByWork = new Map()
+    for (const row of connections) {
+        if (!works.has(row.WorkID) || !articleNames.has(row.ArticleID)) continue
+        const list = linksByWork.get(row.WorkID) ?? []
+        list.push(row)
+        linksByWork.set(row.WorkID, list)
+    }
 
     const needle = phrase.toLowerCase()
     const rows = []
     for (const [id, work] of works) {
-        const links = connections.filter(row => row.WorkID === id && articleById.has(row.ArticleID))
-        // INNER JOIN mot publicerade artiklar: verk utan sådan koppling
-        // kommer inte med i resultatet.
-        if (!links.length) continue
-        const names = sortBySwedish(
-            [...new Set(links.map(row => articleById.get(row.ArticleID).ArticleName))],
-            name => name
-        )
+        const links = linksByWork.get(id)
+        // Verk utan koppling till en publicerad artikel kommer inte med.
+        if (!links) continue
+        const names = sortBySwedish([...new Set(links.map(row => articleNames.get(row.ArticleID)))], name => name)
         rows.push({
             id,
             TitleSwedish: work.TitleSwedish,
@@ -134,32 +139,15 @@ async function workHits(phrase) {
     ).slice(0, 50)
 }
 
+/** Verk kopplade till publicerade artiklar vars namn matchar frasen. */
 async function articleMatchedWorkIds(phrase) {
     const articles = await items('Articles', {
         fields: ['id'],
         filter: { _and: [{ ArticleName: { _contains: phrase } }, publishedFilter] }
     })
     if (!articles.length) return []
-    const ids = articles.map(row => row.id)
-    const parts = await Promise.all(
-        CONNECTION_COLLECTIONS.map(collection =>
-            items(collection, { fields: ['WorkID'], filter: { ArticleID: { _in: ids } } })
-        )
-    )
-    return parts.flat().map(row => row.WorkID)
-}
-
-async function connectionsForWorks(workIds) {
-    if (!workIds.length) return []
-    const parts = await Promise.all(
-        CONNECTION_COLLECTIONS.map(collection =>
-            items(collection, {
-                fields: ['WorkID', 'ArticleID', 'ConnectionType'],
-                filter: { WorkID: { _in: workIds } }
-            })
-        )
-    )
-    return parts.flat()
+    const ids = new Set(articles.map(row => row.id))
+    return (await allConnections()).filter(row => ids.has(row.ArticleID)).map(row => row.WorkID)
 }
 
 /**

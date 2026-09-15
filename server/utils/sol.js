@@ -162,6 +162,14 @@ export function publishedArticleIds() {
     })
 }
 
+/** Namn på publicerade artiklar, id → ArticleName. Några hundra rader. */
+export function publishedArticleNames() {
+    return cached('publishedArticleNames', async () => {
+        const rows = await items('Articles', { fields: ['id', 'ArticleName'], filter: publishedFilter })
+        return new Map(rows.map(row => [row.id, row.ArticleName]))
+    })
+}
+
 /** Kopplingar för en viss artikel. Små mängder, hämtas direkt. */
 export async function connectionsForArticle(articleId) {
     const parts = await Promise.all(
@@ -188,21 +196,17 @@ export async function connectionsForWork(workId) {
     return parts.flat()
 }
 
-/** Hämtar verk i block, eftersom id-listan kan bli lång. */
+/** Hämtar verk på id. Långa id-listor delas upp av items(). */
 export async function worksByIds(ids, { fields, publishedOnly = true } = {}) {
     const unique = [...new Set(ids)]
     if (!unique.length) return new Map()
     // "SELECT Works.*" i SQL gav bara riktiga kolumner, inte Directus
     // relationsfält.
     fields = fields ?? (await realFields('Works'))
-    const rows = []
-    for (let i = 0; i < unique.length; i += 500) {
-        const chunk = unique.slice(i, i + 500)
-        const filter = publishedOnly
-            ? { _and: [{ id: { _in: chunk } }, { Unpublished: { _eq: 0 } }] }
-            : { id: { _in: chunk } }
-        rows.push(...(await items('Works', { fields, filter })))
-    }
+    const filter = publishedOnly
+        ? { _and: [{ id: { _in: unique } }, { Unpublished: { _eq: 0 } }] }
+        : { id: { _in: unique } }
+    const rows = await items('Works', { fields, filter })
     return new Map(rows.map(row => [row.id, row]))
 }
 

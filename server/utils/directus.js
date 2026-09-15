@@ -49,10 +49,92 @@ export async function directusRequest(path, query) {
 }
 
 /**
+ * Filtret skickas i URL:en, och Node avvisar begäranden över 16 kB med 431.
+ * En "_in"-lista med fler id:n än så här delas därför upp i flera anrop.
+ * Ett sök på en kort fras kan träffa tjugotusen verk.
+ */
+const IN_CHUNK = 500
+const IN_CONCURRENCY = 4
+
+/** Hittar en lång "_in"-lista i filtret: returnerar [{ ids, replace(chunk) }] eller null. */
+function longInList(filter) {
+    let found = null
+    const walk = (node, set) => {
+        if (found || !node || typeof node !== 'object') return
+        for (const [key, value] of Object.entries(node)) {
+            if (key === '_in' && Array.isArray(value) && value.length > IN_CHUNK) {
+                found = { ids: value, replace: chunk => set({ ...node, _in: chunk }) }
+                return
+            }
+            if (value && typeof value === 'object') {
+                walk(value, replacement => {
+                    if (Array.isArray(node)) {
+                        const copy = node.slice()
+                        copy[key] = replacement
+                        set(copy)
+                    } else {
+                        set({ ...node, [key]: replacement })
+                    }
+                })
+            }
+        }
+    }
+    let result = filter
+    walk(filter, replacement => {
+        result = replacement
+    })
+    if (!found) return null
+    const { ids, replace } = found
+    return {
+        ids,
+        withChunk: chunk => {
+            result = filter
+            replace(chunk)
+            return result
+        }
+    }
+}
+
+/** Kör funktionen över listan med högst `limit` anrop i taget, i ordning. */
+async function mapLimit(list, limit, fn) {
+    const results = new Array(list.length)
+    let next = 0
+    const worker = async () => {
+        while (next < list.length) {
+            const index = next++
+            results[index] = await fn(list[index])
+        }
+    }
+    await Promise.all(Array.from({ length: Math.min(limit, list.length) }, worker))
+    return results
+}
+
+/**
  * Hämtar rader ur en collection. `filter`, `sort`, `fields` och `deep` följer
  * Directus egen syntax. limit -1 betyder alla rader.
+ *
+ * En lång "_in"-lista i filtret delas upp i block om IN_CHUNK id:n och
+ * svaren slås ihop. Det gäller bara när alla rader hämtas (limit -1, ingen
+ * sidindelning eller aggregering); raderna kommer då blockvis, så den som
+ * behöver en viss ordning sorterar själv, vilket alla anropare redan gör.
  */
-export async function items(collection, { fields, filter, sort, limit = -1, page, offset, deep, aggregate, groupBy } = {}) {
+export async function items(collection, options = {}) {
+    const { filter, limit = -1, page, offset, aggregate, groupBy } = options
+    const long = filter && limit === -1 && page === undefined && offset === undefined && !aggregate && !groupBy
+        ? longInList(filter)
+        : null
+    if (long) {
+        const chunks = []
+        for (let i = 0; i < long.ids.length; i += IN_CHUNK) chunks.push(long.ids.slice(i, i + IN_CHUNK))
+        const parts = await mapLimit(chunks, IN_CONCURRENCY, chunk =>
+            singleRequest(collection, { ...options, filter: long.withChunk(chunk) })
+        )
+        return parts.flat()
+    }
+    return singleRequest(collection, options)
+}
+
+async function singleRequest(collection, { fields, filter, sort, limit = -1, page, offset, deep, aggregate, groupBy }) {
     const query = {}
     if (fields?.length) query.fields = fields.join(',')
     if (filter) query.filter = JSON.stringify(filter)
