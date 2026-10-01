@@ -9,7 +9,7 @@
 # digesten här. När stage är godkänd flyttas digesten till sol-frontend.nomad.
 variable "image" {
   type    = string
-  default = "registry.service.consul:5000/sol-frontend@sha256:3d78ad65953bd84bf280a2d54a9f6d1ae930ed849f3aa2de1a921f70503eef48"
+  default = "registry.service.consul:5000/sol-frontend@sha256:783ce3b35f6bad4fa2fd9c3bbcd53078bdc6b8894145818c4dd33a8188405132"
 }
 
 job "sol-frontend-stage" {
@@ -37,7 +37,7 @@ job "sol-frontend-stage" {
   }
 
   meta {
-    git_ref = "cf343b821d6b39f9965b78f69015391cdfb34740"
+    git_ref = "e95fed9b28314e6a671e27087afefcd01a2bff76"
     branch  = "sol2"
   }
 
