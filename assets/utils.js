@@ -22,6 +22,19 @@ export function debounce(func, wait, immediate) {
   };
 }
 
+/**
+ * Artikeltexterna länkar relativt lexikonets rot, "./artiklar/Namn". Nuxt 2
+ * lade en <base>-tagg i sidhuvudet som fick det att fungera; utan den löses
+ * länkarna upp mot sidans egen adress och hamnar under /artiklar/artiklar/.
+ * Här får de appens basadress framför sig i stället.
+ */
+export function rebaseLinks(html, base) {
+  return html.replace(
+    /(<a\b[^>]*?\bhref\s*=\s*["'])(?:\.\/|(?=artiklar\/))/gi,
+    (match, start) => start + base
+  );
+}
+
 export function naturalSort(array, ...sortKeys) {
   // sorts array in place
   let sorter = nSorter();

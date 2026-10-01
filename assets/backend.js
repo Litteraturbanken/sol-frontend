@@ -1,5 +1,6 @@
 
 import _ from "lodash";
+import { rebaseLinks } from "~/assets/utils";
 
 
 
@@ -113,6 +114,8 @@ class PythonBackend {
     if (showIngress) {
       suffix = ",Ingress";
     }
+    // Läses före första await, där Nuxt-kontexten fortfarande finns.
+    const appBase = encodeURI(String(useRuntimeConfig().app?.baseURL || "/")).replace(/\/*$/, "/");
     let resp = await apiGet(
       urljoin("article", encodeURIComponent(articleId)),
       {
@@ -125,10 +128,13 @@ class PythonBackend {
     works = _.sortBy(works, "RealYear");
     // console.log("article", article)
 
-    rest.article.ArticleText = rest.article.ArticleText.replace(
+    rest.article.ArticleText = rebaseLinks(rest.article.ArticleText, appBase).replace(
       /<p>\s*<img/g,
       "<p class='has_img'><img"
     );
+    if (rest.article.Ingress) {
+      rest.article.Ingress = rebaseLinks(rest.article.Ingress, appBase);
+    }
 
     return {
       ...rest,

@@ -65,6 +65,14 @@ test('article links to a populated detailed bibliography', async ({ page }) => {
     await expect(page.locator('.work').first()).toBeVisible()
 })
 
+test('links in the article text stay under the lexicon root', async ({ page }) => {
+    await page.goto('artiklar/Oscar_Ralf', { waitUntil: 'domcontentloaded' })
+    await page.waitForFunction(() => document.documentElement.dataset.nuxtReady === 'true')
+    await page.locator('.textbody a', { hasText: 'schlager' }).click()
+    await expect(page).toHaveURL(/(?<!\/artiklar)\/artiklar\/Schlager(?:%C3%B6|ö)vers(?:%C3%A4|ä)ttning$/)
+    await expect(page).toHaveTitle(/Schlager/)
+})
+
 test('bibliography filters actual works and can reset the filter', async ({ page }) => {
     await page.goto('listor/avoversattare/Gunnar_Ekelöf', { waitUntil: 'domcontentloaded' })
     await page.waitForFunction(() => document.documentElement.dataset.nuxtReady === 'true')
