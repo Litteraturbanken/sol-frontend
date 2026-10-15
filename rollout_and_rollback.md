@@ -155,11 +155,11 @@ tillkommit sedan dess.
 
 | Steg | Status | Tid |
 |---|---|---|
-| 1. Bildadress | | |
-| 2. Token för produktion | | |
-| 3. Produktionsjobbet | | |
-| 4. Tema | | |
-| 5. Publik växling | | |
-| 6. Admin till sol-admin.lb.se | | |
-| 7. Sökindexet | | |
-| 8. Städning | | |
+| 1. Bildadress | Klart: stage och produktion läser bilder från sol-admin.lb.se | 2026-10-15 22.30 |
+| 2. Token för produktion | Klart: lb-infra `6194d6b`, 45 variabler synkade | 2026-10-15 22.33 |
+| 3. Produktionsjobbet | Klart: version 6, två friska repliker (föregående: version 5) | 2026-10-15 22.36 |
+| 4. Tema | Sand står kvar | |
+| 5. Publik växling | Klart: lb-loadbalancer och lb-loadbalancer-b, kopior `/etc/caddy/Caddyfile.before-sol-frontend-20261015-223819` resp. `-224037`; lb-infra `8833ff8`. 21 av 21 e2e-prov mot den publika adressen | 2026-10-15 22.38 |
+| 6. Admin till sol-admin.lb.se | Jobbfilen klar i filisol, ej körd. Väntar på 6.1 och 6.2 | |
+| 7. Sökindexet | Väntar: källkoden till littb-gather i klustret behöver letas upp | |
+| 8. Städning | Om en vecka | |
