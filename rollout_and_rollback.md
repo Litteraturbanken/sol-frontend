@@ -121,8 +121,9 @@ steg 6.
 Kontroll: inloggning på sol-admin.lb.se, en ändring sparas och syns på
 sajten inom en minut, `/assets/<id>` svarar, licensen är aktiv,
 `filisol.pub.lb.se` svarar inte längre.
-Tillbaka: avaktivera licensen, peka DNS tillbaka på 65.109.240.163 (gamla
-Directus 9 svarar igen), sätt tillbaka `PUBLIC_URL` och `caddy-host` och kör
+Tillbaka: ta bort regeln `@sol_admin` i den gamla lastbalanserarens
+Caddyfile (kopior `/etc/caddy/Caddyfile.before-sol-admin-20261015-225153` på
+båda), peka DNS tillbaka på 65.109.240.163 (gamla Directus 9 svarar igen), sätt tillbaka `PUBLIC_URL` och `caddy-host` och kör
 om jobbet, aktivera licensen under filisol.pub.lb.se. Det som redigerats i
 nya Directus under tiden finns bara där.
 
@@ -160,6 +161,6 @@ tillkommit sedan dess.
 | 3. Produktionsjobbet | Klart: version 6, två friska repliker (föregående: version 5) | 2026-10-15 22.36 |
 | 4. Tema | Sand står kvar | |
 | 5. Publik växling | Klart: lb-loadbalancer och lb-loadbalancer-b, kopior `/etc/caddy/Caddyfile.before-sol-frontend-20261015-223819` resp. `-224037`; lb-infra `8833ff8`. 21 av 21 e2e-prov mot den publika adressen | 2026-10-15 22.38 |
-| 6. Admin till sol-admin.lb.se | Klart: DNS ändrad av Markus; filisol version 3 (föregående: 2), certifikat från Let's Encrypt, licensen aktiv utan omaktivering (ideell förening); filisol `a481863`. filisol.pub.lb.se svarar inte längre | 2026-10-15 22.48 |
+| 6. Admin till sol-admin.lb.se | Klart: DNS ändrad av Markus; filisol version 3 (föregående: 2), certifikat från Let's Encrypt, licensen aktiv utan omaktivering (ideell förening); filisol `a481863`. filisol.pub.lb.se svarar inte längre. 22.52: den gamla lastbalanseraren skickar också sol-admin.lb.se till nya Directus, för klienter med gammal DNS i cache (lb-infra `5a8726b`) | 2026-10-15 22.48 |
 | 7. Sökindexet | Väntar: källkoden till littb-gather i klustret behöver letas upp | |
 | 8. Städning | Om en vecka | |
