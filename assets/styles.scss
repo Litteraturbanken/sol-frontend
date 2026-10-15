@@ -94,6 +94,32 @@ body {
   // background: linear-gradient(to bottom, rgb(165, 63, 15) 0%, darken(rgba(165, 63, 15,1), 10%) 100%);
   //
 }
+// Startsidans bild per tema. Bilden tonas med en slöja i temats färg så att
+// texten håller AA även över bildens mörkaste partier; e2e/themes.spec.js
+// mäter det. På smala skärmar följer bilden med sidan i stället för att stå
+// still, eftersom fast bakgrund fungerar dåligt i mobila webbläsare.
+//
+// $height är bildens höjd i full skärmbredd (höjd/bredd i vw). Slöjan får
+// samma höjd på mobil och tonar in bildens överkant mot temats färg.
+@mixin start-image($bg, $opacity, $image, $height, $position: center bottom) {
+  $veil: rgba($bg, $opacity);
+  background: linear-gradient($veil, $veil), $bg url($image) $position / cover no-repeat;
+  background-attachment: fixed;
+  @media (max-width: 767px) {
+    background:
+      linear-gradient($bg, $veil 40%) center bottom / 100% $height no-repeat,
+      $bg url($image) center bottom / 100% auto no-repeat;
+  }
+}
+html[data-theme="dimbla"] body.page-start {
+  @include start-image(#e4edf2, 0.6, "gren_bkg.jpg", 75vw);
+}
+html[data-theme="salvia"] body.page-start {
+  @include start-image(#e5eee3, 0.6, "europeana-5Kn371SQBtw-unsplash.jpg", 90vw, center);
+}
+html[data-theme="sand"] body.page-start {
+  @include start-image(#eee7d3, 0.4, "smithsonian-1AaWa4w5gsc-unsplash.jpg", 69vw, center);
+}
 h1 {
   font-weight: 400;
   margin-bottom: 1.3em;

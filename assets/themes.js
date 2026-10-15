@@ -14,10 +14,13 @@ export const THEMES = {
   standard: { label: "Vit", bg: "#ffffff", link: "#618296", muted: "#808080" },
   dimbla: { label: "Dimblå", bg: "#e4edf2", link: "#335a6e", muted: "#515e66" },
   salvia: { label: "Salvia", bg: "#e5eee3", link: "#365e40", muted: "#525c54" },
-  rose: { label: "Rosé", bg: "#f5e6e3", link: "#7a3f34", muted: "#5f5451" }
+  sand: { label: "Sand", bg: "#eee7d3", link: "#5f5440", muted: "#555c57" }
 };
 
 export const DEFAULT_THEME = "standard";
+
+/** Teman som bytt namn: gammalt namn -> nytt. directus-meta.mjs flyttar sparade värden. */
+export const RENAMED_THEMES = { rose: "sand" };
 
 export function validTheme(value) {
   return Object.hasOwn(THEMES, value) ? value : null;

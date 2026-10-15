@@ -15,7 +15,7 @@
  *     node scripts/directus-meta.mjs [--dry-run]
  */
 
-import { DEFAULT_THEME, THEMES } from '../assets/themes.js'
+import { DEFAULT_THEME, RENAMED_THEMES, THEMES } from '../assets/themes.js'
 
 const baseUrl = String(process.env.DIRECTUS_URL || '').replace(/\/+$/, '')
 const token = process.env.DIRECTUS_TOKEN
@@ -143,6 +143,12 @@ async function main() {
     if (!current?.id) {
         await step(`första raden i ${COLLECTION} (tema ${DEFAULT_THEME})`, () =>
             api('PATCH', `/items/${COLLECTION}`, { Theme: DEFAULT_THEME })
+        )
+    } else if (!Object.hasOwn(THEMES, current.Theme)) {
+        // Ett tema som bytt namn eller tagits bort får sitt nya namn, annars standard.
+        const theme = RENAMED_THEMES[current.Theme] ?? DEFAULT_THEME
+        await step(`sparat tema ${current.Theme} -> ${theme}`, () =>
+            api('PATCH', `/items/${COLLECTION}`, { Theme: theme })
         )
     }
 
