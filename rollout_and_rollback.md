@@ -106,7 +106,7 @@ steg 6.
 
 ### 6. Redaktörernas admin flyttar till sol-admin.lb.se
 
-1. **Markus:** avaktivera licensen i nya Directus, på
+1. **Markus:** avaktivera licensen i nya Directus (visade sig onödigt: licensen för ideell förening gäller även efter adressbytet), på
    `https://filisol.pub.lb.se/admin/settings/license`. Licensen är bunden
    till `PUBLIC_URL` och måste avaktiveras under den gamla adressen först.
 2. **Markus:** i Cloudflare, zonen lb.se: ändra `sol-admin.lb.se` (A, ej
@@ -160,6 +160,6 @@ tillkommit sedan dess.
 | 3. Produktionsjobbet | Klart: version 6, två friska repliker (föregående: version 5) | 2026-10-15 22.36 |
 | 4. Tema | Sand står kvar | |
 | 5. Publik växling | Klart: lb-loadbalancer och lb-loadbalancer-b, kopior `/etc/caddy/Caddyfile.before-sol-frontend-20261015-223819` resp. `-224037`; lb-infra `8833ff8`. 21 av 21 e2e-prov mot den publika adressen | 2026-10-15 22.38 |
-| 6. Admin till sol-admin.lb.se | Jobbfilen klar i filisol, ej körd. Väntar på 6.1 och 6.2 | |
+| 6. Admin till sol-admin.lb.se | Klart: DNS ändrad av Markus; filisol version 3 (föregående: 2), certifikat från Let's Encrypt, licensen aktiv utan omaktivering (ideell förening); filisol `a481863`. filisol.pub.lb.se svarar inte längre | 2026-10-15 22.48 |
 | 7. Sökindexet | Väntar: källkoden till littb-gather i klustret behöver letas upp | |
 | 8. Städning | Om en vecka | |
