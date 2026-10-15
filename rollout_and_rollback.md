@@ -132,22 +132,31 @@ Stoppet för redigering måste gälla tills steg 6 är klart.
 
 ### 7. Sökindexet
 
-`littb-gather` bygger indexet `littb-live_sol` genom att läsa
-artikellistan på sajten och hämta varje artikel från gamla Python-API:t
-(`/sol/api/article/<namn>`). Efter releasen ska den hämta från
-`/översättarlexikon/api/sol/article/<namn>`, som ger samma svar. Koden som
-kör i klustret finns inte i GitHub-repot (där är `main` från 2022); den
-behöver letas upp innan ändringen kan göras. Indexet skapades senast
-2026-09-21.
+`littb-gather` (Nomad-tjänst i klustret, nattjobbet `littb-gather-nightly`
+kl. 03.00) bygger indexet `littb-live_sol` i OpenSearch på lb-elastic-*.
+Den läser artikellistan på sajten och hämtar varje artikel från
+`litteraturbanken.se/sol/api/article/<namn>`.
 
-Tills dess: sökningen visar indexet som det är och saknar det som
-tillkommit sedan dess.
+Gjort 2026-10-15 23.06: den gamla lastbalanseraren skriver om
+`litteraturbanken.se/sol/api/*` till sol-frontends
+`/översättarlexikon/api/sol/*`, som ger samma svar ur nya Directus (bara
+ordningen på verken inom en artikel skiljer). littb-gather behöver ingen
+ändring. lb-infra `ecff5aa`; kopior
+`/etc/caddy/Caddyfile.before-sol-api-20261015-230636` (lb-loadbalancer) och
+`-230409`-filen på lb-loadbalancer-b.
+Tillbaka: ta bort regeln `@sol_api` och ladda om; Python-API:t på
+lb-appserv-a svarar då igen med gamla databasen.
+
+Kvar: varje nattlig körning har avbrutits sedan 2026-09-21 med
+`PopularityReportError: Raw popularity aggregation failed; indexing must
+stop` (hämtningen av sidvisningar från Matomo). Tills det är löst byggs
+inget index om, för någon av samlingarna.
 
 ### 8. Efter en vecka i drift
 
 - Stäng gamla Directus 9 (lb-appserv-a, port 8056) och den gamla Nuxt-appen.
   Behåll databasen `sol` som arkiv.
-- Stäng Python-API:t `/sol/api` när steg 7 är klart.
+- Stäng Python-API:t på lb-appserv-a; `/sol/api` besvaras redan av sol-frontend.
 - Ta bort `sol-admin.lb.se` ur den gamla lastbalanserarens Caddyfile.
 - Slå ihop `sol2` till `master` i sol-frontend.
 - Stäng den publika rollens rätt att skapa och ändra filer i nya Directus.
@@ -162,5 +171,5 @@ tillkommit sedan dess.
 | 4. Tema | Sand står kvar | |
 | 5. Publik växling | Klart: lb-loadbalancer och lb-loadbalancer-b, kopior `/etc/caddy/Caddyfile.before-sol-frontend-20261015-223819` resp. `-224037`; lb-infra `8833ff8`. 21 av 21 e2e-prov mot den publika adressen | 2026-10-15 22.38 |
 | 6. Admin till sol-admin.lb.se | Klart: DNS ändrad av Markus; filisol version 3 (föregående: 2), certifikat från Let's Encrypt, licensen aktiv utan omaktivering (ideell förening); filisol `a481863`. filisol.pub.lb.se svarar inte längre. 22.52: den gamla lastbalanseraren skickar också sol-admin.lb.se till nya Directus, för klienter med gammal DNS i cache (lb-infra `5a8726b`) | 2026-10-15 22.48 |
-| 7. Sökindexet | Väntar: källkoden till littb-gather i klustret behöver letas upp | |
+| 7. Sökindexet | Källan klar (`/sol/api` till nya Directus). Väntar på Matomo-felet | 2026-10-15 23.06 |
 | 8. Städning | Om en vecka | |
