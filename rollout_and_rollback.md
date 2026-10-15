@@ -158,7 +158,7 @@ inget index om, för någon av samlingarna.
   Behåll databasen `sol` som arkiv.
 - Stäng Python-API:t på lb-appserv-a; `/sol/api` besvaras redan av sol-frontend.
 - Ta bort `sol-admin.lb.se` ur den gamla lastbalanserarens Caddyfile.
-- Slå ihop `sol2` till `master` i sol-frontend.
+- ~~Slå ihop `sol2` till `master` i sol-frontend.~~ Gjort 2026-10-15 (snabbspolning).
 - Stäng den publika rollens rätt att skapa och ändra filer i nya Directus.
 
 ## Status
