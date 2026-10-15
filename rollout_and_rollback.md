@@ -143,7 +143,7 @@ Gjort 2026-10-15 23.06: den gamla lastbalanseraren skriver om
 ordningen på verken inom en artikel skiljer). littb-gather behöver ingen
 ändring. lb-infra `ecff5aa`; kopior
 `/etc/caddy/Caddyfile.before-sol-api-20261015-230636` (lb-loadbalancer) och
-`-230409`-filen på lb-loadbalancer-b.
+`/etc/caddy/Caddyfile.before-sol-api-20261015-230538` (lb-loadbalancer-b).
 Tillbaka: ta bort regeln `@sol_api` och ladda om; Python-API:t på
 lb-appserv-a svarar då igen med gamla databasen.
 
