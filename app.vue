@@ -1,5 +1,27 @@
 <script setup>
+import backend from '~/assets/backend'
+import { DEFAULT_THEME, themeVariables, validTheme } from '~/assets/themes'
+
 useHead({ titleTemplate: title => title ? `${title} - Svenskt översättarlexikon` : 'Svenskt översättarlexikon' })
+
+// Temat sätts redan i serverrenderingen, så att sidan aldrig visas i fel färg.
+// ?tema=<namn> förhandsvisar ett annat tema än det som är sparat i Directus,
+// utan att spara något.
+const route = useRoute()
+const { data: meta } = await useAsyncData('sol-meta', () =>
+    backend.getMeta().catch(() => ({ theme: DEFAULT_THEME }))
+)
+
+const theme = computed(() => validTheme(route.query.tema) || meta.value?.theme || DEFAULT_THEME)
+
+useHead(() => ({
+    htmlAttrs: {
+        'data-theme': theme.value,
+        style: Object.entries(themeVariables(theme.value))
+            .map(([name, value]) => `${name}: ${value}`)
+            .join('; ')
+    }
+}))
 </script>
 
 <template>

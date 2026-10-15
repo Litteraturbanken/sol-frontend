@@ -49,7 +49,8 @@ export const SOL_COLLECTIONS = [
     'BibliographyTypes',
     'Languages',
     'PrizeWinners',
-    'StaticPages'
+    'StaticPages',
+    'Meta'
 ]
 
 async function api(method, path, body) {

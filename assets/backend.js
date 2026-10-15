@@ -183,6 +183,10 @@ class PythonBackend {
     return groups;
   }
 
+  async getMeta() {
+    return apiGet("/meta");
+  }
+
   async getContributors() {
     return (
       await apiGet("/contributors", { show: "URLName,FirstName,LastName" })

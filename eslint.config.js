@@ -45,7 +45,7 @@ export default [
     js.configs.recommended,
     ...vue.configs['flat/essential'],
     {
-        languageOptions: { globals: { ...globals.browser, ...globals.node, defineNuxtConfig: 'readonly', defineNuxtComponent: 'readonly', defineNuxtPlugin: 'readonly', useRuntimeConfig: 'readonly', useHead: 'readonly', createError: 'readonly', navigateTo: 'readonly', pageContext: 'readonly', getCurrentInstance: 'readonly', useRoute: 'readonly', useNuxtApp: 'readonly', onNuxtReady: 'readonly', usePageHead: 'readonly', $fetch: 'readonly' } },
+        languageOptions: { globals: { ...globals.browser, ...globals.node, defineNuxtConfig: 'readonly', defineNuxtComponent: 'readonly', defineNuxtPlugin: 'readonly', useRuntimeConfig: 'readonly', useHead: 'readonly', createError: 'readonly', navigateTo: 'readonly', pageContext: 'readonly', getCurrentInstance: 'readonly', useRoute: 'readonly', useNuxtApp: 'readonly', onNuxtReady: 'readonly', usePageHead: 'readonly', useAsyncData: 'readonly', computed: 'readonly', $fetch: 'readonly' } },
         rules: {
             'no-unused-vars': 'off', 'no-empty': 'off', 'no-useless-escape': 'off',
             'no-redeclare': 'off', 'no-constant-condition': 'off',

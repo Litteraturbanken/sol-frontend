@@ -75,9 +75,10 @@ ul.resultlist {
   }
 }
 body {
-  // background-color : #f7fdf4;
+  // Temats färger kommer som CSS-variabler från app.vue (assets/themes.js).
+  background-color : var(--sol-bg, #fff);
   &.page-start {
-    background: url("cloud_blue.jpg" ) ;
+    background: var(--sol-start-bg, url("cloud_blue.jpg"));
 
     a:hover {
       color : black;
@@ -198,7 +199,6 @@ a:focus, a:hover {
   min-height : 100%;
   margin-bottom: 150px;
 }
-
 .outer-container {
   display : flex;
   flex-direction : column;
@@ -228,9 +228,10 @@ a {
 
 .colorlinks, p {
   a {
-      color : $primary_color;
+      color : var(--sol-link, $primary_color);
       &:hover {
-        color : darken($primary_color, 20%)
+        color : darken($primary_color, 20%);
+        color : color-mix(in srgb, var(--sol-link, $primary_color) 70%, black);
       }
     }
 }

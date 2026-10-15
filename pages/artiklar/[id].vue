@@ -207,7 +207,7 @@ figcaption {
     columns: 250px 2;
   }
   li span {
-    color: grey;
+    color: var(--sol-muted, grey);
   }
 }
 
