@@ -12,6 +12,13 @@ export default defineNuxtConfig({
     app: {
         baseURL,
         head: {
+            // Typsnittet Verlag läggs in medan sidan tolkas, så att det kommer
+            // så tidigt som möjligt utan att blockera sidan om typsnittstjänsten
+            // inte svarar. Tills dess visas "Verlag fallback" (assets/styles.scss)
+            // med samma mått. Utanför unhead, som annars kunde skriva över länken.
+            script: [{
+                innerHTML: "(function(){var l=document.createElement('link');l.rel='stylesheet';l.href='https://cloud.typography.com/7426274/6964792/css/fonts.css';document.head.appendChild(l)})()"
+            }],
                         meta: [
                 { charset: "utf-8" },
                 { name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -25,6 +32,7 @@ export default defineNuxtConfig({
                 // { href: '/bootstrap.css', rel: "stylesheet" },
                 // { rel: 'stylesheet', href: '/font/fa-custom.otf' }
                 // <link rel="stylesheet" type="text/css" href="https://cloud.typography.com/7426274/770508/css/fonts.css" />
+                { rel: "preconnect", href: "https://cloud.typography.com" },
                 {
                     rel: "apple-touch-icon",
                     sizes: "57x57",

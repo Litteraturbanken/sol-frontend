@@ -1,23 +1,50 @@
+// Reservtypsnitt med Verlags mått. Verlag kommer från cloud.typography.com
+// och läses in utan att blockera sidan (se nuxt.config.js); tills det är
+// laddat visas Arial skalad så att raderna blir lika långa och höga, och
+// bytet syns inte som ett hopp. Måtten är uppmätta mot Verlag i Chromium:
+// size-adjust är breddförhållandet, ascent/descent-override Verlags höjd
+// (0,96 em över och 0,24 em under baslinjen) delat med size-adjust.
+// Gemener och versaler skiljer, därför en egen familj för versalrubriken
+// och menyn.
+$fallback-regular: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
+$fallback-bold: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Arimo Bold");
+$fallback-italic: local("Arial Italic"), local("Arial-ItalicMT"), local("Liberation Sans Italic"), local("Arimo Italic");
 @font-face {
-    font-family: "Verlag A", "Verlag B";
-    font-style: normal;
+    font-family: "Verlag fallback";
+    src: $fallback-regular;
     font-weight: 400;
+    size-adjust: 87.4%;
+    ascent-override: 109.9%;
+    descent-override: 27.5%;
+    line-gap-override: 0%;
 }
 @font-face {
-    font-family: "Verlag A", "Verlag B";
-    font-style: normal;
+    font-family: "Verlag fallback";
+    src: $fallback-bold;
     font-weight: 700;
+    size-adjust: 90.4%;
+    ascent-override: 99.6%;
+    descent-override: 27.7%;
+    line-gap-override: 0%;
 }
-// @font-face {
-//     font-family: "Verlag A", "Verlag B";
-//     font-style: normal;
-//     font-weight: 800;
-// }
-
 @font-face {
-    font-family: "Verlag A", "Verlag B";
+    font-family: "Verlag fallback";
+    src: $fallback-italic;
     font-style: italic;
     font-weight: 400;
+    size-adjust: 86.1%;
+    ascent-override: 111.5%;
+    descent-override: 27.9%;
+    line-gap-override: 0%;
+}
+@font-face {
+    font-family: "Verlag fallback caps";
+    src: $fallback-regular;
+    font-weight: 400;
+    size-adjust: 93.5%;
+    ascent-override: 102.7%;
+    descent-override: 25.7%;
+    line-gap-override: 0%;
 }
 
 @mixin dotted($color) {
@@ -85,7 +112,7 @@ body {
     }
   }
   color : $textcolor;
-  font-family : "Verlag A", "Verlag B", sans-serif;
+  font-family : "Verlag A", "Verlag B", "Verlag fallback", sans-serif;
   padding : 1em;
   line-height : 1.4;
   // background-color : rgb(226,145,0); 
@@ -326,6 +353,10 @@ li {
 //     box-shadow: 1px 2px 6px;
 //   }
 // }
+// Versaltext: rubriken, menyn och "Läs mer" får reservtypsnittet för versaler.
+header h1, header .nav-item, .sc {
+  font-family: "Verlag A", "Verlag B", "Verlag fallback caps", sans-serif;
+}
 header {
   // * {
   //   color : white !important;

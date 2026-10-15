@@ -85,6 +85,7 @@ export default defineEventHandler(async event => {
         files: []
     }
 
+    Object.assign(result.article, await imageSize(file?.image_ref))
     if (article.Type === 2) {
         result.prizewinners = await prizeWinners(article.id)
     }

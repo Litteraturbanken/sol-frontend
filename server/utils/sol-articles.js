@@ -79,5 +79,22 @@ export async function randomArticle(event, articleType = null) {
     })
     const projected = fixDates(projectShow(tokens, { Articles: row }, 'Articles'))
     projected.FileName = portraitByArticle.get(pick.id) ?? null
+    Object.assign(projected, await imageSize(projected.FileName))
     return { data: [projected] }
+}
+
+/**
+ * Bildens bredd och höjd ur Directus filarkiv, som FileWidth och FileHeight.
+ * Sidorna sätter dem på <img> så att platsen är reserverad innan bilden
+ * laddats och texten inte hoppar. Tomt objekt om måtten saknas.
+ */
+export async function imageSize(id) {
+    if (!id) return {}
+    const response = await directusRequest('/files', {
+        fields: 'width,height',
+        filter: JSON.stringify({ id: { _eq: id } }),
+        limit: 1
+    })
+    const file = response?.data?.[0]
+    return file?.width && file?.height ? { FileWidth: file.width, FileHeight: file.height } : {}
 }

@@ -27,7 +27,7 @@
       <div class="right-col col-md-6 ">
           <section class="section row no-gutters flex-column">
             <nuxt-link :to="'/artiklar/' + article.URLName">
-              <figure class=""><img :src="$assetsBase + article.FileName" alt="">
+              <figure class=""><img :src="$assetsBase + article.FileName" :width="article.FileWidth" :height="article.FileHeight" alt="">
               </figure>
             </nuxt-link>
 
@@ -163,6 +163,9 @@ export default defineNuxtComponent({
 
     img {
       border: 1px solid #333;
+      // Måtten från API:t reserverar platsen; höjden följer bredden när
+      // bilden skalas ner.
+      height: auto;
     }
 
 

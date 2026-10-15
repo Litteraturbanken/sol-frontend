@@ -2,7 +2,14 @@
 import backend from '~/assets/backend'
 import { DEFAULT_THEME, themeVariables, validTheme } from '~/assets/themes'
 
-useHead({ titleTemplate: title => title ? `${title} - Svenskt översättarlexikon` : 'Svenskt översättarlexikon' })
+// Bilderna kommer från Directus på en annan värd; anslutningen öppnas i förväg.
+const assetsOrigin = (() => {
+    try { return new URL(useRuntimeConfig().public.assetsBase).origin } catch { return null }
+})()
+useHead({
+    titleTemplate: title => title ? `${title} - Svenskt översättarlexikon` : 'Svenskt översättarlexikon',
+    link: assetsOrigin ? [{ rel: 'preconnect', href: assetsOrigin }] : []
+})
 
 // Temat sätts redan i serverrenderingen, så att sidan aldrig visas i fel färg.
 // ?tema=<namn> förhandsvisar ett annat tema än det som är sparat i Directus,

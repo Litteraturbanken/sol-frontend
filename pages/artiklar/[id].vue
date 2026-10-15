@@ -18,6 +18,8 @@
         <figure>
           <img
             :src="$assetsBase + article.FileName"
+            :width="article.FileWidth"
+            :height="article.FileHeight"
             onerror="this.style.display='none'"
           />
           <!-- <img :src="'https://spraakbanken.gu.se/karp/data/sol/artikelfiler/' + article.FileName"
@@ -148,6 +150,8 @@ figure {
 img {
   border: 1px solid white;
   image-orientation: 0deg;
+  max-width: 100%;
+  height: auto;
 }
 figcaption {
   font-size: 0.7em;
