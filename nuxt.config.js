@@ -141,6 +141,14 @@ export default defineNuxtConfig({
             pages.push({ name: 'bibliografi-filter', path: '/listor/bibliografi/:id/:type?/:lang?', file: fileURLToPath(new URL('./pages/listor/avoversattare/[id].vue', import.meta.url)) })
             pages.push({ name: 'sprak-filter', path: '/listor/sprak/:id?/:lang?', file: fileURLToPath(new URL('./pages/listor/sprak/[id].vue', import.meta.url)) })
         },
+        // Nuxt förhämtar varje bild som stilmallen nämner. Startsidan har en
+        // bild per tema men visar bara en, så bilderna hämtas när regeln
+        // gäller i stället för alla på varje sidladdning.
+        'build:manifest'(manifest) {
+            for (const entry of Object.values(manifest)) {
+                if (entry.assets) entry.assets = entry.assets.filter(asset => !/\.(jpe?g|png|webp|avif)$/i.test(asset))
+            }
+        },
         async 'prerender:routes'(ctx) {
             if (!process.argv.includes('generate')) return
             const base = process.env.NUXT_PUBLIC_API_BASE || 'https://litteraturbanken.se/sol/api'
