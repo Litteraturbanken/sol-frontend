@@ -134,7 +134,7 @@ job "sol-frontend-stage" {
         NUXT_DIRECTUS_TOKEN     = "${secret.runtime.directus_token}"
         NUXT_OPENSEARCH_URL     = "http://lb-loadbalancer:9200"
         NUXT_OPENSEARCH_INDEX   = "littb-live_sol"
-        NUXT_PUBLIC_ASSETS_BASE = "https://filisol.pub.lb.se/assets/"
+        NUXT_PUBLIC_ASSETS_BASE = "https://sol-admin.lb.se/assets/"
       }
 
       resources {

@@ -2,7 +2,7 @@
 # Deploy the digest-pinned image after validating and planning this file.
 variable "image" {
   type    = string
-  default = "10.0.0.50:5000/sol-frontend@sha256:4340920ebea9ce9e0a120297b4af151d91db785c5a8dec46ac23f6de149fdd38"
+  default = "registry.service.consul:5000/sol-frontend@sha256:62c938260a79085f65401d95ce216772df22e4531b0ba6edffde00873706f059"
 }
 
 job "sol-frontend" {
@@ -31,7 +31,8 @@ job "sol-frontend" {
   }
 
   meta {
-    source_sha256 = "4251e55439a34f24a6c0d6d7d98e230ec0a32b27db5b2e56b1937a6a2926d702"
+    git_ref = "b0c45ba86750bf9ba0de2dfef14dd42bfd490664"
+    branch  = "sol2"
   }
 
   group "frontend" {
@@ -131,7 +132,7 @@ job "sol-frontend" {
         NUXT_DIRECTUS_TOKEN     = "${secret.runtime.directus_token}"
         NUXT_OPENSEARCH_URL     = "http://lb-loadbalancer:9200"
         NUXT_OPENSEARCH_INDEX   = "littb-live_sol"
-        NUXT_PUBLIC_ASSETS_BASE = "https://filisol.pub.lb.se/assets/"
+        NUXT_PUBLIC_ASSETS_BASE = "https://sol-admin.lb.se/assets/"
       }
 
       resources {

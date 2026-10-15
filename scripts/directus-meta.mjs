@@ -11,7 +11,7 @@
  * Idempotent: det som redan finns lämnas orört, utom temavalen, som alltid
  * följer assets/themes.js.
  *
- *   DIRECTUS_URL=https://filisol.pub.lb.se DIRECTUS_TOKEN=<admin> \
+ *   DIRECTUS_URL=https://sol-admin.lb.se DIRECTUS_TOKEN=<admin> \
  *     node scripts/directus-meta.mjs [--dry-run]
  */
 

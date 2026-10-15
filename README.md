@@ -4,7 +4,7 @@ Frontend använder Nuxt 4 och Vue 3.
 
 ## Datakällor
 
-Lexikonets innehåll ligger i Directus på `filisol.pub.lb.se` (Nomad-jobbet
+Lexikonets innehåll ligger i Directus på `sol-admin.lb.se` (Nomad-jobbet
 `filisol`), i samma instans som FILIS men i egna collections. Fritextsökningen går mot OpenSearch-indexet
 `littb-live_sol`, som byggs av littb-gather.
 
@@ -22,7 +22,7 @@ Ett fåtal skillnader mot det gamla API:t är avsiktliga och beskrivs i
 och roteras om med:
 
 ```sh
-DIRECTUS_URL=https://filisol.pub.lb.se DIRECTUS_TOKEN=<admin> node scripts/directus-access.mjs
+DIRECTUS_URL=https://sol-admin.lb.se DIRECTUS_TOKEN=<admin> node scripts/directus-access.mjs
 ```
 
 ## Utveckling
