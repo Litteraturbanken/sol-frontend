@@ -92,6 +92,15 @@ test('editor tools require login and are not indexed', async ({ request }) => {
     expect(login.status()).toBe(401)
 })
 
+// I webbläsaren, under appens basadress: sidan ska visa inloggningen och
+// inte appens egen 404 (som den gjorde med ssr: false i produktion).
+test('the Libris page renders in the browser', async ({ page }) => {
+    await page.route('https://cloud.typography.com/**', route => route.fulfill({ contentType: 'text/css', body: '' }))
+    await page.goto('redaktion/libris', { waitUntil: 'networkidle' })
+    await expect(page.locator('form.login')).toBeVisible()
+    await expect(page.locator('h2')).toHaveText('Librisimport')
+})
+
 // Kräver ett riktigt Directus-konto: SOL_TEST_EMAIL och SOL_TEST_PASSWORD.
 test('an editor can log in and stays logged in', async ({ request }) => {
     test.skip(!process.env.SOL_TEST_EMAIL, 'SOL_TEST_EMAIL och SOL_TEST_PASSWORD saknas')

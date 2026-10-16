@@ -128,10 +128,12 @@ export default defineNuxtConfig({
             assetsBase: 'https://sol-admin.lb.se/assets/'
         }
     },
-    // Redaktörsverktygen är personliga: renderas i webbläsaren, cachas och
-    // indexeras inte.
+    // Redaktörsverktygen är personliga: cachas och indexeras inte. De
+    // serverrenderas som andra sidor; med ssr: false läser routern den kodade
+    // adressen (/%C3%B6vers…) i webbläsaren och hittar inte sidan under
+    // basadressen /översättarlexikon/.
     routeRules: {
-        '/redaktion/**': { ssr: false, headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow' } },
+        '/redaktion/**': { headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow' } },
         '/api/redaktion/**': { headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow' } }
     },
     css: [
