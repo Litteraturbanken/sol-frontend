@@ -28,6 +28,9 @@ function cookieOptions() {
 }
 
 function readSession(event) {
+    // En session som förnyats under den här begäran: kakan i begäran har
+    // fortfarande den gamla refresh-token, som Directus redan har bytt ut.
+    if (event.context.editorSession) return event.context.editorSession
     const raw = getCookie(event, COOKIE)
     if (!raw) return null
     try {
@@ -45,10 +48,12 @@ function writeSession(event, tokens) {
         expires: tokens.expires ? Date.now() + Number(tokens.expires) : null
     }
     setCookie(event, COOKIE, Buffer.from(JSON.stringify(session)).toString('base64url'), cookieOptions())
+    event.context.editorSession = session
     return session
 }
 
 export function clearEditorSession(event) {
+    event.context.editorSession = null
     deleteCookie(event, COOKIE, cookieOptions())
 }
 
@@ -109,15 +114,33 @@ export async function logoutEditor(event) {
     }
 }
 
+/**
+ * Directus byter ut refresh-token vid varje förnyelse (mode json har ingen
+ * respitperiod), så den gamla går inte att använda igen. Samtidiga begäranden
+ * med samma kaka delar därför på en förnyelse, och svaret sparas en stund
+ * för begäranden som kommer strax efter med den gamla kakan.
+ */
+const refreshes = new Map()
+const REFRESH_REUSE_MS = 30_000
+
+function directusRefresh(token) {
+    const hit = refreshes.get(token)
+    if (hit) return hit
+    const pending = $fetch('/auth/refresh', {
+        baseURL: directusUrl(),
+        method: 'POST',
+        body: { refresh_token: token, mode: 'json' }
+    }).then(({ data }) => data)
+    refreshes.set(token, pending)
+    const forget = () => setTimeout(() => refreshes.delete(token), REFRESH_REUSE_MS).unref?.()
+    pending.then(forget, () => refreshes.delete(token))
+    return pending
+}
+
 async function refreshSession(event, session) {
     if (!session.refresh) throw unauthorized('Sessionen har gått ut')
     try {
-        const { data } = await $fetch('/auth/refresh', {
-            baseURL: directusUrl(),
-            method: 'POST',
-            body: { refresh_token: session.refresh, mode: 'json' }
-        })
-        return writeSession(event, data)
+        return writeSession(event, await directusRefresh(session.refresh))
     } catch {
         clearEditorSession(event)
         throw unauthorized('Sessionen har gått ut')

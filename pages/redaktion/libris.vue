@@ -131,6 +131,15 @@ useHead({ title: 'Librisimport', meta: [{ name: 'robots', content: 'noindex, nof
 const base = String(useRuntimeConfig().app.baseURL || '/').replace(/\/+$/, '')
 const api = (path, options) => $fetch(base + '/api/redaktion' + path, options)
 const errorText = e => e?.data?.message || e?.message || 'Något gick fel'
+/** Felet visas; har sessionen gått ut visas inloggningen igen. */
+function failed(e, prefix = '') {
+  if (e?.response?.status === 401) {
+    editor.value = false
+    error.value = errorText(e) + '. Logga in igen.'
+    return
+  }
+  say(prefix + errorText(e), true)
+}
 
 const editor = ref(null)
 const email = ref('')
@@ -221,7 +230,16 @@ function findArticles() {
   clearTimeout(articleTimer)
   articleTimer = setTimeout(async () => {
     const q = articleQuery.value.trim()
-    articleHits.value = q.length < 2 ? [] : (await api('/articles', { query: { q } }).catch(() => ({ articles: [] }))).articles
+    if (q.length < 2) {
+      articleHits.value = []
+      return
+    }
+    try {
+      articleHits.value = (await api('/articles', { query: { q } })).articles
+    } catch (e) {
+      articleHits.value = []
+      failed(e, 'Artiklarna kunde inte hämtas: ')
+    }
   }, 200)
 }
 function chooseArticle(a) {
@@ -250,7 +268,7 @@ async function search() {
     total.value = result.total
     say('')
   } catch (e) {
-    say(errorText(e), true)
+    failed(e)
   } finally {
     busy.value = false
   }
@@ -312,7 +330,7 @@ async function save() {
     say(`${n} verk ${n === 1 ? 'tillagt' : 'tillagda'} och kopplade till ${result.article}.` +
       (result.skipped.length ? ` ${result.skipped.length} fanns redan och hoppades över.` : ''))
   } catch (e) {
-    say(`Inget sparades: ${errorText(e)}`, true)
+    failed(e, 'Inget sparades: ')
   } finally {
     busy.value = false
   }
