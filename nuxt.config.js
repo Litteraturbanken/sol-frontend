@@ -128,6 +128,12 @@ export default defineNuxtConfig({
             assetsBase: 'https://sol-admin.lb.se/assets/'
         }
     },
+    // Redaktörsverktygen är personliga: renderas i webbläsaren, cachas och
+    // indexeras inte.
+    routeRules: {
+        '/redaktion/**': { ssr: false, headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow' } },
+        '/api/redaktion/**': { headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow' } }
+    },
     css: [
         '~/assets/fontawesome-custom/css/fa-custom.css',
         '~/assets/fontawesome-custom/css/animation.css',

@@ -25,6 +25,29 @@ och roteras om med:
 DIRECTUS_URL=https://sol-admin.lb.se DIRECTUS_TOKEN=<admin> node scripts/directus-access.mjs
 ```
 
+## Librisimport
+
+`/översättarlexikon/redaktion/libris` är redaktörernas verktyg för att hämta
+verk ur Libris och koppla dem till en artikel. Det ersätter
+`Litteraturbanken/librisimport-vite` och `libris-api` på lb-appserv-a, som
+skrev direkt i den gamla databasen.
+
+Redaktörerna loggar in med sina Directus-konton. Sparandet går till Directus
+med deras egen token (sessionen ligger i en httpOnly-kaka), så Directus
+rättigheter gäller och aktivitetsloggen visar vem som importerat vad.
+Sidan och `/api/redaktion/*` cachas och indexeras inte.
+
+- `assets/libris.js`: tolkningen av Libris MARC-XML, varningarna och verkens
+  fält. Samma fält och standardvärden som den tidigare importen (status
+  "behöver rättas", anmärkningen "Librisimporterad"), men utgivning läses
+  också ur MARC 264, där Libris lägger den sedan övergången till RDA.
+- `server/api/redaktion/`: inloggning, artikeluppslag, sökning i Libris
+  xsearch och sparande. Sparandet hoppar över Libris-id:n som redan finns
+  och tar bort nya verk igen om kopplingarna inte går att spara.
+  `dryRun: true` visar vad som skulle sparas.
+- `e2e/libris.spec.js` och `e2e/fixtures/libris-nonnen.xml`: tolkningen mot
+  ett riktigt Libris-svar.
+
 ## Utveckling
 
 Använd Node.js 24 (`nvm use`) och pnpm.
