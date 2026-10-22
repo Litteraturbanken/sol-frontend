@@ -1,7 +1,6 @@
 <template>
     <section>
         <h2>Översättarlexikonets artikelförfattare</h2>
-        <h3>{{contributor.FirstName}} {{contributor.LastName}}</h3>
         <p v-html="contributor.Description"></p>
 
         <section class="articles">
