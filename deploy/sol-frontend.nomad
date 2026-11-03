@@ -2,7 +2,7 @@
 # Deploy the digest-pinned image after validating and planning this file.
 variable "image" {
   type    = string
-  default = "registry.service.consul:5000/sol-frontend@sha256:2bac8e3770a01d0e0825bfafdf65e99c4b62b2b531ec89abcb4c5194996db7ef"
+  default = "registry.service.consul:5000/sol-frontend@sha256:386b581a969b4ffa519f6d2ff46aa4261418b574bb6dda2e3496cf7d8e080de6"
 }
 
 job "sol-frontend" {
@@ -31,7 +31,7 @@ job "sol-frontend" {
   }
 
   meta {
-    git_ref = "9910fa0d641f74f4f276bf24aa4897639c2f9e0e"
+    git_ref = "4bf6a2010268f3d186dc07db28d573bed8dc0b65"
     branch  = "sol2"
   }
 
