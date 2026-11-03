@@ -133,7 +133,8 @@ test('work and contributor links load their detail pages', async ({ page }) => {
     await page.waitForFunction(() => document.documentElement.dataset.nuxtReady === 'true')
     await page.locator('.mainview a').first().click()
     await expect(page).toHaveURL(/\/medarbetare\/[^/]+$/)
-    await expect(page.locator('.mainview h3')).not.toBeEmpty()
+    // Namnet visas inte längre som rubrik (9910fa0); medarbetarens artiklar gör det.
+    await expect(page.locator('.mainview .articles li a').first()).toBeVisible()
 })
 
 test('missing article returns HTTP 404', async ({ request }) => {
