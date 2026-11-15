@@ -8,6 +8,11 @@ Lexikonets innehåll ligger i Directus på `sol-admin.lb.se` (Nomad-jobbet
 `filisol`), i samma instans som FILIS men i egna collections. Fritextsökningen går mot OpenSearch-indexet
 `littb-live_sol`, som byggs av littb-gather.
 
+Bilderna i artiklarna laddas från `https://sol-admin.lb.se/assets/<id>`
+(`NUXT_PUBLIC_ASSETS_BASE` i jobbfilen). Det är filisol som svarar där, och
+filerna ligger i Cloudflare R2, bucket `sol`. Den gamla Directus 9 på
+lb-appserv-a behövs alltså inte för bilderna.
+
 Appen har ett eget serverlager i `server/api/sol/`. Rutterna läser Directus
 och OpenSearch och svarar i exakt samma form som det tidigare Python-API:t på
 `litteraturbanken.se/sol/api`, som de ersätter. Därför är sidorna under
